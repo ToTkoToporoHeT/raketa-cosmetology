@@ -59,7 +59,7 @@ public class MaterialsDAO {
         return result > 0; // result show how many rows was updated.
     }
     
-    public boolean addMaterial(String name, Units unit, int count, double cost) {
+    public boolean addMaterial(String name, int unit, int count, double cost) {
         System.out.println("DAO level addMaterial is called");
  
         String qlString = "insert into Materials (name,unit,count,cost) values (?,?,?,?)";
@@ -68,6 +68,7 @@ public class MaterialsDAO {
         query.setParameter(2, unit);
         query.setParameter(3, count);
         query.setParameter(4, cost);
+        
         int result = query.executeUpdate();
  
         return result > 0;

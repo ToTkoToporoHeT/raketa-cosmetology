@@ -26,7 +26,7 @@ public class UnitsService {
         return unitsDAO.getAllUnits();        
     }
     
-    public List<Units> findUnitById(int id){
+    public Units findUnitById(int id){
         System.out.println("Service level findUnitById is called");
         return unitsDAO.findUnitById(id);        
     }

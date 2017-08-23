@@ -54,19 +54,17 @@ public class Materials implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "count")
-    private int count;
+    private Integer count;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cost")
-    private double cost;
+    private Double cost;
     @JoinColumn(name = "unit", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Units unit;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "materialId")
     private List<Usedmaterials> usedmaterialsList;
     
-    private int unitId;
-
     public Materials() {
     }
 
@@ -79,6 +77,14 @@ public class Materials implements Serializable {
         this.name = name;
         this.count = count;
         this.cost = cost;
+    }
+    
+    public Materials(Integer id, String name, Units unit, int count, double cost) {
+        this.id = id;
+        this.name = name;
+        this.count = count;
+        this.cost = cost;
+        this.unit = unit;
     }
 
     public Integer getId() {
@@ -97,24 +103,20 @@ public class Materials implements Serializable {
         this.name = name;
     }
 
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 
-    public double getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
-    }
-
-    public int getUnitId() {
-        return unitId;
     }
     
     public Units getUnit() {

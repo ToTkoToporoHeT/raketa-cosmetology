@@ -23,6 +23,7 @@
     <body>
         <c:url var="showMaterials" value="/materials/showAllMaterials"/>
         <c:url var="materialsTest" value="/materials/showMaterialsTest"/>
+        <c:url var="test" value="/materials/validate"/>
 
         <div class="container">
 
@@ -43,6 +44,7 @@
                             <li class="${currentPage == 'index' ? 'active' : ''}"><a href="../index.html">Главная</a></li>
                             <li><a href="#">Оформление договора</a></li>
                             <li><a href="#">Запись на прием</a></li>
+                            <li><a href="${test}">Test</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Учет <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -51,7 +53,7 @@
                                     <li role="separator" class="divider"></li>
                                     <li class="dropdown-header">Материалы и услуги</li>
                                     <li class="${currentPage == 'viewMaterials' ? 'active' : ''}"><a href="${showMaterials}">Материалы</a></li>
-                                    <li class="${currentPage == 'materialsTest' ? 'active' : ''}"><a href="${materialsTest}">Услуги</a></li>
+                                    <li><!--class="${currentPage == '#' ? 'active' : ''}"--><a href="#">Услуги</a></li>
                                 </ul>
                             </li>
                         </ul>

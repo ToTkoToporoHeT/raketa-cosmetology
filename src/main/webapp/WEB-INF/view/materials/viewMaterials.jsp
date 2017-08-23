@@ -47,14 +47,25 @@
                                                     <input type="radio" name="materialsRadio" id="materialRadio${material.id}" value="${material.id}">
                                                     ${materialNumber.count}</th>
                                                 <td>
-                                                    <label class="radio" for="materialRadio${material.id}">
-                                                        ${material.name}</label></td>
-                                                <td><label class="radio" for="materialRadio${material.id}">
-                                                        ${material.unit}</label></td>
-                                                <td><label class="radio" for="materialRadio${material.id}">
-                                                        ${material.count}</label></td>
-                                                <td><label class="radio" for="materialRadio${material.id}">
-                                                        ${material.cost}</label></td>
+                                                    <div class="radio">
+                                                        <label class="radio" for="materialRadio${material.id}">${material.name}</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label class="radio" for="materialRadio${material.id}">${material.unit}</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label class="radio" for="materialRadio${material.id}">${material.count}</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label class="radio" for="materialRadio${material.id}">${material.cost}</label>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </c:forEach>
 
@@ -66,7 +77,7 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="btn-group btn-group-vertical" role="group" aria-label="...">
-                        <a class="btn btn-default" data-toggle="modal" href="#myModal">
+                        <a class="btn" href="/materials/material/show_page/add">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
@@ -74,7 +85,7 @@
                                 </tr>                        
                             </table>
                         </a>
-                        <button tupe="submit" class="btn btn-default" value="edit">
+                        <button tupe="button" class="btn" data-target="/materials/material/show_page/edit">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></td>
@@ -82,7 +93,7 @@
                                 </tr> 
                             </table>
                         </button>
-                        <button tupe="submit" class="btn btn-default" value="delete" formaction="/materials/deleteMaterial/materialId">
+                        <button tupe="submit" class="btn" value="delete" formaction="/materials/deleteMaterial">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></td>
@@ -94,54 +105,6 @@
                 </div>
             </div>
         </form> 
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Добавление материала</h4>
-                    </div
-                    <formSpring:form modelAttribute="material" cssClass="form-horizontal" action="/materials/addMaterial">
-                    <div class="modal-body">
-                        <div class="control-group">
-                            <label class="control-lable" for="name">Наименование материала</label>
-                            <div class="controls">
-                                <input type="text" class="input-xlarge" id="name">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-lable" for="unit">Единицы измерения</label>
-                            <div class="controls">
-                                <select id="unit">
-                                    <c:forEach items="${units}" var="unit">
-                                        <option value="${unit.id}">${unit.unit}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-lable" for="count">Количество</label>
-                            <div class="controls">
-                                <input type="text" class="input-xlarge" id="count">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-lable" for="cost">Цена одной единицы</label>
-                            <div class="controls">
-                                <input type="text" class="input-xlarge" id="cost">
-                            </div>
-                        </div>
-                        <button type="subbmit" formtarget="_parent" formaction="/materials/addMaterial" class="btn btn-primary">Сохранить</button>
-                        
-                    </formSpring:form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                        <button type="subbmit" formtarget="_parent" formaction="/materials/addMaterial" class="btn btn-primary">Сохранить</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </jsp:body>        
 
 </page:mainTamplate>

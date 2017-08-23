@@ -45,8 +45,7 @@ public class MaterialsService {
     
     public boolean addMaterial(String name, int unit, int count, double cost){
         System.out.println("Service level addMaterial is called");
-        List<Units> units = new UnitsService().findUnitById(unit);
-        return materialsDAO.addMaterial(name, units.get(0), count, cost);
+        return materialsDAO.addMaterial(name, unit, count, cost);
     }
     
     public boolean deleteMaterial(int idMaterial) {

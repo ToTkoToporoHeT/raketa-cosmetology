@@ -32,11 +32,8 @@ public class UnitsDAO {
         return tq.getResultList();
     }
     
-    public List<Units> findUnitById(int id){
+    public Units findUnitById(int id){
         System.out.println("DAO level findUnitById is called");
-        TypedQuery<Units> tq = entityManager.createNamedQuery("Units.findById", Units.class);
-        tq.setParameter(1, id);
-        
-        return tq.getResultList();
+        return entityManager.find(Units.class, id);
     }
 }
