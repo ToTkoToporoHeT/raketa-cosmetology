@@ -51,7 +51,7 @@ public class Services implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cost")
-    private double cost;
+    private Double cost;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "serviceId")
     private List<Providedservices> providedservicesList;
 
@@ -84,11 +84,11 @@ public class Services implements Serializable {
         this.name = name;
     }
 
-    public double getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 
@@ -123,7 +123,7 @@ public class Services implements Serializable {
 
     @Override
     public String toString() {
-        return "by.ban.cosmetology.model.Services[ id=" + id + " ]";
+        return "by.ban.cosmetology.model.Services[ id=" + id + ", name=" + name + ", cost=" + cost + "]";
     }
     
 }

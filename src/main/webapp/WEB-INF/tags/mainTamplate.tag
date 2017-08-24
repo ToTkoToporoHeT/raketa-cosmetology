@@ -22,6 +22,7 @@
     </head>
     <body>
         <c:url var="showMaterials" value="/materials/showAllMaterials"/>
+        <c:url var="showServices" value="/services/showAllServices"/>
         <c:url var="materialsTest" value="/materials/showMaterialsTest"/>
         <c:url var="test" value="/materials/validate"/>
 
@@ -53,7 +54,7 @@
                                     <li role="separator" class="divider"></li>
                                     <li class="dropdown-header">Материалы и услуги</li>
                                     <li class="${currentPage == 'viewMaterials' ? 'active' : ''}"><a href="${showMaterials}">Материалы</a></li>
-                                    <li><!--class="${currentPage == '#' ? 'active' : ''}"--><a href="#">Услуги</a></li>
+                                    <li class="${currentPage == 'viewServices' ? 'active' : ''}"><a href="${showServices}">Услуги</a></li>
                                 </ul>
                             </li>
                         </ul>

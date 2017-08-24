@@ -7,7 +7,6 @@ package by.ban.cosmetology.service;
 
 import by.ban.cosmetology.DAO.MaterialsDAO;
 import by.ban.cosmetology.model.Materials;
-import by.ban.cosmetology.model.Units;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,9 +37,9 @@ public class MaterialsService {
         return materialsDAO.findMaterialByName(name);
     }
     
-    public boolean updateMaterial(int id, int unit, int count, double cost){
+    public boolean updateMaterial(int id, String name, int unit, int count, double cost){
         System.out.println("Service level updateMaterial is called");
-        return materialsDAO.updateMaterial(id, unit, count, cost);
+        return materialsDAO.updateMaterial(id, name, unit, count, cost);
     }
     
     public boolean addMaterial(String name, int unit, int count, double cost){

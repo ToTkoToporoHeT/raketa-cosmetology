@@ -24,12 +24,12 @@
 
 
 <page:mainTamplate>
-    <jsp:attribute name="title">${action == add ? 'Добавить' : 'Удалить'} материал</jsp:attribute>
+    <jsp:attribute name="title">${action == 'add' ? 'Добавить' : 'Редактировать'} услугу</jsp:attribute>
 
     <jsp:body>        
-        <formSpring:form cssClass="form-horizontal" modelAttribute="material" method="POST" action="/materials/material/${action}" role="main">
+        <formSpring:form cssClass="form-horizontal" modelAttribute="service" method="POST" action="/services/service/${action}" role="main">
             <fieldset>
-                <legend>${action == add ? 'Добавление' : 'Удаление'} материала</legend>
+                <legend>${action == 'add' ? 'Добавление' : 'Редактирование'} услуги</legend>
                 <div class="form-group">
                     <formSpring:hidden path="id"/>
                 </div>
@@ -38,23 +38,7 @@
                     <div class="col-sm-10">    
                         <formSpring:input autofocus="${action == 'add' ? 'true' : ''}" type="text" path="name" cssClass="form-control" placeholder="Введите наименование" required="true"/>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="unit">Единицы измерения</label>
-                    <div class="col-sm-10">
-                        <select name="materialUnitId" class="form-control">
-                            <c:forEach items="${units}" var="unit">
-                                <option ${unit.id == material.unit.id ? 'selected' : ''} value="${unit.id}">${unit.unit}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="count">Количество</label>
-                    <div class="col-sm-10">    
-                        <formSpring:input type="number" path="count" cssClass="form-control" placeholder="Введите количество материала на складе" required="true"/>
-                    </div>
-                </div>
+                </div>                
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="cost">Стоимость одной единицы</label>
                     <div class="col-sm-10">
@@ -75,7 +59,7 @@
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" value="add" href="/materials/showAllMaterials">
+                    <a class="btn btn-default" value="add" href="/services/showAllServices">
                         Отмена
                     </a>
                 </div>
