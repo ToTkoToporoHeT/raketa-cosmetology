@@ -19,18 +19,13 @@
                             <div class="panel-body">
                                 <div class="row">                                
                                     <div class="col-sm-12">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" width="10%" placeholder="Искать...">
-                                            <span class="input-group-btn">
-                                                <form method="post" action=""><button class="btn btn-default" type="button">Найти</button></form>
-                                            </span>
-                                        </div><!-- /input-group -->
-                                    </div><!-- /.col-lg-6 -->
+                                        <input  id="search" type="text" class="form-control" placeholder="Искать...">
+                                    </div>
                                 </div><!-- /.row -->
                             </div>
-                            <table class="table table-condensed table-bordered table-hover ">
+                            <table id="table" class="table table-condensed table-bordered table-hover ">
                                 <thead>
-                                    <tr class="info">
+                                    <tr class="info" role="row">
                                         <th class="info" width="5%" valign="middle">№</th>
                                         <th width="70%">Наименование</th>
                                         <th width="25%">Стоимость</th>
@@ -90,7 +85,7 @@
                     </div>
                 </div>
             </div>
-        </formSpring:form> 
+        </formSpring:form>        
     </jsp:body>        
 
 </page:mainTamplate>

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class MaterialsService {
     
     @Autowired
-    MaterialsDAO materialsDAO;
+    private MaterialsDAO materialsDAO;
     
     public List<Materials> getAllMaterials(){
         System.out.println("Service level getAllMaterials is called");

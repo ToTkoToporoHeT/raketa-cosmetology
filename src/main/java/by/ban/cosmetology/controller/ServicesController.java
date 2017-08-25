@@ -23,37 +23,37 @@ import org.springframework.web.servlet.ModelAndView;
  * @author dazz
  */
 @Controller
-@RequestMapping(value="/services")
+@RequestMapping(value = "/services")
 public class ServicesController {
-    
+
     @Autowired
-    ServicesService servicesService;
-    
+    private ServicesService servicesService;
+
     @RequestMapping(value = "/showAllServices", method = RequestMethod.GET)
     public ModelAndView showAllServices() {
         System.out.println("Controller level showAllServices is called");
-        
+
         List<Services> services = servicesService.getAllServices();
         ModelAndView modelAndView = new ModelAndView("/services/viewServices");
         modelAndView.addObject("services", services);
 
         return modelAndView;
-    }    
+    }
 
     @RequestMapping(value = "/service/show_page/{action}")
     public String showServicePage(@ModelAttribute("service") Services services,
             @PathVariable String action, Model model) {
         System.out.println("Controller level showServicePage is called for "
                 + action + " material");
-        
+
         model.addAttribute(action);
         if (action.equals("add")) {
             model.addAttribute("service", new Services());
-        }
-        else if (action.equals("edit")){
+        } else if (action.equals("edit")) {
             Integer idServiceFC = services.getId();
-            if (idServiceFC == null)
+            if (idServiceFC == null) {
                 return "redirect:/services/showAllServices";
+            }
             Services serviceFC = servicesService.findServiceById(idServiceFC);
             model.addAttribute("service", serviceFC);
         }
@@ -70,22 +70,22 @@ public class ServicesController {
 
         return "redirect:/services/showAllServices";
     }
-    
+
     @RequestMapping(value = "/service/edit")
     public String editService(@ModelAttribute("service") Services service) {
         System.out.println("Controller level editService is called");
-        
+
         boolean result = servicesService.updateService(service.getId(), service.getName(), service.getCost());
 
         return "redirect:/services/showAllServices";
     }
-    
+
     @RequestMapping(value = "/service/delete", method = RequestMethod.POST)
     public String deleteService(@RequestParam("id") int serviceId) {
         System.out.println("Controller level deleteService is called");
-        
+
         boolean result = servicesService.deleteService(serviceId);
 
-        return "redirect:/materials/showAllMaterials";
+        return "redirect:/services/showAllServices";
     }
 }

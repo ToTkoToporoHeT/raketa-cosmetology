@@ -12,12 +12,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author dazz
  */
 @Repository
+@Transactional
 public class ServicesDAO {
     
     @PersistenceContext
@@ -58,7 +60,7 @@ public class ServicesDAO {
     public boolean addService(String name, double cost) {
         System.out.println("DAO level addService is called");
  
-        String qlString = "insert into services (name, cost) values (?,?)";
+        String qlString = "insert into Services (name, cost) values (?,?)";
         System.out.println("Name=" + name + " Cost=" + cost);
         Query query = entityManager.createNativeQuery(qlString);
         query.setParameter(1, name);

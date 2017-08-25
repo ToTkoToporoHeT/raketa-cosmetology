@@ -28,9 +28,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class MaterialsController {
 
     @Autowired
-    MaterialsService materialsService;
+    private MaterialsService materialsService;
     @Autowired
-    UnitsService unitsService;
+    private UnitsService unitsService;
 
     @RequestMapping(value = "/showAllMaterials", method = RequestMethod.GET)
     public ModelAndView showAllMaterials() {
