@@ -61,7 +61,6 @@ public class ServicesDAO {
         System.out.println("DAO level addService is called");
  
         String qlString = "insert into Services (name, cost) values (?,?)";
-        System.out.println("Name=" + name + " Cost=" + cost);
         Query query = entityManager.createNativeQuery(qlString);
         query.setParameter(1, name);
         query.setParameter(2, cost);

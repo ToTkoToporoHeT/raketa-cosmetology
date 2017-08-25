@@ -8,6 +8,7 @@ package by.ban.cosmetology.DAO;
 import by.ban.cosmetology.model.Address;
 import by.ban.cosmetology.model.Customers;
 import by.ban.cosmetology.model.Telephonenumbers;
+import by.ban.cosmetology.service.AddressService;
 import by.ban.cosmetology.service.TelephonenumbersService;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -31,6 +32,8 @@ public class CustomersDAO {
     private EntityManager entityManager;
     @Autowired
     private TelephonenumbersService telephoneNumbersService;
+    @Autowired
+    private AddressService addressService;
     
     public List<Customers> getAllCustomers(){
         System.out.println("DAO level getAllCustomers is called");
@@ -64,12 +67,16 @@ public class CustomersDAO {
     public boolean addCustomer(String login, String firstName, String middleName, String lastName, List<Telephonenumbers> telephonenumbersList, Address address) {
         System.out.println("DAO level addCustomer is called");
  
-        String qlString = "insert into Customers (login,firstName,middleName,lastName) values (?,?,?,?)";
+        String qlString = "insert into Customers (login,firstName,middleName,lastName,addressId) values (?,?,?,?,?)";
         Query query = entityManager.createNativeQuery(qlString);
         query.setParameter(1, login);
         query.setParameter(2, firstName);
         query.setParameter(3, middleName);
         query.setParameter(4, lastName);
+        Integer addressId = addressService.addAddress(address.getStreet(), address.getHouse(), address.getFlat());
+//Переделать что бы возвращала id созданного или существующего адреса
+        if (addressId != 0)
+            query.setParameter(5, addressId);
         telephoneNumbersService.addListOfTelephones(telephonenumbersList);
         
         

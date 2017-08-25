@@ -65,7 +65,6 @@ public class ServicesController {
     public String addService(@ModelAttribute("service") Services service) {
         System.out.println("Controller level addService is called");
 
-        System.out.println(service);
         boolean result = servicesService.addService(service.getName(), service.getCost());
 
         return "redirect:/services/showAllServices";
