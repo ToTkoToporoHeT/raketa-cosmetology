@@ -24,12 +24,12 @@
 
 
 <page:mainTamplate>
-    <jsp:attribute name="title">${action == add ? 'Добавить' : 'Удалить'} материал</jsp:attribute>
+    <jsp:attribute name="title">${action == add ? 'Добавить' : 'Редактировать'} материал</jsp:attribute>
 
     <jsp:body>        
         <formSpring:form cssClass="form-horizontal" modelAttribute="material" method="POST" action="/materials/material/${action}" role="main">
             <fieldset>
-                <legend>${action == add ? 'Добавление' : 'Удаление'} материала</legend>
+                <legend>${action == add ? 'Добавление' : 'Редактирование'} материала</legend>
                 <div class="form-group">
                     <formSpring:hidden path="id"/>
                 </div>

@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -60,7 +61,7 @@ public class Customers implements Serializable {
     @Size(min = 1, max = 25)
     @Column(name = "lastName")
     private String lastName;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
     private List<Telephonenumbers> telephonenumbersList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerLogin")
     private List<Orders> ordersList;

@@ -38,8 +38,10 @@
     <body>
         <c:url var="showMaterials" value="/materials/showAllMaterials"/>
         <c:url var="showServices" value="/services/showAllServices"/>
+        <c:url var="viewCustomers" value="/customers/showAllCustomers"/>
+        
         <c:url var="materialsTest" value="/materials/showMaterialsTest"/>
-        <c:url var="test" value="/materials/validate"/>
+        <c:url var="test" value="/customers/test"/>
 
         <div class="container">
 
@@ -65,7 +67,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Учет <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Договора</a></li>
-                                    <li><a href="#">Клиенты</a></li>
+                                    <li class="${currentPage == 'viewCustomers' ? 'active' : ''}"><a href="${viewCustomers}">Клиенты</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li class="dropdown-header">Материалы и услуги</li>
                                     <li class="${currentPage == 'viewMaterials' ? 'active' : ''}"><a href="${showMaterials}">Материалы</a></li>

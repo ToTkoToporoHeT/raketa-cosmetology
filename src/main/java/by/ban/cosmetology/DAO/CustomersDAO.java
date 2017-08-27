@@ -48,6 +48,11 @@ public class CustomersDAO {
         return entityManager.find(Customers.class, login);
     }
     
+    public boolean updateCustomer(Customers customer){
+        entityManager.refresh(customer);
+        return true;
+    }
+    
     public boolean updateCustomer(String login, String firstName, String middleName, String lastName, List<Telephonenumbers> telephonenumbersList, Address address) {
         System.out.println("DAO level updateCustomer is called");
  

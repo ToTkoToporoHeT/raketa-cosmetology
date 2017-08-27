@@ -91,6 +91,13 @@
             <version>${spring-framework.data.version}</version>
         </dependency>
         
+        <!-- Jackson JSON Mapper -->
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+    
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>

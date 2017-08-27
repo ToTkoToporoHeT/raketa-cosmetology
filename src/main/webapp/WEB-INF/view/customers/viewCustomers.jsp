@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="page" tagdir="/WEB-INF/tags" %>
+
+<page:mainTamplate>
+    <jsp:attribute name="title">Клиенты</jsp:attribute>
+    <jsp:attribute name="currentPage">viewCustomers</jsp:attribute>
+
+    <jsp:body>         
+        <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="customer" method="post" action="/customers">
+            <div class="row">
+                <div class="col-sm-10">
+                    <div class="form-group">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">Список клиентов</div> 
+                            <div class="panel-body">
+                                <div class="row">                                
+                                    <div class="col-sm-12">
+                                        <input id="search" type="text" class="form-control" width="10%" placeholder="Искать...">
+                                    </div>
+                                </div><!-- /.row -->
+                            </div>
+                            <table id="table" class="table table-condensed table-bordered table-hover ">
+                                <thead>
+                                    <tr class="info" role="row">
+                                        <th class="info" width="5%" valign="middle">№</th>
+                                        <th width="20%">Фамилия</th>
+                                        <th width="20%">Имя</th>
+                                        <th width="20%">Отчесто</th>
+                                        <th width="20%">Адрес</th>
+                                        <th width="15%">Телефоны</th>
+                                    </tr>
+                                </thead> 
+                                <div class="controls">
+                                    <tbody>
+                                        <c:forEach items="${customers}" var="customer" varStatus="customerNumber">
+                                            <tr>
+                                                <th class="info">
+                                                    <input type="radio" name="login" id="customerRadio${customer.login}" value="${customer.login}">
+                                                    ${materialNumber.count}</th>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label class="radio" for="customerRadio${customer.login}">${customer.lastName}</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label class="radio" for="customerRadio${customer.login}">${customer.firstName}</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label class="radio" for="customerRadio${customer.login}">${customer.middleName}</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label class="radio" for="customerRadio${customer.login}">${customer.addressId}</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label class="radio" for="customerRadio${customer.login}">${customer.telephonenumbersList}</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </div>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+                        <button tupe="submit" class="btn btn-default" formaction="/customers/customer/show_page/add">
+                            <table width="100%">
+                                <tr>
+                                    <td align="left" width="20"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
+                                    <td align="center"> Добавить</td>
+                                </tr>                        
+                            </table>
+                        </button>
+                        <button tupe="submit" class="btn btn-default" formaction="/customers/customer/show_page/edit">
+                            <table width="100%">
+                                <tr>
+                                    <td align="left" width="20"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></td>
+                                    <td align="center"> Редактировать</td>
+                                </tr> 
+                            </table>
+                        </button>
+                        <button tupe="button" class="btn btn-default" value="delete" formaction="/customers/customer/delete">
+                            <table width="100%">
+                                <tr>
+                                    <td align="left" width="20"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></td>
+                                    <td align="center"> Удалить</td>
+                                </tr>                        
+                            </table>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </formSpring:form> 
+    </jsp:body>        
+
+</page:mainTamplate>
