@@ -158,7 +158,8 @@ public class Materials implements Serializable {
 
     @Override
     public String toString() {
-        return "by.ban.cosmetology.model.Materials[ id=" + id + " ]";
+        return "by.ban.cosmetology.model.Materials[ id=" + id + ", name=" + name + 
+                ", unit="+ unit + ", count=" + count + ", cost=" + cost + " ]";
     }
     
 }

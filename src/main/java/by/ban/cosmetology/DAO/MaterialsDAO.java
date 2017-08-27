@@ -6,7 +6,6 @@
 package by.ban.cosmetology.DAO;
 
 import by.ban.cosmetology.model.Materials;
-import by.ban.cosmetology.model.Units;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -46,15 +45,16 @@ public class MaterialsDAO {
         return entityManager.find(Materials.class, name);
     }
     
-    public boolean updateMaterial(int id, int unit, int count, double cost) {
+    public boolean updateMaterial(int id, String name, int unit, int count, double cost) {
         System.out.println("DAO level updateMaterial is called");
  
-        String query= "update Materials set unit =?, count = ?, cost = ? where id = ?";
+        String query= "update Materials set name = ?, unit =?, count = ?, cost = ? where id = ?";
         Query nativeQuery = entityManager.createNativeQuery(query);
-        nativeQuery.setParameter(1, unit);
-        nativeQuery.setParameter(2, count);
-        nativeQuery.setParameter(3, cost);
-        nativeQuery.setParameter(4, id);
+        nativeQuery.setParameter(1, name);
+        nativeQuery.setParameter(2, unit);
+        nativeQuery.setParameter(3, count);
+        nativeQuery.setParameter(4, cost);
+        nativeQuery.setParameter(5, id);
         int result = nativeQuery.executeUpdate();
         return result > 0; // result show how many rows was updated.
     }

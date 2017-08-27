@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class UnitsService {
     
     @Autowired
-    UnitsDAO unitsDAO;
+    private UnitsDAO unitsDAO;
     
     public List<Units> getAllUnits(){
         System.out.println("Service level getAllUnits is called");

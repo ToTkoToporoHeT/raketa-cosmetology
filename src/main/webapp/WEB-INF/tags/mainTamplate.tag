@@ -14,14 +14,30 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> 
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script>
+            $(document).ready(function () {
+                $("#search").keyup(function () {
+                    _this = this;
+                    $.each($("#table tbody tr"), function () {
+                        if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1) {
+                            $(this).hide();
+                        } else {
+                            $(this).show();
+                        }
+                    });
+                });
+            });
+        </script>
     </head>
     <body>
         <c:url var="showMaterials" value="/materials/showAllMaterials"/>
+        <c:url var="showServices" value="/services/showAllServices"/>
         <c:url var="materialsTest" value="/materials/showMaterialsTest"/>
         <c:url var="test" value="/materials/validate"/>
 
@@ -53,7 +69,7 @@
                                     <li role="separator" class="divider"></li>
                                     <li class="dropdown-header">Материалы и услуги</li>
                                     <li class="${currentPage == 'viewMaterials' ? 'active' : ''}"><a href="${showMaterials}">Материалы</a></li>
-                                    <li><!--class="${currentPage == '#' ? 'active' : ''}"--><a href="#">Услуги</a></li>
+                                    <li class="${currentPage == 'viewServices' ? 'active' : ''}"><a href="${showServices}">Услуги</a></li>
                                 </ul>
                             </li>
                         </ul>
