@@ -46,15 +46,25 @@ public class Address implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 2, max = 30)
+    @Column(name = "Country")
+    private String country;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "City")
+    private String city;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "Street")
     private String street;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 5)
+    @Size(min = 1, max = 15)
     @Column(name = "House")
     private String house;
-    @Size(max = 3)
+    @Size(max = 15)
     @Column(name = "Flat")
     private String flat;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "addressId")
@@ -73,6 +83,15 @@ public class Address implements Serializable {
         this.house = house;
     }
 
+    public Address(Integer id, String country, String city, String street, String house, String flat) {
+        this.id = id;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.house = house;
+        this.flat = flat;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -80,6 +99,22 @@ public class Address implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }   
 
     public String getStreet() {
         return street;
@@ -136,7 +171,6 @@ public class Address implements Serializable {
 
     @Override
     public String toString() {
-        return "by.ban.cosmetology.model.Address[ id=" + id + " ]";
+        return country + ", " + city + ", " + street + ", " + house + ", " + flat;
     }
-    
 }

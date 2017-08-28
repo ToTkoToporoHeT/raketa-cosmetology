@@ -38,33 +38,39 @@
                                     <tbody>
                                         <c:forEach items="${customers}" var="customer" varStatus="customerNumber">
                                             <tr>
-                                                <th class="info">
+                                                <th class="info" style="padding: 5px; margin-left: 0px">
                                                     <input type="radio" name="login" id="customerRadio${customer.login}" value="${customer.login}">
-                                                    ${materialNumber.count}</th>
-                                                <td>
-                                                    <div class="radio">
-                                                        <label class="radio" for="customerRadio${customer.login}">${customer.lastName}</label>
+                                                    ${customerNumber.count}</th>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.lastName}</label>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div class="radio">
-                                                        <label class="radio" for="customerRadio${customer.login}">${customer.firstName}</label>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.firstName}</label>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div class="radio">
-                                                        <label class="radio" for="customerRadio${customer.login}">${customer.middleName}</label>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.middleName}</label>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div class="radio">
-                                                        <label class="radio" for="customerRadio${customer.login}">${customer.addressId}</label>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.addressId}</label>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div class="radio">
-                                                        <label class="radio" for="customerRadio${customer.login}">${customer.telephonenumbersList}</label>
-                                                    </div>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <ul style="padding: 0; margin-left: 0px">
+                                                        <div class="radio" style="padding: 0;">
+                                                            <label class="radio" for="customerRadio${customer.login}">
+                                                                <c:forEach items="${customer.telephonenumbersList}" var="telNumb">
+                                                                    <li>${telNumb}</li>
+                                                                </c:forEach>
+                                                            </label>
+                                                        </div>
+                                                    </ul>                                                    
                                                 </td>
                                             </tr>
                                         </c:forEach>

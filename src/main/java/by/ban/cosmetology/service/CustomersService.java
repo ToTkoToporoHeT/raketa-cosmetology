@@ -37,6 +37,12 @@ public class CustomersService {
         return true;
     }
     
+    public boolean addCustomer(Customers customer){
+        System.out.println("Service level addCustomer is called");
+        custromersDAO.addCustomer(customer);
+        return true;
+    }
+    
     public boolean deleteCustomer(String customerLogin){
         System.out.println("Service level deleteCustomer is called");
         return custromersDAO.deleteCustomer(customerLogin);

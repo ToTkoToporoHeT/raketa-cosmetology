@@ -163,7 +163,6 @@ public class Customers implements Serializable {
 
     @Override
     public String toString() {
-        return "by.ban.cosmetology.model.Customers[ login=" + login + " ]";
+        return "Customers{" + "login=" + login + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName + ", telephonenumbersList=" + telephonenumbersList + ", ordersList=" + ordersList + ", addressId=" + addressId + '}';
     }
-    
 }

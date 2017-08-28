@@ -69,6 +69,14 @@ public class CustomersDAO {
         return result > 0; // result show how many rows was updated.
     }
     
+    public boolean addCustomer(Customers customer){
+        System.out.println("DAO level addCustomer is called");
+        
+        entityManager.persist(customer.getAddressId());
+        entityManager.persist(customer);
+        return true;
+    }
+    
     public boolean addCustomer(String login, String firstName, String middleName, String lastName, List<Telephonenumbers> telephonenumbersList, Address address) {
         System.out.println("DAO level addCustomer is called");
  
@@ -93,12 +101,10 @@ public class CustomersDAO {
     public boolean deleteCustomer(String customerLogin) {
         System.out.println("DAO level deleteCustomer is called");
  
-        String qlString = "delete from Customers where id=?";
-        Query query = entityManager.createNativeQuery(qlString);
-        query.setParameter(1, customerLogin);
-        
-        int result = query.executeUpdate();
+        Customers customer = findCustomerByLogin(customerLogin);
+        entityManager.remove(customer);
+        entityManager.remove(customer.getAddressId());
  
-        return result > 0;
+        return true;
     }
 }
