@@ -53,10 +53,9 @@ public class CustomersController {
             Customers tempCustomer = new Customers();
             List<Telephonenumbers> telephonenumbers = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
-                Telephonenumbers telNumber = new Telephonenumbers();
-                telNumber.setCustomer(tempCustomer);
-                telephonenumbers.add(telNumber);
+                telephonenumbers.add(new Telephonenumbers());
             }
+            tempCustomer.setTelephonenumbersList(telephonenumbers);
             model.addAttribute("customer", tempCustomer);
         } else if (action.equals("edit")) {
             String loginCustomerFC = customer.getLogin();
@@ -79,9 +78,8 @@ public class CustomersController {
 
     @RequestMapping(value = "/customer/add")
     public String addCustomer(@ModelAttribute("customer") Customers customer) {
-        System.out.println("Controller level addCustomer is called");
-
-        System.out.println(customer + "\n" + customer.getAddressId().getId());
+        System.out.println("Controller level addCustomer is called");        
+        
         boolean result = customersService.addCustomer(customer);
         return "redirect:/customers/showAllCustomers";
     }

@@ -27,11 +27,12 @@
                                 <thead>
                                     <tr class="info" role="row">
                                         <th class="info" width="5%" valign="middle">№</th>
-                                        <th width="20%">Фамилия</th>
-                                        <th width="20%">Имя</th>
-                                        <th width="20%">Отчесто</th>
-                                        <th width="20%">Адрес</th>
-                                        <th width="15%">Телефоны</th>
+                                        <th >Фамилия</th>
+                                        <th >Имя</th>
+                                        <th >Отчесто</th>
+                                        <th width="250">Адрес</th>
+                                        <th width="160">Телефоны</th>                                        
+                                        <th >E-mail</th>
                                     </tr>
                                 </thead> 
                                 <div class="controls">
@@ -60,17 +61,24 @@
                                                     <div class="radio" style="padding: 0;">
                                                         <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.addressId}</label>
                                                     </div>
-                                                </td>
+                                                </td>                                                
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <ul style="padding: 0; margin-left: 0px">
                                                         <div class="radio" style="padding: 0;">
                                                             <label class="radio" for="customerRadio${customer.login}">
                                                                 <c:forEach items="${customer.telephonenumbersList}" var="telNumb">
-                                                                    <li>${telNumb}</li>
-                                                                </c:forEach>
+                                                                    <c:if test="${telNumb.telephoneNumber != ''}">
+                                                                        <li>${telNumb}</li>
+                                                                        </c:if>
+                                                                    </c:forEach>
                                                             </label>
                                                         </div>
                                                     </ul>                                                    
+                                                </td>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.login}</label>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </c:forEach>

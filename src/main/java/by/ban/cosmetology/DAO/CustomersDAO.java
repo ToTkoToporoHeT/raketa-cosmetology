@@ -38,8 +38,11 @@ public class CustomersDAO {
     public List<Customers> getAllCustomers(){
         System.out.println("DAO level getAllCustomers is called");
         TypedQuery<Customers> tq = entityManager.createNamedQuery("Customers.findAll", Customers.class);
-        
-        return tq.getResultList();
+        List<Customers> customers = tq.getResultList();
+        for (Customers cust : customers){
+            entityManager.persist(cust);
+        }
+        return customers;
     }
     
     public Customers findCustomerByLogin(String login){
@@ -72,30 +75,11 @@ public class CustomersDAO {
     public boolean addCustomer(Customers customer){
         System.out.println("DAO level addCustomer is called");
         
-        entityManager.persist(customer.getAddressId());
+        Address address = customer.getAddressId();
+        address = addressService.addAddress(address);
+        customer.setAddressId(address);
         entityManager.persist(customer);
         return true;
-    }
-    
-    public boolean addCustomer(String login, String firstName, String middleName, String lastName, List<Telephonenumbers> telephonenumbersList, Address address) {
-        System.out.println("DAO level addCustomer is called");
- 
-        String qlString = "insert into Customers (login,firstName,middleName,lastName,addressId) values (?,?,?,?,?)";
-        Query query = entityManager.createNativeQuery(qlString);
-        query.setParameter(1, login);
-        query.setParameter(2, firstName);
-        query.setParameter(3, middleName);
-        query.setParameter(4, lastName);
-        Integer addressId = addressService.addAddress(address.getStreet(), address.getHouse(), address.getFlat());
-//Переделать что бы возвращала id созданного или существующего адреса
-        if (addressId != 0)
-            query.setParameter(5, addressId);
-        telephoneNumbersService.addListOfTelephones(telephonenumbersList);
-        
-        
-        int result = query.executeUpdate();
- 
-        return result > 0;
     }
  
     public boolean deleteCustomer(String customerLogin) {
@@ -103,7 +87,10 @@ public class CustomersDAO {
  
         Customers customer = findCustomerByLogin(customerLogin);
         entityManager.remove(customer);
-        entityManager.remove(customer.getAddressId());
+        
+        TypedQuery<Customers> typedQuery = entityManager.createNamedQuery("Customers.findByAddressId", Customers.class).setParameter("addressId", customer.getAddressId());        
+        if (typedQuery.getResultList().isEmpty())
+            entityManager.remove(customer.getAddressId());
  
         return true;
     }

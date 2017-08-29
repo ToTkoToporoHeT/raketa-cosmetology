@@ -36,20 +36,14 @@ public class AddressService {
         return addressDAO.updateAddress(id, street, house, flat);
     }
     
-    public Integer addAddress(String street, String house, String flat){
+    public Address addAddress(Address address){
         System.out.println("Service level addAddress is called");
         
-        List<Address> addresses = getAllAddress();
+        Address addressResult = addressDAO.findAddressWithoutId(address);
+        if (addressResult == null)
+            addressResult = addressDAO.addAddress(address);
         
-        for (Address address : addresses){
-            if (address.getStreet().equals(street))
-                if (address.getHouse().equals(house))
-                    if (address.getFlat().equals(flat))
-                        return address.getId();
-        }
-        
-        addressDAO.addAddress(street.trim(), house.trim(), flat.trim());//Переделать, должна возвращать Id созданного адреса
-        return 0;
+        return addressResult;
     }
     
     public boolean deleteAddress(int idAddress) {

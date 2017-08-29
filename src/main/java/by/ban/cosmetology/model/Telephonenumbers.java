@@ -17,7 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -41,7 +40,7 @@ public class Telephonenumbers implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Size(min = 1, max = 17)
+    @Size(min = 0, max = 17)
     @Column(name = "telephoneNumber")
     private String telephoneNumber;
     @JoinColumn(name = "Customer", referencedColumnName = "login")
@@ -106,30 +105,33 @@ public class Telephonenumbers implements Serializable {
 
     @Override
     public String toString() {
-        switch(telephoneNumber.length()){
-            case 7:{
-                telephoneNumber = telephoneNumber.substring(0,3) + "-" + telephoneNumber.substring(3,5) + "-" + telephoneNumber.substring(5);
-                break;
-            }
-            case 11:{
-                telephoneNumber = telephoneNumber.substring(0,1) + " (" + telephoneNumber.substring(1,4) + ") " 
-                        + telephoneNumber.substring(4,7) + "-" + telephoneNumber.substring(7,9) + "-" + telephoneNumber.substring(9);
-                break;
-            }
-            case 12:{telephoneNumber = "+" + telephoneNumber.substring(0,3) + " (" + telephoneNumber.substring(3,5) + ") " 
-                        + telephoneNumber.substring(5,8) + "-" + telephoneNumber.substring(8,10) + "-" + telephoneNumber.substring(10);
-                break;
-            }
-            case 13:{telephoneNumber = telephoneNumber.substring(0,4) + " (" + telephoneNumber.substring(4,6) + ") " 
-                        + telephoneNumber.substring(6,9) + "-" + telephoneNumber.substring(9,11) + "-" + telephoneNumber.substring(11);
-                break;
+        if (telephoneNumber != null) {
+            switch (telephoneNumber.length()) {
+                case 7: {
+                    telephoneNumber = telephoneNumber.substring(0, 3) + "-" + telephoneNumber.substring(3, 5) + "-" + telephoneNumber.substring(5);
+                    break;
+                }
+                case 11: {
+                    telephoneNumber = telephoneNumber.substring(0, 1) + " (" + telephoneNumber.substring(1, 4) + ") "
+                            + telephoneNumber.substring(4, 7) + "-" + telephoneNumber.substring(7, 9) + "-" + telephoneNumber.substring(9);
+                    break;
+                }
+                case 12: {
+                    telephoneNumber = "+" + telephoneNumber.substring(0, 3) + " (" + telephoneNumber.substring(3, 5) + ") "
+                            + telephoneNumber.substring(5, 8) + "-" + telephoneNumber.substring(8, 10) + "-" + telephoneNumber.substring(10);
+                    break;
+                }
+                case 13: {
+                    telephoneNumber = telephoneNumber.substring(0, 4) + " (" + telephoneNumber.substring(4, 6) + ") "
+                            + telephoneNumber.substring(6, 9) + "-" + telephoneNumber.substring(9, 11) + "-" + telephoneNumber.substring(11);
+                    break;
+                }
             }
         }
-        
+        else
+            telephoneNumber = "";
+
         return telephoneNumber;
     }
-
-
-
 
 }

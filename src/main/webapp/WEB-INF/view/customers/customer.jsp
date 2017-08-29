@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags/"%>
+
+<style>
+    #tel { 
+        -moz-appearance: textfield;
+    }
+    #tel::-webkit-inner-spin-button { 
+        display: none;
+    }
+</style>
 
 <page:mainTamplate>
     <jsp:attribute name="title">${action == 'add' ? 'Добавить' : 'Редактировать'} клиента</jsp:attribute>
@@ -72,16 +82,20 @@
                             </div>
                         </fieldset>
                     </div>
-                    <!--<div class="col-sm-3 col-sm-offset-1">
+                    <div class="col-sm-3 col-sm-offset-1">
                         <fieldset>
                             <legend>Телефоные номера</legend>
                             <div class="form-group">
-                                <div class="col-sm-12">                                    
-                                                                       
-                                </div>
+                                <c:forEach begin="0" end="${fn:length(customer.telephonenumbersList) - 1}" var="i">
+                                    <div class="form-group">
+                                        <formSpring:hidden path="telephonenumbersList[${i}].id"/>
+                                        <formSpring:input type="number" id="tel" path="telephonenumbersList[${i}].telephoneNumber"  cssClass="form-control"/>  
+                                        <formSpring:hidden path="telephonenumbersList[${i}].customer"/>
+                                    </div>
+                                </c:forEach>
                             </div>
                         </fieldset>
-                    </div>-->
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <formSpring:button class="btn btn-primary" type="submit">

@@ -59,19 +59,14 @@ public class TelephonenumbersService {
         return results;
     }
     
-    public boolean addTelephonenumber(String telephoneNumber, String customerLogin){
+    public Telephonenumbers addTelephonenumber(Telephonenumbers telephonenumber){
         System.out.println("Service level addTelephonenumber is called");
-        return telephonenumbersDAO.addTelephonenumber(telephoneNumber, customerLogin);
+        return telephonenumbersDAO.addTelephonenumber(telephonenumber);
     }
     
-    public List<Boolean> addListOfTelephones(List<Telephonenumbers> telephones){
-        System.out.println("Service level addListOfTelephones is called");
-        
-        List<Boolean> results = new ArrayList <>();
-        for (Telephonenumbers tel : telephones){
-            results.add(addTelephonenumber(tel.getTelephoneNumber(), tel.getCustomer().getLogin()));
-        }
-        return results;
+    public List<Telephonenumbers> addTelephonenumbersList(List<Telephonenumbers> telephonenumbersList){
+        System.out.println("Service level addTelephonenumbersList is called");
+        return telephonenumbersDAO.addTelephonenumbersList(telephonenumbersList);
     }
     
     public boolean deleteTelephonenumber(int idTelephonenumber) {

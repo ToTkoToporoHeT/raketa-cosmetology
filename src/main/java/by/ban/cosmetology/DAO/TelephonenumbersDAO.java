@@ -63,17 +63,21 @@ public class TelephonenumbersDAO {
         return result > 0; // result show how many rows was updated.
     }
     
-    public boolean addTelephonenumber(String telephoneNumber, String customerLogin) {
+    public Telephonenumbers addTelephonenumber(Telephonenumbers telephonenumber) {
         System.out.println("DAO level addTelephonenumber is called");
  
-        String qlString = "insert into Telephonenumbers (telephoneNumber,customer) values (?,?)";
-        Query query = entityManager.createNativeQuery(qlString);
-        query.setParameter(1, telephoneNumber);
-        query.setParameter(2, customerLogin);
+        entityManager.persist(telephonenumber);
         
-        int result = query.executeUpdate();
+        return telephonenumber;
+    }
+    
+    public List<Telephonenumbers> addTelephonenumbersList(List<Telephonenumbers> telephonenumbersList) {
+        System.out.println("DAO level addTelephonenumbersList is called");
  
-        return result > 0;
+        for (Telephonenumbers telephonenumber : telephonenumbersList)
+            addTelephonenumber(telephonenumber);
+        
+        return telephonenumbersList;
     }
  
     public boolean deleteMaterial(int idTelephonenumber) {

@@ -6,6 +6,7 @@
 package by.ban.cosmetology.DAO;
 
 import by.ban.cosmetology.model.Address;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,6 +41,26 @@ public class AddressDAO {
         return entityManager.find(Address.class, id);
     }
     
+    public Address findAddressWithoutId(Address address){
+        System.out.println("DAO level findAddress is called");
+        
+        String country = address.getCountry();
+        String city = address.getCity();
+        String street = address.getStreet();
+        String house = address.getHouse();
+        String flat = address.getFlat();
+        List<Address> addresses = getAllAddress();
+        for (Address addressTemp : addresses) {
+            if (addressTemp.getCountry().equals(country))
+                if (addressTemp.getCity().equals(city))
+                    if (addressTemp.getStreet().equals(street))
+                        if (addressTemp.getHouse().equals(house))
+                            if (addressTemp.getFlat().equals(flat))
+                                return addressTemp;                
+        }
+        return null;
+    }
+    
     public boolean updateAddress(Integer id, String street, String house, String flat) {
         System.out.println("DAO level updateAddress is called");
  
@@ -53,18 +74,12 @@ public class AddressDAO {
         return result > 0; // result show how many rows was updated.
     }
     
-    public boolean addAddress(String street, String house, String flat) {
+    public Address addAddress(Address address) {
         System.out.println("DAO level addAddress is called");
  
-        String qlString = "insert into Address (street, house, flat) values (?,?,?)";
-        Query query = entityManager.createNativeQuery(qlString);
-        query.setParameter(1, street);
-        query.setParameter(2, house);
-        query.setParameter(3, flat);
+        entityManager.persist(address);
         
-        int result = query.executeUpdate();
- 
-        return result > 0;
+        return address;
     }
  
     public boolean deleteAddress(int idAddress) {

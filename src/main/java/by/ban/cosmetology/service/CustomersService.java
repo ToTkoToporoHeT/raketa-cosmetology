@@ -7,6 +7,7 @@ package by.ban.cosmetology.service;
 
 import by.ban.cosmetology.DAO.CustomersDAO;
 import by.ban.cosmetology.model.Customers;
+import by.ban.cosmetology.model.Telephonenumbers;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,14 @@ public class CustomersService {
     
     public boolean addCustomer(Customers customer){
         System.out.println("Service level addCustomer is called");
+        
+        //Добавляет полученный Customer во все Telephonenumbers из telephonenumbersList
+        List<Telephonenumbers> telephonenumbersList = customer.getTelephonenumbersList();
+        for (Telephonenumbers t : telephonenumbersList){
+            t.setCustomer(customer);
+        }
+        customer.setTelephonenumbersList(telephonenumbersList);
+        
         custromersDAO.addCustomer(customer);
         return true;
     }
