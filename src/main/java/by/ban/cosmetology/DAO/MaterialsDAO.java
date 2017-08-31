@@ -49,7 +49,7 @@ public class MaterialsDAO {
     public boolean updateMaterial(int id, String name, int unit, int count, double cost) {
         System.out.println("DAO level updateMaterial is called");
  
-        /*String query= "update Materials set name = ?, unit =?, count = ?, cost = ? where id = ?";
+        String query= "update Materials set name = ?, unit =?, count = ?, cost = ? where id = ?";
         Query nativeQuery = entityManager.createNativeQuery(query);
         nativeQuery.setParameter(1, name);
         nativeQuery.setParameter(2, unit);
@@ -57,10 +57,8 @@ public class MaterialsDAO {
         nativeQuery.setParameter(4, cost);
         nativeQuery.setParameter(5, id);
         int result = nativeQuery.executeUpdate();
-        return result > 0;*/
-        entityManager.refresh(new Materials(id, name, unitsDAO.findUnitById(unit), count, cost));
-        
-        return true;
+        return result > 0;
+        //entityManager.refresh(new Materials(id, name, unitsDAO.findUnitById(unit), count, cost));
     }
     
     public boolean addMaterial(String name, int unit, int count, double cost) {

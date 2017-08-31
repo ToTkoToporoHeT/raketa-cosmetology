@@ -10,8 +10,11 @@ import by.ban.cosmetology.model.Telephonenumbers;
 import by.ban.cosmetology.service.CustomersService;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -27,10 +31,16 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping("/customers")
+@SessionAttributes(types = Customers.class)
 public class CustomersController {
 
     @Autowired
     private CustomersService customersService;
+
+    @ModelAttribute("customer")
+    public Customers populateCustomer() {
+        return new Customers();
+    }
 
     @RequestMapping("/showAllCustomers")
     public ModelAndView getAllCustomers() {
@@ -38,10 +48,12 @@ public class CustomersController {
         List<Customers> customers = customersService.getAllCustomers();
         ModelAndView modelAndView = new ModelAndView("/customers/viewCustomers");
         modelAndView.addObject("customers", customers);
+        modelAndView.addObject("customer", new Customers());
 
         return modelAndView;
     }
 
+    @Transactional
     @RequestMapping(value = "/customer/show_page/{action}")
     public String showCustomerPage(@ModelAttribute("customer") Customers customer,
             @PathVariable String action, Model model) {
@@ -63,6 +75,7 @@ public class CustomersController {
                 return "redirect:/customers/showAllCustomers";
             }
             Customers customerFC = customersService.findCustomerByLogin(loginCustomerFC);
+            Hibernate.initialize(customerFC.getOrdersList());
             model.addAttribute("customer", customerFC);
         }
 
@@ -78,8 +91,8 @@ public class CustomersController {
 
     @RequestMapping(value = "/customer/add")
     public String addCustomer(@ModelAttribute("customer") Customers customer) {
-        System.out.println("Controller level addCustomer is called");        
-        
+        System.out.println("Controller level addCustomer is called");
+
         boolean result = customersService.addCustomer(customer);
         return "redirect:/customers/showAllCustomers";
     }

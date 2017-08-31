@@ -164,6 +164,6 @@ public class Customers implements Serializable {
 
     @Override
     public String toString() {
-        return "Customers{" + "login=" + login + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName + ", telephonenumbersList=" + telephonenumbersList + ", ordersList=" + ordersList + ", addressId=" + addressId + '}';
+        return "Customers{" + "login=" + login + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName + ", telephonenumbersList=" + telephonenumbersList + ", addressId=" + addressId + '}';
     }
 }

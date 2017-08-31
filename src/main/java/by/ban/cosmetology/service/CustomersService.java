@@ -34,6 +34,14 @@ public class CustomersService {
     
     public boolean updateCustomer(Customers customer){
         System.out.println("Service level updateCustomer is called");
+        
+        //Добавляет полученный Customer во все Telephonenumbers из telephonenumbersList
+        List<Telephonenumbers> telephonenumbersList = customer.getTelephonenumbersList();
+        for (Telephonenumbers t : telephonenumbersList){
+            t.setCustomer(customer);
+        }
+        customer.setTelephonenumbersList(telephonenumbersList);
+        
         custromersDAO.updateCustomer(customer);
         return true;
     }
