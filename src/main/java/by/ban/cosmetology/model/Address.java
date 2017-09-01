@@ -7,6 +7,7 @@ package by.ban.cosmetology.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -163,10 +164,14 @@ public class Address implements Serializable {
             return false;
         }
         Address other = (Address) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        if (Objects.equals(this.id, other.id))
+            if (this.country.equals(other.country))
+                if (this.city.equals(other.city))
+                    if (this.street.equals(other.street))
+                        if (this.house.equals(other.house))
+                            if (this.flat.equals(other.flat))
+                                return true;
+        return false;
     }
 
     @Override

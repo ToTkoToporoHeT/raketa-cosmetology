@@ -6,15 +6,6 @@
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags/"%>
 
-<style>
-    #tel { 
-        -moz-appearance: textfield;
-    }
-    #tel::-webkit-inner-spin-button { 
-        display: none;
-    }
-</style>
-
 <page:mainTamplate>
     <jsp:attribute name="title">${action == 'add' ? 'Добавить' : 'Редактировать'} клиента</jsp:attribute>
 
@@ -86,13 +77,19 @@
                         <fieldset>
                             <legend>Телефоные номера</legend>
                             <div class="form-group">
-                                <c:forEach begin="0" end="${fn:length(customer.telephonenumbersList) - 1}" var="i">
+                                <c:set var="telListLength" value="${fn:length(customer.telephonenumbersList)}"/>
+                                <c:forEach begin="0" end="${telListLength == 0 ? 0 : telListLength - 1}" var="i">
                                     <div class="form-group">
                                         <formSpring:hidden path="telephonenumbersList[${i}].id"/>
-                                        <formSpring:input type="number" id="tel" path="telephonenumbersList[${i}].telephoneNumber"  cssClass="form-control"/>  
+                                        <formSpring:input type="text" id="tel${i}" path="telephonenumbersList[${i}].telephoneNumber"  cssClass="form-control"/>  
                                         <formSpring:hidden path="telephonenumbersList[${i}].customer"/>
                                     </div>
-                                </c:forEach>
+                                    <script>
+                                        document.getElementById('tel${i}').onkeypress = function (e) {
+                                            return !(/[А-Яа-яA-Za-z ]/.test(String.fromCharCode(e.charCode)));
+                                        };
+                                    </script>
+                                </c:forEach>                                
                             </div>
                         </fieldset>
                     </div>

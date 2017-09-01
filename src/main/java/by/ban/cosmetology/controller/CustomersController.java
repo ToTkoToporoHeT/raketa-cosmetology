@@ -11,7 +11,6 @@ import by.ban.cosmetology.service.CustomersService;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +52,7 @@ public class CustomersController {
         return modelAndView;
     }
 
-    @Transactional
+    //@Transactional
     @RequestMapping(value = "/customer/show_page/{action}")
     public String showCustomerPage(@ModelAttribute("customer") Customers customer,
             @PathVariable String action, Model model) {
@@ -74,9 +73,13 @@ public class CustomersController {
             if (loginCustomerFC == null) {
                 return "redirect:/customers/showAllCustomers";
             }
-            Customers customerFC = customersService.findCustomerByLogin(loginCustomerFC);
-            Hibernate.initialize(customerFC.getOrdersList());
-            model.addAttribute("customer", customerFC);
+            customer = customersService.findCustomerByLogin(loginCustomerFC);
+            int telCount = customer.getTelephonenumbersList().size();
+            for (int i = 0; i < 3 - telCount; i++){
+                customer.getTelephonenumbersList().add(new Telephonenumbers());
+            }                
+            //Hibernate.initialize(customerFC.getOrdersList());
+            model.addAttribute("customer", customer);
         }
 
         return "/customers/customer";
@@ -85,7 +88,6 @@ public class CustomersController {
     @RequestMapping("/test")
     public @ResponseBody
     Customers showCustomerString() {
-
         return customersService.findCustomerByLogin("dazz01@mail.ru");
     }
 
@@ -97,6 +99,7 @@ public class CustomersController {
         return "redirect:/customers/showAllCustomers";
     }
 
+    @Transactional
     @RequestMapping(value = "/customer/edit")
     public String editCustomer(@ModelAttribute("customer") Customers customer) {
         System.out.println("Controller level editCustomer is called");
