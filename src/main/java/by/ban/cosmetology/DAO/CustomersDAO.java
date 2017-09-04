@@ -11,6 +11,7 @@ import by.ban.cosmetology.model.Telephonenumbers;
 import by.ban.cosmetology.service.AddressService;
 import by.ban.cosmetology.service.TelephonenumbersService;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -52,6 +53,22 @@ public class CustomersDAO {
 
     public boolean updateCustomer(Customers customer) {
         System.out.println("DAO level updateCustomer is called");
+
+        //Удаляет номер телефона из БД, если он был удален на клиенте
+        //(присвоено значение поля telephoneNumber = "")
+        List<Telephonenumbers> telephonenumbersList = findCustomerByLogin(customer.getLogin()).getTelephonenumbersList();
+        for (Telephonenumbers tel : telephonenumbersList) {
+            boolean telExist = false;
+            for (Telephonenumbers contrTel : customer.getTelephonenumbersList()) {
+                if (Objects.equals(contrTel.getId(), tel.getId())) {
+                    telExist = true;
+                }
+            }
+            if (!telExist) {
+                Telephonenumbers telForDelete = entityManager.find(Telephonenumbers.class, tel.getId());
+                entityManager.remove(telForDelete);
+            }
+        }
         
         entityManager.merge(customer);
         return true;

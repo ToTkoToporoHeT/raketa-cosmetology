@@ -68,7 +68,7 @@ public class Address implements Serializable {
     @Size(max = 15)
     @Column(name = "Flat")
     private String flat;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "addressId")
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "addressId")
     private List<Customers> customersList;
 
     public Address() {
@@ -176,6 +176,9 @@ public class Address implements Serializable {
 
     @Override
     public String toString() {
-        return country + ", " + city + ", " + street + ", " + house + ", " + flat;
+        String s = country + ", " + city + ", " + street + ", " + house;
+        if (!flat.equals("") && flat != null)
+            s += ", " + flat;
+        return  s;
     }
 }

@@ -10,10 +10,8 @@ import by.ban.cosmetology.model.Telephonenumbers;
 import by.ban.cosmetology.service.CustomersService;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,7 +50,6 @@ public class CustomersController {
         return modelAndView;
     }
 
-    //@Transactional
     @RequestMapping(value = "/customer/show_page/{action}")
     public String showCustomerPage(@ModelAttribute("customer") Customers customer,
             @PathVariable String action, Model model) {
@@ -78,7 +75,6 @@ public class CustomersController {
             for (int i = 0; i < 3 - telCount; i++){
                 customer.getTelephonenumbersList().add(new Telephonenumbers());
             }                
-            //Hibernate.initialize(customerFC.getOrdersList());
             model.addAttribute("customer", customer);
         }
 
@@ -99,13 +95,11 @@ public class CustomersController {
         return "redirect:/customers/showAllCustomers";
     }
 
-    @Transactional
     @RequestMapping(value = "/customer/edit")
     public String editCustomer(@ModelAttribute("customer") Customers customer) {
         System.out.println("Controller level editCustomer is called");
 
         boolean result = customersService.updateCustomer(customer);
-
         return "redirect:/customers/showAllCustomers";
     }
 

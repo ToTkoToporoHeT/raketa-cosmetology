@@ -105,7 +105,7 @@ public class Telephonenumbers implements Serializable {
 
     @Override
     public String toString() {
-        if (telephoneNumber != null) {
+        /*if (telephoneNumber != null) {
             switch (telephoneNumber.length()) {
                 case 7: {
                     telephoneNumber = telephoneNumber.substring(0, 3) + "-" + telephoneNumber.substring(3, 5) + "-" + telephoneNumber.substring(5);
@@ -129,7 +129,7 @@ public class Telephonenumbers implements Serializable {
             }
         }
         else
-            telephoneNumber = "";
+            telephoneNumber = "";*/
 
         return telephoneNumber;
     }
