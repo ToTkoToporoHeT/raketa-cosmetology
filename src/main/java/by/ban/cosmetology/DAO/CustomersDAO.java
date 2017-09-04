@@ -9,12 +9,10 @@ import by.ban.cosmetology.model.Address;
 import by.ban.cosmetology.model.Customers;
 import by.ban.cosmetology.model.Telephonenumbers;
 import by.ban.cosmetology.service.AddressService;
-import by.ban.cosmetology.service.TelephonenumbersService;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,8 +28,6 @@ public class CustomersDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
-    @Autowired
-    private TelephonenumbersService telephoneNumbersService;
     @Autowired
     private AddressService addressService;
 
@@ -72,21 +68,6 @@ public class CustomersDAO {
         
         entityManager.merge(customer);
         return true;
-    }
-
-    public boolean updateCustomer(String login, String firstName, String middleName, String lastName, List<Telephonenumbers> telephonenumbersList, Address address) {
-        System.out.println("DAO level updateCustomer is called");
-
-        String query = "update Customers set firstName =?, middleName = ?, lastName = ?, where login = ?";
-        Query nativeQuery = entityManager.createNativeQuery(query);
-        nativeQuery.setParameter(1, firstName);
-        nativeQuery.setParameter(2, middleName);
-        nativeQuery.setParameter(3, lastName);
-        nativeQuery.setParameter(4, login);
-        telephoneNumbersService.updateListOfTelephones(telephonenumbersList);
-
-        int result = nativeQuery.executeUpdate();
-        return result > 0; // result show how many rows was updated.
     }
 
     public boolean addCustomer(Customers customer) {
