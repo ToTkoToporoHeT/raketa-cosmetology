@@ -81,12 +81,6 @@ public class CustomersController {
         return "/customers/customer";
     }
 
-    @RequestMapping("/test")
-    public @ResponseBody
-    Customers showCustomerString() {
-        return customersService.findCustomerByLogin("dazz01@mail.ru");
-    }
-
     @RequestMapping(value = "/customer/add")
     public String addCustomer(@ModelAttribute("customer") Customers customer) {
         System.out.println("Controller level addCustomer is called");

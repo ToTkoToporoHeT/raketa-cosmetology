@@ -39,6 +39,7 @@
         <c:url var="showMaterials" value="/materials/showAllMaterials"/>
         <c:url var="showServices" value="/services/showAllServices"/>
         <c:url var="viewCustomers" value="/customers/showAllCustomers"/>
+        <c:url var="viewStaff" value="/staff/showAllStaff"/>
         
         <c:url var="materialsTest" value="/materials/showMaterialsTest"/>
         <c:url var="test" value="/customers/test"/>
@@ -68,6 +69,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Договора</a></li>
                                     <li class="${currentPage == 'viewCustomers' ? 'active' : ''}"><a href="${viewCustomers}">Клиенты</a></li>
+                                    <li class="${currentPage == 'viewStaff' ? 'active' : ''}"><a href="${viewStaff}">Персонал</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li class="dropdown-header">Материалы и услуги</li>
                                     <li class="${currentPage == 'viewMaterials' ? 'active' : ''}"><a href="${showMaterials}">Материалы</a></li>

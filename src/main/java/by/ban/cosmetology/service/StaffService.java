@@ -20,6 +20,8 @@ public class StaffService {
     
     @Autowired
     StaffDAO staffDAO;
+    @Autowired
+    UserTypesService userTypesService;
     
     public List<Staff> getAllStaff() {
         System.out.println("Service level getAllStaff is called");        
@@ -38,6 +40,7 @@ public class StaffService {
 
     public boolean addStaff(Staff staff) {
         System.out.println("Service level addStaff is called");
+        
         return staffDAO.addStaff(staff);
     }
 

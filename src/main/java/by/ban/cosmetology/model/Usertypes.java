@@ -109,7 +109,7 @@ public class Usertypes implements Serializable {
 
     @Override
     public String toString() {
-        return "by.ban.cosmetology.model.Usertypes[ id=" + id + " ]";
+        return type;
     }
     
 }
