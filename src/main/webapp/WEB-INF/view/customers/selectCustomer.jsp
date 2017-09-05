@@ -97,7 +97,7 @@
                                 </tr>                        
                             </table>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="delete" formaction="../orders/order.jsp">
+                        <button tupe="button" class="btn btn-default" value="back" formaction="/orders/show_page/add">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></td>

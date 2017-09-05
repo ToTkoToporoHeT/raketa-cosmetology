@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -104,5 +103,13 @@ public class CustomersController {
         boolean result = customersService.deleteCustomer(customerLogin);
 
         return "redirect:/customers/showAllCustomers";
+    }
+    
+    @RequestMapping("/show_page/selectCustomer")
+    public String showCustomersList(Model model){
+        System.out.println("Controller level showCustomersList is called");
+        
+        model.addAttribute("customers", customersService.getAllCustomers());
+        return "/customers/selectCustomer";
     }
 }

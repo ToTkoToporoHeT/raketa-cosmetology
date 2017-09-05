@@ -20,7 +20,7 @@
                         <formSpring:input type="text" autofocus="${action == 'add' ? 'true' : ''}" path="customer" cssClass="form-control" placeholder="Выберите клиента" required="true" disabled="true"/>
                     </div>
                     <div class="col-sm-2">
-                        <button type="submit" class="btn btn-default" formaction="/orders/order/show_page/selectCustomer">Выбрать</button>
+                        <button type="submit" class="btn btn-default" formaction="/customers/show_page/selectCustomer">Выбрать</button>
                     </div>
                 </div>
                 <div class="row">                    
@@ -40,7 +40,7 @@
                                         <c:forEach items="${order.providedservicesList}" var="providedService" varStatus="servCount">
                                             <tr>
                                                 <th class="info" style="padding: 5px; margin-left: 0px">
-                                                    <input type="radio" name="order.providedservicesList[${servCount.count - 1}].id" id="serviceRadio${providedService.id}" value="${providedService.id}">
+                                                    <formSpring:input type="radio" path="providedservicesList[${servCount.count - 1}].id" id="serviceRadio${providedService.id}"/>
                                                     ${servCount.count}</th>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
@@ -88,7 +88,7 @@
                                         <c:forEach items="${order.usedmaterialsList}" var="usedMaterial" varStatus="matCount">
                                             <tr>
                                                 <th class="info"  style="padding: 5px; margin-left: 0px">
-                                                    <input type="radio" name="id" id="materialRadio${usedMaterial.id}" value="${usedMaterial.id}">
+                                                    <formSpring:input type="radio" path="usedmaterialsList[${matCount.count - 1}].id" id="materialRadio${usedMaterial.id}"/>
                                                     ${matCount.count}</th>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
@@ -133,7 +133,7 @@
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" href="/staff/showAllStaff">
+                    <a class="btn btn-default" href="/orders/showAllOrders">
                         Отмена
                     </a>
                 </div>
