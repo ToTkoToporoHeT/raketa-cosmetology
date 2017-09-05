@@ -64,7 +64,7 @@ public class Customers implements Serializable {
     private String lastName;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
     private List<Telephonenumbers> telephonenumbersList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerLogin")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private List<Orders> ordersList;
     @JoinColumn(name = "addressId", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -164,6 +164,6 @@ public class Customers implements Serializable {
 
     @Override
     public String toString() {
-        return "Customers{" + "login=" + login + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName + ", telephonenumbersList=" + telephonenumbersList + ", addressId=" + addressId + '}';
+        return lastName + " " + firstName.charAt(0) + "." + middleName.charAt(0) + ".";
     }
 }

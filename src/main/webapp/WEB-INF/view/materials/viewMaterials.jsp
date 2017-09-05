@@ -38,27 +38,27 @@
 
                                         <c:forEach items="${materials}" var="material" varStatus="materialNumber">
                                             <tr>
-                                                <th class="info">
+                                                <th class="info"  style="padding: 5px; margin-left: 0px">
                                                     <input type="radio" name="id" id="materialRadio${material.id}" value="${material.id}">
                                                     ${materialNumber.count}</th>
-                                                <td>
-                                                    <div class="radio">
-                                                        <label class="radio" for="materialRadio${material.id}">${material.name}</label>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">${material.name}</label>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div class="radio">
-                                                        <label class="radio" for="materialRadio${material.id}">${material.unit}</label>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">${material.unit}</label>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div class="radio">
-                                                        <label class="radio" for="materialRadio${material.id}">${material.count}</label>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">${material.count}</label>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div class="radio">
-                                                        <label class="radio" for="materialRadio${material.id}">${material.cost}</label>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">${material.cost}</label>
                                                     </div>
                                                 </td>
                                             </tr>

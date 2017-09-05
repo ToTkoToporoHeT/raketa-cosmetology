@@ -67,7 +67,7 @@ public class Staff implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "password")
     private String password;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "managerId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "manager")
     private List<Orders> ordersList;
     @JoinColumn(name = "userType", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -167,7 +167,7 @@ public class Staff implements Serializable {
 
     @Override
     public String toString() {
-        return "by.ban.cosmetology.model.Staff[ id=" + id + " ]";
+        return lastName + " " + firstName.charAt(0) + "." + middleName.charAt(0) + ".";
     }
     
 }

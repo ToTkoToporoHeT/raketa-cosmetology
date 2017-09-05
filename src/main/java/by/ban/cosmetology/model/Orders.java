@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -48,6 +49,11 @@ public class Orders implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 3, max = 7)
+    @Column(name = "number")
+    private String number;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -55,10 +61,10 @@ public class Orders implements Serializable {
     private List<Providedservices> providedservicesList;
     @JoinColumn(name = "customerLogin", referencedColumnName = "login")
     @ManyToOne(optional = false)
-    private Customers customerLogin;
+    private Customers customer;
     @JoinColumn(name = "managerId", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Staff managerId;
+    private Staff manager;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private List<Usedmaterials> usedmaterialsList;
 
@@ -82,6 +88,14 @@ public class Orders implements Serializable {
         this.id = id;
     }
 
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+    
     public Date getDate() {
         return date;
     }
@@ -99,20 +113,20 @@ public class Orders implements Serializable {
         this.providedservicesList = providedservicesList;
     }
 
-    public Customers getCustomerLogin() {
-        return customerLogin;
+    public Customers getCustomer() {
+        return customer;
     }
 
-    public void setCustomerLogin(Customers customerLogin) {
-        this.customerLogin = customerLogin;
+    public void setCustomer(Customers customer) {
+        this.customer = customer;
     }
 
-    public Staff getManagerId() {
-        return managerId;
+    public Staff getManager() {
+        return manager;
     }
 
-    public void setManagerId(Staff managerId) {
-        this.managerId = managerId;
+    public void setManager(Staff manager) {
+        this.manager = manager;
     }
 
     @XmlTransient

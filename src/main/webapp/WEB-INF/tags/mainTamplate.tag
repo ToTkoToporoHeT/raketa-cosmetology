@@ -19,7 +19,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> 
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
         <script>
             $(document).ready(function () {
                 $("#search").keyup(function () {
@@ -40,7 +40,8 @@
         <c:url var="showServices" value="/services/showAllServices"/>
         <c:url var="viewCustomers" value="/customers/showAllCustomers"/>
         <c:url var="viewStaff" value="/staff/showAllStaff"/>
-        
+        <c:url var="viewOrders" value="/orders/showAllOrders"/>
+
         <c:url var="materialsTest" value="/materials/showMaterialsTest"/>
         <c:url var="test" value="/customers/test"/>
 
@@ -67,7 +68,7 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Учет <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Договора</a></li>
+                                    <li class="${currentPage == 'viewOrders' ? 'active' : ''}"><a href="${viewOrders}">Договора</a></li>
                                     <li class="${currentPage == 'viewCustomers' ? 'active' : ''}"><a href="${viewCustomers}">Клиенты</a></li>
                                     <li class="${currentPage == 'viewStaff' ? 'active' : ''}"><a href="${viewStaff}">Персонал</a></li>
                                     <li role="separator" class="divider"></li>

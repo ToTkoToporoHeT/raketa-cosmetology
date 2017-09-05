@@ -34,5 +34,5 @@
     <mvc:view-controller path="/index.html" view-name="/index"/>
     <mvc:view-controller path="/viewMaterials.html" view-name="/materials/viewMaterials"/>
     <mvc:view-controller path="/materials/material.html" view-name="/materials/material"/>
-    
+    <mvc:view-controller path="/customers/selectCustomers.html" view-name="/customers/selectCustomer"/>
 </beans>
