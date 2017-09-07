@@ -87,4 +87,12 @@ public class ServicesController {
 
         return "redirect:/services/showAllServices";
     }
+    
+    @RequestMapping("/show_page/selectServices")
+    public String selectServices(Model model){
+        System.out.println("Controller level selectServices is called");
+        
+        model.addAttribute("services", servicesService.getAllServices());
+        return "/materials/selectMaterials";
+    }
 }

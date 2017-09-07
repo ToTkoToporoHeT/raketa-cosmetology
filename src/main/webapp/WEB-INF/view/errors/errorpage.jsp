@@ -9,6 +9,7 @@
     <jsp:attribute name="title">Произошла ошибка</jsp:attribute>
     
     <jsp:body>
-        <h1>Случилось горе - страницу не нашли</h1>
+        <h1>Ошибка 404</h1>
+        <h3>Страница не найдена</h3>
     </jsp:body>
 </page:mainTamplate>

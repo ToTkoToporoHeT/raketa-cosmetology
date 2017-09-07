@@ -7,8 +7,10 @@ package by.ban.cosmetology.controller.OrdersController;
 
 import by.ban.cosmetology.model.Customers;
 import by.ban.cosmetology.model.Orders;
+import by.ban.cosmetology.model.Usedmaterials;
 import by.ban.cosmetology.service.CustomersService;
 import by.ban.cosmetology.service.OrdersService;
+import java.util.List;
 import org.springframework.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,11 +64,23 @@ public class addOrderController {
     
     @RequestMapping("/selectCustomer")
     public String selectCustomer(Orders order, @ModelAttribute Customers customer, Model model){
-        
+        System.out.println("Controller level selectCustomer is called for add order");
+
         customer = customersService.findCustomerByLogin(customer.getLogin());
         order.setCustomer(customer);
         Assert.notNull(order);
         Assert.notNull(order.getCustomer());
+        model.addAttribute("order", order);
+        return "/orders/order";
+    }
+    
+    @RequestMapping("/selectMaterials")
+    public String selectMaterials(Orders order, @ModelAttribute List<Usedmaterials> usedMaterials, Model model){
+        System.out.println("Controller level selectMaterials is called for add order");
+
+        order.setUsedmaterialsList(usedMaterials);
+        Assert.notNull(order);
+        Assert.notNull(order.getUsedmaterialsList());
         model.addAttribute("order", order);
         return "/orders/order";
     }

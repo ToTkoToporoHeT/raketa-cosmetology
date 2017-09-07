@@ -117,10 +117,10 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <formSpring:button class="btn btn-primary" type="button">
+                            <formSpring:button class="btn btn-primary" type="submit" formaction = "/usedMaterials/show_page/selectMaterials">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
                             </formSpring:button>
-                            <a class="btn btn-info" href="/staff/showAllStaff">
+                            <a class="btn btn-info" href="#">
                                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Удалить
                             </a>
                             <formSpring:button class="btn btn-default" type="button">

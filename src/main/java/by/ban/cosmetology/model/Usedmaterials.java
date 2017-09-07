@@ -55,11 +55,21 @@ public class Usedmaterials implements Serializable {
         this.id = id;
     }
 
+    public Usedmaterials(Materials materialId) {
+        this.materialId = materialId;
+    }
+
     public Usedmaterials(Integer id, int count) {
         this.id = id;
         this.count = count;
     }
 
+    public Usedmaterials(int count, Orders orderId, Materials materialId) {
+        this.count = count;
+        this.orderId = orderId;
+        this.materialId = materialId;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -114,7 +124,7 @@ public class Usedmaterials implements Serializable {
 
     @Override
     public String toString() {
-        return "by.ban.cosmetology.model.Usedmaterials[ id=" + id + " ]";
+        return materialId.getName();
     }
     
 }
