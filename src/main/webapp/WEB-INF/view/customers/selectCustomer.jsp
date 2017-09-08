@@ -39,7 +39,7 @@
                                         <c:forEach items="${customers}" var="customer" varStatus="customerNumber">
                                             <tr>
                                                 <th class="info" style="padding: 5px; margin-left: 0px">
-                                                    <input type="radio" name="login" id="customerRadio${customer.login}" value="${customer.login}">
+                                                    <input type="radio" name="login" id="customerRadio${customer.login}" value="${customer.login}" required="true">
                                                     ${customerNumber.count}</th>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
@@ -97,14 +97,14 @@
                                 </tr>                        
                             </table>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="back" formaction="/orders/show_page/add">
+                        <a class="btn btn-default" value="back" href="/orders/order/show_page/add">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></td>
                                     <td align="center"> Назад</td>
                                 </tr>                        
                             </table>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

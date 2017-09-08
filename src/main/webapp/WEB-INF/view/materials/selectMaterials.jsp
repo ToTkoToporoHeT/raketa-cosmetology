@@ -9,7 +9,7 @@
     <jsp:attribute name="title">Выбор материалов</jsp:attribute>
 
     <jsp:body>         
-        <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="order" method="post" action="/usedMaterials">
+        <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="orderTemp" method="post">
             <div class="row">
                 <div class="col-sm-10">
                     <div class="form-group">
@@ -52,7 +52,7 @@
                                             </td>
                                             <td style="padding: 0; margin-left: 0px">
                                                 <div class="checkbox" style="padding: 0;">
-                                                    <input type="number" style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" name="usedmaterialsList[${materialNumber.index}].materialId.count"/>
+                                                    <formSpring:input type="number" style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].count"/>
                                                 </div>
                                             </td>
                                             <td style="padding: 0; margin-left: 0px">
@@ -76,7 +76,7 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="btn-group btn-group-vertical" role="group" aria-label="...">
-                        <button tupe="submit" class="btn btn-default" formaction="/usedMaterials/create">
+                        <button tupe="submit" class="btn btn-default" formaction="/orders/order/selectMaterials">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>

@@ -40,7 +40,7 @@ public class Usedmaterials implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "count")
-    private int count;
+    private Integer count;
     @JoinColumn(name = "orderId", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Orders orderId;
@@ -78,11 +78,11 @@ public class Usedmaterials implements Serializable {
         this.id = id;
     }
 
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 

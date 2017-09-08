@@ -29,22 +29,11 @@ public class UsedMaterialsController {
     MaterialsService materialsService;
 
     @RequestMapping("/show_page/selectMaterials")
-    public String selectUsedMaterials(Orders order, Model model) {
+    public String selectUsedMaterials(@ModelAttribute Orders order, Model model) {
         System.out.println("Controller level selectUsedMaterials is called");
 
-        //model.addAttribute("materials", materialsService.getAllMaterials());
-        model.addAttribute("order", order);
+        model.addAttribute("orderTemp", order);
         return "/materials/selectMaterials";
-    }
-
-    @RequestMapping("/create")
-    public String createUsedMaterials(@ModelAttribute Orders order) {
-        System.out.println("Controller level selectUsedMaterials is called");
-
-        for (Usedmaterials u : order.getUsedmaterialsList()) {
-            System.out.println(u.getMaterialId());
-        }
-        return "done";//"/materials/selectMaterials";
     }
 
     @ModelAttribute("allMaterials")
@@ -57,9 +46,9 @@ public class UsedMaterialsController {
             Usedmaterials u = new Usedmaterials(m);
             usedmaterialsList.add(u);
         }
-        Orders order = new Orders();
-        order.setUsedmaterialsList(usedmaterialsList);
-        return order;
+        Orders orderResult = new Orders();
+        orderResult.setUsedmaterialsList(usedmaterialsList);
+        return orderResult;
     }
 }
 

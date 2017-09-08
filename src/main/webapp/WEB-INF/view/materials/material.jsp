@@ -75,7 +75,7 @@
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" value="add" href="/materials/showAllMaterials">
+                    <a class="btn btn-default" href="/materials/showAllMaterials">
                         Отмена
                     </a>
                 </div>
