@@ -62,7 +62,7 @@ public class Materials implements Serializable {
     @JoinColumn(name = "unit", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Units unit;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "materialId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material")
     private List<Usedmaterials> usedmaterialsList;
     
     public Materials() {

@@ -37,7 +37,7 @@ public class UsedMaterialsController {
     }
 
     @ModelAttribute("allMaterials")
-    public Orders getallMaterials() {
+    public Orders getAllMaterials() {
         List<Usedmaterials> usedmaterialsList = new ArrayList<>();
         List<Materials> materialsList = materialsService.getAllMaterials();
         for (Materials m : materialsList) {

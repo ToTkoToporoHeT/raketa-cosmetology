@@ -46,7 +46,7 @@ public class Usedmaterials implements Serializable {
     private Orders orderId;
     @JoinColumn(name = "materialId", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Materials materialId;
+    private Materials material;
 
     public Usedmaterials() {
     }
@@ -56,7 +56,7 @@ public class Usedmaterials implements Serializable {
     }
 
     public Usedmaterials(Materials materialId) {
-        this.materialId = materialId;
+        this.material = materialId;
     }
 
     public Usedmaterials(Integer id, int count) {
@@ -67,7 +67,7 @@ public class Usedmaterials implements Serializable {
     public Usedmaterials(int count, Orders orderId, Materials materialId) {
         this.count = count;
         this.orderId = orderId;
-        this.materialId = materialId;
+        this.material = materialId;
     }
     
     public Integer getId() {
@@ -94,12 +94,12 @@ public class Usedmaterials implements Serializable {
         this.orderId = orderId;
     }
 
-    public Materials getMaterialId() {
-        return materialId;
+    public Materials getMaterial() {
+        return material;
     }
 
-    public void setMaterialId(Materials materialId) {
-        this.materialId = materialId;
+    public void setMaterial(Materials material) {
+        this.material = material;
     }
 
     @Override
@@ -124,7 +124,7 @@ public class Usedmaterials implements Serializable {
 
     @Override
     public String toString() {
-        return materialId.getName();
+        return material.getName();
     }
     
 }

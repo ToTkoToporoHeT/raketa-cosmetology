@@ -39,10 +39,10 @@ public class Providedservices implements Serializable {
     private Integer id;
     @JoinColumn(name = "orderId", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Orders orderId;
+    private Orders order;
     @JoinColumn(name = "serviceId", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Services serviceId;
+    private Services service;
 
     public Providedservices() {
     }
@@ -51,6 +51,15 @@ public class Providedservices implements Serializable {
         this.id = id;
     }
 
+    public Providedservices(Services serviceId) {
+        this.service = serviceId;
+    }
+
+    public Providedservices(Orders orderId, Services service) {
+        this.order = orderId;
+        this.service = service;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -59,20 +68,20 @@ public class Providedservices implements Serializable {
         this.id = id;
     }
 
-    public Orders getOrderId() {
-        return orderId;
+    public Orders getOrder() {
+        return order;
     }
 
-    public void setOrderId(Orders orderId) {
-        this.orderId = orderId;
+    public void setOrder(Orders order) {
+        this.order = order;
     }
 
-    public Services getServiceId() {
-        return serviceId;
+    public Services getService() {
+        return service;
     }
 
-    public void setServiceId(Services serviceId) {
-        this.serviceId = serviceId;
+    public void setService(Services service) {
+        this.service = service;
     }
 
     @Override

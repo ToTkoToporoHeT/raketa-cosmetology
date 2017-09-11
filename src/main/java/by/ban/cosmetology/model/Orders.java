@@ -57,7 +57,7 @@ public class Orders implements Serializable {
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<Providedservices> providedservicesList;
     @JoinColumn(name = "customerLogin", referencedColumnName = "login")
     @ManyToOne(optional = false)

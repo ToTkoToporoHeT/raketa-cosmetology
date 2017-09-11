@@ -52,7 +52,7 @@ public class Services implements Serializable {
     @NotNull
     @Column(name = "cost")
     private Double cost;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "serviceId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "service")
     private List<Providedservices> providedservicesList;
 
     public Services() {
