@@ -109,7 +109,7 @@ public class Units implements Serializable {
 
     @Override
     public String toString() {
-        return getUnit();
+        return unit;
     }
     
 }

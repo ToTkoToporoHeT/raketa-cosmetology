@@ -124,7 +124,6 @@ public class Usedmaterials implements Serializable {
 
     @Override
     public String toString() {
-        return material.getName();
+        return "Id=" + id + ", Наименование=" + material.getName() + ", Кол-во=" + count + " " + material.getUnit() + '}';
     }
-    
 }

@@ -106,7 +106,9 @@ public class Providedservices implements Serializable {
 
     @Override
     public String toString() {
-        return "by.ban.cosmetology.model.Providedservices[ id=" + id + " ]";
+        return "Id=" + id + ", Наименование=" + service.getName() + '}';
     }
+
+    
     
 }

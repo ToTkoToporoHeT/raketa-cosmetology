@@ -160,7 +160,9 @@ public class Orders implements Serializable {
 
     @Override
     public String toString() {
-        return "by.ban.cosmetology.model.Orders[ id=" + id + " ]";
+        return "Order {" + "Id = " + id + ", Номер = " + number + ", Дата = " + date + ", Клиент = " + customer + ", Работник=" + manager + ",\nОказанные услуги = " + providedservicesList + ",\nИспользованные материалы=" + usedmaterialsList + '}';
     }
+
+    
     
 }

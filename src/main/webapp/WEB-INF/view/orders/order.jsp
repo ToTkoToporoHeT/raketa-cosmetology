@@ -11,22 +11,45 @@
 
     <jsp:body> 
         <c:set var="tableHeadHeight" value="47"/>
-        <formSpring:form cssClass="form-horizontal" commandName="order" method="POST" action="/orders/order/${action}">
+
+        <formSpring:form id="mainForm" cssClass="form-horizontal" commandName="order" method="POST" action="/orders/order/${action}" role="main">
             <fieldset>
                 <legend>${action == 'add' ? 'Создание' : 'Просмотр'} договора</legend>
-                <formSpring:hidden path="id"/>
+                <div class="row">
+                    <div class="form-group">
+                        <formSpring:hidden path="id"/>
+                        <//formSpring:hidden path="manager"/>
+                        <div class='col-sm-4'>
+                            <label class="col-sm-2 control-label" for="numberInput">Номер</label>
+                            <div class="col-sm-10">
+                                <formSpring:input id="numberInput" path="number" cssClass="form-control" autofocus="${action == 'add' ? 'true' : 'false'}"/>  
+                            </div>
+                        </div>
+                        <div class='col-sm-3'>
+                            <label class="col-sm-2 control-label" for="datePick">Дата</label>
+                            <div class="col-sm-10">
+                                <formSpring:input id="datePick" type="date" path="date" cssClass="form-control"/>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </formSpring:form>
+
+        <formSpring:form cssClass="form-horizontal" commandName="order" method="POST">
+            <div class="row">
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="name">Клиент</label>
                     <div class="col-sm-8">    
-                        <formSpring:input type="text" autofocus="${action == 'add' ? 'true' : ''}" path="customer" cssClass="form-control" placeholder="Выберите клиента" required="true" disabled="true"/>
+                        <formSpring:input type="text" path="customer" cssClass="form-control" placeholder="Выберите клиента" required="true" disabled="true"/>
                     </div>
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-default" formaction="/customers/show_page/selectCustomer">Выбрать</button>
                     </div>
                 </div>
+            </div>
+        </formSpring:form> 
 
-            </fieldset>
-        </formSpring:form>
         <div class="row">                    
             <div class="col-sm-5">
                 <h4>Список оказанных услуг</h4>
@@ -34,7 +57,7 @@
                     <div class="panel panel-info">
                         <table class="table table-condensed table-bordered table-hover">
                             <thead>
-                                <tr class="info" role="row">
+                                <tr class="info" role="row" height="${tableHeadHeight}">
                                     <th width="45px">№</th>
                                     <th>Наименование</th>
                                     <th whidth="10%">Стоимость</th>
@@ -152,15 +175,13 @@
                 </formSpring:form>
             </div>
         </div>
-        <formSpring:form modelAttribute="order" action="/orders/order/add" role="main">
-            <div class="modal-footer">
-                <formSpring:button class="btn btn-primary">
-                    Сохранить
-                </formSpring:button>
-                <a class="btn btn-default" href="/orders/showAllOrders">
-                    Отмена
-                </a>
-            </div>
-        </formSpring:form>
+        <div class="modal-footer">
+            <button form="mainForm" class="btn btn-primary">
+                Сохранить
+            </button>
+            <a class="btn btn-default" href="/orders/showAllOrders">
+                Отмена
+            </a>
+        </div>
     </jsp:body>
 </page:mainTamplate>
