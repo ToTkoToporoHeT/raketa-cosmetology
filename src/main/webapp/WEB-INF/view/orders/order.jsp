@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="form-group">
                         <formSpring:hidden path="id"/>
-                        <//formSpring:hidden path="manager"/>
+                        <formSpring:hidden path="manager.id"/>
                         <div class='col-sm-4'>
                             <label class="col-sm-2 control-label" for="numberInput">Номер</label>
                             <div class="col-sm-10">
