@@ -104,12 +104,4 @@ public class CustomersController {
 
         return "redirect:/customers/showAllCustomers";
     }
-    
-    @RequestMapping("/show_page/selectCustomer")
-    public String showCustomersList(Model model){
-        System.out.println("Controller level showCustomersList is called");
-        
-        model.addAttribute("customers", customersService.getAllCustomers());
-        return "/customers/selectCustomer";
-    }
 }
