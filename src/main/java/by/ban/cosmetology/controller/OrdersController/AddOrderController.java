@@ -27,8 +27,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -63,16 +63,12 @@ public class AddOrderController {
     
     @InitBinder
     public void initBinder(WebDataBinder binder){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, "date", new CustomDateEditor(
                 dateFormat, true));
     }
 
-    /*@ModelAttribute("orders")
-    public List<Orders> populateOrdersList(){
-        return new ArrayList<Orders>();
-    }*/
     @RequestMapping(value = "/create_page/add")
     public String createOrderPage(Model model) {
         System.out.println("Controller level showOrderPage is called for add order");
@@ -90,7 +86,32 @@ public class AddOrderController {
 
         return "/orders/order";
     }
-
+    
+    @RequestMapping("/show_page/{page}")
+    public String showSelectPage(Orders order, Model model, @PathVariable String page){
+        System.out.println("Controller level showSelectPage is called");
+        
+        String packageView;
+        switch (page){
+            case "selectCustomer":{
+                model.addAttribute("customers", customersService.getAllCustomers());
+                packageView = "/customers/";
+                break;
+            }
+            case "selectMaterials":{
+                return "redirect:/usedMaterials/show_page/selectMaterials";
+            }
+            case "selectServices":{
+                return "redirect:/providedServices/show_page/selectServices";
+            }
+            default:{
+                return "redirect:/orders/order/show_page/add";
+            }
+        }
+        
+        return packageView + page;
+    }
+    
     @RequestMapping("/selectCustomer")
     public String selectCustomer(Orders order, @ModelAttribute Customers customer, Model model) {
         System.out.println("Controller level selectCustomer is called for add order");
