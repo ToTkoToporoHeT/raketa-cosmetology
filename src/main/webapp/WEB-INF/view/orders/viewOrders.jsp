@@ -19,7 +19,7 @@
                             <div class="panel-body">
                                 <div class="row">                                
                                     <div class="col-sm-12">
-                                        <input id="search" type="text" class="form-control" width="10%" placeholder="Искать...">
+                                        <input id="search" type="text" class="form-control" placeholder="Искать...">
                                     </div>
                                 </div><!-- /.row -->
                             </div>
@@ -77,7 +77,7 @@
                                 </tr>                        
                             </table>
                         </button>
-                        <button tupe="submit" class="btn btn-default" formaction="/orders/order/show_page/edit">
+                        <button tupe="submit" class="btn btn-default" formaction="/orders/order/create_page/edit">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></td>

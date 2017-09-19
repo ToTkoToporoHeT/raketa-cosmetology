@@ -6,6 +6,7 @@
 package by.ban.cosmetology.DAO;
 
 import by.ban.cosmetology.model.Orders;
+import by.ban.cosmetology.model.Usedmaterials;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -50,6 +51,11 @@ public class OrdersDAO {
     public boolean addOrder(Orders order) {
         System.out.println("DAO level addOrder is called");
 
+        /*List<Usedmaterials> usedmaterialsList = order.getUsedmaterialsList();
+        for (Usedmaterials u : usedmaterialsList)
+            entityManager.persist(u);
+        order.setUsedmaterialsList(usedmaterialsList);
+        entityManager.persist(order.getProvidedservicesList());*/
         entityManager.persist(order);
         return true;
     }

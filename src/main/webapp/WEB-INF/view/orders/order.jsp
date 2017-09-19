@@ -44,7 +44,7 @@
                         <formSpring:input type="text" path="customer" cssClass="form-control" placeholder="Выберите клиента" required="true" disabled="true"/>
                     </div>
                     <div class="col-sm-2">
-                        <button type="submit" class="btn btn-default" formaction="/orders/order/show_page/selectCustomer">Выбрать</button>
+                        <button type="submit" class="btn btn-default" formaction="/orders/order/show_page/select/selectCustomer">Выбрать</button>
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
                 </form>
                 <formSpring:form modelAttribute="order">
                     <div class="modal-footer">
-                        <formSpring:button class="btn btn-primary" formaction = "/orders/order/show_page/selectServices">
+                        <formSpring:button class="btn btn-primary" formaction = "/orders/order/show_page/select/selectServices">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
                         </formSpring:button>
                         <button form="services" class="btn btn-info" formaction="/orders/order/service_delete">
@@ -162,7 +162,7 @@
                 </form>
                 <formSpring:form modelAttribute="order">
                     <div class="modal-footer">
-                        <formSpring:button class="btn btn-primary" formaction = "/orders/order/show_page/selectMaterials">
+                        <formSpring:button class="btn btn-primary" formaction = "/orders/order/show_page/select/selectMaterials">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
                         </formSpring:button>
                         <button form="materials" class="btn btn-info" type="submit" formaction="/orders/order/material_delete">
@@ -179,7 +179,7 @@
             <button form="mainForm" class="btn btn-primary">
                 Сохранить
             </button>
-            <a class="btn btn-default" href="/orders/showAllOrders">
+            <a class="btn btn-default" href="/orders/order/${action}/cancel">
                 Отмена
             </a>
         </div>
