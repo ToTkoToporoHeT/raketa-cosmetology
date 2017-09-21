@@ -18,7 +18,7 @@
                             <div class="panel-body">
                                 <div class="row">                                
                                     <div class="col-sm-12">
-                                        <input id="search" type="text" class="form-control" width="10%" placeholder="Искать...">
+                                        <input id="search" type="text" class="form-control" placeholder="Искать...">
                                     </div>
                                 </div><!-- /.row -->
                             </div>
@@ -49,7 +49,6 @@
                                             </td>
                                             </tr>
                                         </c:forEach>
-
                                     </tbody>
                                 </div>
                             </table>

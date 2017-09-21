@@ -12,13 +12,13 @@
     <jsp:body> 
         <c:set var="tableHeadHeight" value="47"/>
 
-        <formSpring:form id="mainForm" cssClass="form-horizontal" commandName="order" method="POST" action="/orders/order/${action}" role="main">
+        <formSpring:form id="mainForm" cssClass="form-horizontal" commandName="orders" method="POST" action="/orders/order/${action}" role="main">
             <fieldset>
                 <legend>${action == 'add' ? 'Создание' : 'Просмотр'} договора</legend>
                 <div class="row">
                     <div class="form-group">
                         <formSpring:hidden path="id"/>
-                        <//formSpring:hidden path="manager.id"/>
+                        <formSpring:hidden path="manager.id"/>
                         <div class='col-sm-4'>
                             <label class="col-sm-2 control-label" for="numberInput">Номер</label>
                             <div class="col-sm-10">
@@ -36,7 +36,7 @@
             </fieldset>
         </formSpring:form>
         
-        <formSpring:form cssClass="form-horizontal" commandName="order" method="POST">
+        <formSpring:form cssClass="form-horizontal" commandName="orders" method="POST">
             <div class="row">
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="name">Клиент</label>
@@ -70,7 +70,7 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                                <c:forEach items="${order.providedservicesList}" var="providedService" varStatus="servCount">
+                                <c:forEach items="${orders.providedservicesList}" var="providedService" varStatus="servCount">
                                     <tr>
                                         <th class="info" style="padding: 5px; margin-left: 0px">
                                             <input type="radio" name="indexPrServ" id="serviceRadio${servCount.index}" value="${servCount.index}">
@@ -92,7 +92,7 @@
                         </table>
                     </div>
                 </form>
-                <formSpring:form modelAttribute="order">
+                <formSpring:form modelAttribute="orders">
                     <div class="modal-footer">
                         <formSpring:button class="btn btn-primary" formaction = "/orders/order/show_page/select/selectServices">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
@@ -128,7 +128,7 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                                <c:forEach items="${order.usedmaterialsList}" var="usedMaterial" varStatus="matCount">
+                                <c:forEach items="${orders.usedmaterialsList}" var="usedMaterial" varStatus="matCount">
                                     <tr>
                                         <th class="info"  style="padding: 5px; margin-left: 0px">
                                             <input type="radio" name="indexUsMat" id="materialRadio${matCount.index}" value="${matCount.index}">
@@ -160,7 +160,7 @@
                         </table>
                     </div>
                 </form>
-                <formSpring:form modelAttribute="order">
+                <formSpring:form modelAttribute="orders">
                     <div class="modal-footer">
                         <formSpring:button class="btn btn-primary" formaction = "/orders/order/show_page/select/selectMaterials">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить

@@ -6,6 +6,7 @@
 package by.ban.cosmetology.DAO;
 
 import by.ban.cosmetology.model.Orders;
+import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Usedmaterials;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrdersDAO {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public List<Orders> getAllOrders() {
         System.out.println("DAO level getAllOrders is called");
@@ -40,10 +41,11 @@ public class OrdersDAO {
         Orders order = entityManager.find(Orders.class, id);
         return order;
     }
-    
+
     public boolean updateOrder(Orders order) {
         System.out.println("DAO level updateOrder is called");
 
+        clearRedudantUMandPS(order);
         entityManager.merge(order);
         return true;
     }
@@ -51,20 +53,30 @@ public class OrdersDAO {
     public boolean addOrder(Orders order) {
         System.out.println("DAO level addOrder is called");
 
-        /*List<Usedmaterials> usedmaterialsList = order.getUsedmaterialsList();
-        for (Usedmaterials u : usedmaterialsList)
-            entityManager.persist(u);
-        order.setUsedmaterialsList(usedmaterialsList);
-        entityManager.persist(order.getProvidedservicesList());*/
         entityManager.persist(order);
         return true;
     }
 
-    public boolean deleteOrder(Integer id) {
+    public boolean deleteOrder(Orders order) {
         System.out.println("DAO level deleteOrder is called");
 
-        Orders order = findOrderById(id);
         entityManager.remove(order);
         return true;
+    }
+
+    //Удаляет из базы данных использованные материалы и оказанные услуги
+    //которые были удалены во время редактирования договора
+    private void clearRedudantUMandPS(Orders order) {
+        Orders orderOld = findOrderById(order.getId());
+        for (Usedmaterials usMat : orderOld.getUsedmaterialsList()) {
+            if (!order.getUsedmaterialsList().contains(usMat)) {
+                entityManager.remove(usMat);
+            }
+        }
+        for (Providedservices prServ : orderOld.getProvidedservicesList()) {
+            if (!order.getProvidedservicesList().contains(prServ)) {
+                entityManager.remove(prServ);
+            }
+        }
     }
 }

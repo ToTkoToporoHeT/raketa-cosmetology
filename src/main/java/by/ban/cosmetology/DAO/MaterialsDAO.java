@@ -61,6 +61,13 @@ public class MaterialsDAO {
         //entityManager.refresh(new Materials(id, name, unitsDAO.findUnitById(unit), count, cost));
     }
     
+    public boolean updateMaterial(Materials material){
+        System.out.println("DAO level updateMaterial is called");
+ 
+        entityManager.merge(material);
+        return true;
+    }
+    
     public boolean addMaterial(String name, int unit, int count, double cost) {
         System.out.println("DAO level addMaterial is called");
  

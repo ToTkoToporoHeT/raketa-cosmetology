@@ -42,6 +42,11 @@ public class MaterialsService {
         return materialsDAO.updateMaterial(id, name, unit, count, cost);
     }
     
+    public boolean updateMaterial(Materials material){
+        System.out.println("Service level updateMaterial is called");
+        return materialsDAO.updateMaterial(material);
+    }
+    
     public boolean addMaterial(String name, int unit, int count, double cost){
         System.out.println("Service level addMaterial is called");
         return materialsDAO.addMaterial(name, unit, count, cost);
