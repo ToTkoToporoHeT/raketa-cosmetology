@@ -6,12 +6,14 @@
 package by.ban.cosmetology.service;
 
 import by.ban.cosmetology.DAO.OrdersDAO;
-import by.ban.cosmetology.DAO.UsedmaterialsDAO;
 import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Usedmaterials;
 import java.util.List;
+import org.eclipse.persistence.jpa.jpql.Assert;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -23,10 +25,10 @@ public class OrdersService {
     @Autowired
     OrdersDAO ordersDAO;
     @Autowired
-    UsedmaterialsDAO usedmaterialsDAO;
-    
+    UsedmaterialsService usedmaterialsService;
+
     private enum CalcAction {
-        PLUS, MINUS
+        PLUS, MINUS, EDIT
     }
 
     public List<Orders> getAllOrders() {
@@ -41,40 +43,69 @@ public class OrdersService {
 
     public boolean addOrder(Orders order) {
         System.out.println("Service level addOrder is called");
-        List<Usedmaterials> usedmaterialsList = calculateMaterialsBalance(order.getUsedmaterialsList(), CalcAction.MINUS);
+        List<Usedmaterials> usedmaterialsList = calculateMaterialsBalance(order, CalcAction.MINUS);
         order.setUsedmaterialsList(usedmaterialsList);
         return ordersDAO.addOrder(order);
     }
 
     public boolean updateOrder(Orders order) {
         System.out.println("Service level updateOrder is called");
-        
-        //Доделать
-        List<Usedmaterials> usedmaterialsList = calculateMaterialsBalance(order.getUsedmaterialsList(), CalcAction.MINUS);
+
+        List<Usedmaterials> usedmaterialsList = calculateMaterialsBalance(order, CalcAction.EDIT);
         order.setUsedmaterialsList(usedmaterialsList);
         return ordersDAO.updateOrder(order);
     }
 
+    //Добавить прибавление материалов только в случае выбора такового пользователем (возможно через chekbox)
+    @Transactional
     public boolean deleteOrder(Integer id) {
         System.out.println("Service level deleteOrder is called");
-        
+
         Orders order = ordersDAO.findOrderById(id);
-        List<Usedmaterials> usedmaterialsList = calculateMaterialsBalance(order.getUsedmaterialsList(), CalcAction.PLUS);
+        if (!Hibernate.isInitialized(order.getUsedmaterialsList())) {
+            Hibernate.initialize(order.getUsedmaterialsList());
+        }
+        List<Usedmaterials> usedmaterialsList = calculateMaterialsBalance(order, CalcAction.PLUS);
         order.setUsedmaterialsList(usedmaterialsList);
         return ordersDAO.deleteOrder(order);
     }
-    
-    private List<Usedmaterials> calculateMaterialsBalance(List<Usedmaterials> usedmaterialsList, CalcAction calcAction) {
+
+    private List<Usedmaterials> calculateMaterialsBalance(Orders order, CalcAction calcAction) {
+        List<Usedmaterials> usedmaterialsList = order.getUsedmaterialsList();
+        if (usedmaterialsList == null) {
+            return null;
+        }
         //Переменная определяющая дейсвие сложения или вычитания будет производиться
         Integer sign;
         sign = (calcAction == calcAction.MINUS ? -1 : 1);
-        
-        for (Usedmaterials um : usedmaterialsList) {
-            Integer materialInStore = um.getMaterial().getCount();
-            Integer useMatCount = um.getCount();
-            um.getMaterial().setCount(materialInStore + (useMatCount * sign));
+
+        if (calcAction == CalcAction.PLUS || calcAction == CalcAction.MINUS) {
+            for (Usedmaterials um : usedmaterialsList) {
+                int materialCount = um.getMaterial().getCount();
+                int useMatCount = um.getCount();
+                materialCount += useMatCount * sign;
+                Assert.isFalse(materialCount < 0, "Отрицательный остаток материала - " + um.getMaterial()
+                        + ". Количество материалов на складе не может равняться " + materialCount + ".");
+                um.getMaterial().setCount(materialCount);
+            }
+        } else if (calcAction == CalcAction.EDIT) {
+            for (Usedmaterials um : usedmaterialsList) {
+                Integer umId = um.getId();
+                int materialCount = um.getMaterial().getCount();
+                if (umId == null) {
+                    materialCount -= um.getCount();
+                } else {
+                    int oldCountUseMat = usedmaterialsService.getUsMatCount(umId);
+                    int newCountUseMat = um.getCount();
+                    int diffCountUseMat = oldCountUseMat - newCountUseMat;
+                    materialCount += diffCountUseMat;
+                }
+                Assert.isFalse(materialCount < 0, "Отрицательный остаток материала - " + um.getMaterial()
+                        + ". Количество материалов на складе не может равняться " + materialCount + ".");
+                um.getMaterial().setCount(materialCount);
+            }
         }
-        
+
         return usedmaterialsList;
     }
 }
