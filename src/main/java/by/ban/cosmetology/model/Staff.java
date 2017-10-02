@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Staff.findByMiddleName", query = "SELECT s FROM Staff s WHERE s.middleName = :middleName"),
     @NamedQuery(name = "Staff.findByLastName", query = "SELECT s FROM Staff s WHERE s.lastName = :lastName"),
     @NamedQuery(name = "Staff.findByPassword", query = "SELECT s FROM Staff s WHERE s.password = :password")})
-public class Staff implements Serializable {
+public class Staff implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -169,5 +169,11 @@ public class Staff implements Serializable {
     public String toString() {
         return lastName + " " + firstName.charAt(0) + "." + middleName.charAt(0) + ".";
     }
-    
+
+    @Override
+    public Staff clone() throws CloneNotSupportedException {
+        Staff clone = (Staff) super.clone();
+        if (userType != null) clone.userType = (Usertypes) userType.clone();
+        return clone; //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Providedservices.findAll", query = "SELECT p FROM Providedservices p"),
     @NamedQuery(name = "Providedservices.findById", query = "SELECT p FROM Providedservices p WHERE p.id = :id")})
-public class Providedservices implements Serializable {
+public class Providedservices implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -109,6 +109,11 @@ public class Providedservices implements Serializable {
         return "Id=" + id + ", Наименование=" + service.getName() + '}';
     }
 
-    
-    
+    @Override
+    public Providedservices clone() throws CloneNotSupportedException {
+        Providedservices clone = (Providedservices) super.clone();
+        if (order != null) clone.order = order.clone();
+        if (service != null) clone.service = service.clone();
+        return clone; //To change body of generated methods, choose Tools | Templates.
+    }
 }

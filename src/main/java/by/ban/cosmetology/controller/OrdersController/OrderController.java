@@ -19,6 +19,7 @@ import by.ban.cosmetology.service.StaffService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.util.Assert;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,13 +74,13 @@ public class OrderController {
         String action = actionStr;
         Assert.notNull(action);
         model.addAttribute("action", action);
-        
+
         if (action.equals("add")) {
             //Если страница открыта для добавления/создания, то создать новый Orders и положить в модель
             model.addAttribute("orders", new Orders());
         } else if (action.equals("edit")) {
             //Если страница открыта для редактирования, найти Orders в базе по id и положить в модель
-            if (order.getId() == null){
+            if (order.getId() == null) {
                 return "redirect:/orders/showAllOrders";
             }
             Orders orders = ordersService.findOrderById(order.getId());
@@ -99,39 +101,22 @@ public class OrderController {
         return "/orders/order";
     }
 
-    @RequestMapping("/show_page/select/{page}")
-    public String showSelectPage(Model model, @PathVariable String page) {
-        System.out.println("Controller level showSelectPage is called for " + page);
+    @RequestMapping("/show_page/selectCustomer")
+    public String showSelectPage(Model model) {
+        System.out.println("Controller level showSelectPage is called for selectCustomer");
 
-        String packageView;
-        switch (page) {
-            case "selectCustomer": {
-                model.addAttribute("customers", customersService.getAllCustomers());
-                packageView = "/customers/";
-                break;
-            }
-            case "selectMaterials": {
-                return "redirect:/usedMaterials/show_page/selectMaterials";
-            }
-            case "selectServices": {
-                return "redirect:/providedServices/show_page/selectServices";
-            }
-            default: {
-                return "redirect:/orders/order/show_page/add";
-            }
-        }
-
-        return packageView + page;
+        model.addAttribute("customers", customersService.getAllCustomers());
+        return "/customers/selectCustomer";
     }
 
     @RequestMapping("/selectCustomer")
     public String selectCustomer(Orders orders, String action, Customers customer, Model model) {
         System.out.println("Controller level selectCustomer is called for " + action + " order");
-        
+
         customer = customersService.findCustomerByLogin(customer.getLogin());
         orders.setCustomer(customer);
         Assert.notNull(orders.getCustomer());
-        
+
         return "/orders/order";
     }
 
@@ -139,18 +124,17 @@ public class OrderController {
     public String selectServicesFOrder(Orders orders, String action, Model model) {
         System.out.println("Controller level selectServicesFOrder is called for " + action + " order");
 
-        List<Providedservices> resultProvidedservicesList = new ArrayList();
-        for (Providedservices p : orders.getProvidedservicesList()) {
-            Integer provServiceId = p.getService().getId();
-            if (provServiceId != null) {
-                Services service = this.servicesService.findServiceById(provServiceId);
-                Providedservices provServices = new Providedservices(orders, service);
-                resultProvidedservicesList.add(provServices);
+        Iterator<Providedservices> iter = orders.getProvidedservicesList().iterator();
+        while (iter.hasNext()) {
+            Providedservices ps = iter.next();
+            Integer servId = ps.getService().getId();
+            if (servId == null) {
+                iter.remove();
+            } else {
+                ps.setService(servicesService.findServiceById(servId));
+                ps.setOrder(orders);
             }
         }
-        orders.setProvidedservicesList(resultProvidedservicesList);
-        Assert.notNull(orders.getProvidedservicesList());
-        
         return "/orders/order";
     }
 
@@ -158,18 +142,17 @@ public class OrderController {
     public String selectMaterialsFOrder(Orders orders, String action, Model model) {
         System.out.println("Controller level selectMaterialsFOrder is called for " + action + " order");
 
-        List<Usedmaterials> resultUsedmaterialsList = new ArrayList<>();
-        for (Usedmaterials u : orders.getUsedmaterialsList()) {
-            Integer usedMaterialId = u.getMaterial().getId();
-            if (usedMaterialId != null) {
-                Materials usedMaterial = materialsService.findMaterialById(usedMaterialId);
-                Usedmaterials usedmaterial = new Usedmaterials(u.getCount(), orders, usedMaterial);
-                resultUsedmaterialsList.add(usedmaterial);
+        Iterator<Usedmaterials> iter = orders.getUsedmaterialsList().iterator();
+        while (iter.hasNext()) {
+            Usedmaterials um = iter.next();
+            Integer matId = um.getMaterial().getId();
+            if (matId == null) {
+                iter.remove();
+            } else {
+                um.setMaterial(materialsService.findMaterialById(matId));
+                um.setOrderId(orders);
             }
         }
-        orders.setUsedmaterialsList(resultUsedmaterialsList);
-        Assert.notNull(orders.getUsedmaterialsList());
-        
         return "/orders/order";
     }
 
@@ -244,15 +227,15 @@ public class OrderController {
         ordersService.deleteOrder(id);
         return "redirect:/orders/showAllOrders";
     }
-    
+
     @RequestMapping("/{action}/cancel")
-    public String cancelOrder(String action, SessionStatus sessionStatus){
+    public String cancelOrder(String action, SessionStatus sessionStatus) {
         System.out.println("Controller level cancel" + action + "Order is called");
-        
+
         if (!sessionStatus.isComplete()) {
             sessionStatus.setComplete();
         }
-        
+
         return "redirect:/orders/showAllOrders";
     }
 }

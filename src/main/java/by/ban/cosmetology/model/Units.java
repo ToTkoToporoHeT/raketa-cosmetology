@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Units.findAll", query = "SELECT u FROM Units u"),
     @NamedQuery(name = "Units.findById", query = "SELECT u FROM Units u WHERE u.id = :id"),
     @NamedQuery(name = "Units.findByUnit", query = "SELECT u FROM Units u WHERE u.unit = :unit")})
-public class Units implements Serializable {
+public class Units implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -111,5 +111,9 @@ public class Units implements Serializable {
     public String toString() {
         return unit;
     }
-    
+
+    @Override
+    public Units clone() throws CloneNotSupportedException {
+        return (Units) super.clone();
+    }
 }

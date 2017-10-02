@@ -7,6 +7,7 @@ package by.ban.cosmetology.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Usedmaterials.findAll", query = "SELECT u FROM Usedmaterials u"),
     @NamedQuery(name = "Usedmaterials.findById", query = "SELECT u FROM Usedmaterials u WHERE u.id = :id"),
     @NamedQuery(name = "Usedmaterials.findByCount", query = "SELECT u FROM Usedmaterials u WHERE u.count = :count")})
-public class Usedmaterials implements Serializable {
+public class Usedmaterials implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,7 +48,7 @@ public class Usedmaterials implements Serializable {
     @ManyToOne(optional = false)
     private Orders orderId;
     @JoinColumn(name = "materialId", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     private Materials material;
 
     public Usedmaterials() {
@@ -127,5 +128,13 @@ public class Usedmaterials implements Serializable {
     @Override
     public String toString() {
         return "Id=" + id + ", Наименование=" + material.getName() + ", Кол-во=" + count + " " + material.getUnit() + '}';
+    }
+
+    @Override
+    public Usedmaterials clone() throws CloneNotSupportedException {
+        Usedmaterials clone = (Usedmaterials) super.clone();
+        if (material != null) clone.material = (Materials) material.clone();
+        if (orderId != null) clone.orderId = (Orders) orderId.clone();
+        return clone;
     }
 }

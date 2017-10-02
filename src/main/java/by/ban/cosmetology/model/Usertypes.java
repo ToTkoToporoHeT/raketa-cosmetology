@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usertypes.findAll", query = "SELECT u FROM Usertypes u"),
     @NamedQuery(name = "Usertypes.findById", query = "SELECT u FROM Usertypes u WHERE u.id = :id"),
     @NamedQuery(name = "Usertypes.findByType", query = "SELECT u FROM Usertypes u WHERE u.type = :type")})
-public class Usertypes implements Serializable {
+public class Usertypes implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -111,5 +111,10 @@ public class Usertypes implements Serializable {
     public String toString() {
         return type;
     }
-    
+
+    @Override
+    public Usertypes clone() throws CloneNotSupportedException {
+        Usertypes clone = (Usertypes) super.clone();
+        return clone; 
+    }
 }

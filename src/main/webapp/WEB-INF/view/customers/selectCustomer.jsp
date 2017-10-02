@@ -97,6 +97,14 @@
                                 </tr>                        
                             </table>
                         </button>
+                        <button tupe="submit" class="btn btn-default" formaction="/customers/customer/show_page/add">
+                            <table width="100%">
+                                <tr>
+                                    <td align="left" width="20"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
+                                    <td align="center"> Добавить</td>
+                                </tr>                        
+                            </table>
+                        </button>
                         <a class="btn btn-default" value="back" href="/orders/order/show_page/add">
                             <table width="100%">
                                 <tr>

@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Customers.findByMiddleName", query = "SELECT c FROM Customers c WHERE c.middleName = :middleName"),
     @NamedQuery(name = "Customers.findByLastName", query = "SELECT c FROM Customers c WHERE c.lastName = :lastName"),
     @NamedQuery(name = "Customers.findByAddressId", query = "SELECT c FROM Customers c WHERE c.addressId = :addressId")})
-public class Customers implements Serializable {
+public class Customers implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -165,5 +165,12 @@ public class Customers implements Serializable {
     @Override
     public String toString() {
         return lastName + " " + firstName.charAt(0) + "." + middleName.charAt(0) + ".";
+    }
+
+    @Override
+    public Customers clone() throws CloneNotSupportedException {
+        Customers clone = (Customers) super.clone();
+        if (addressId != null) clone.addressId = (Address) addressId.clone();
+        return clone; //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Address.findByStreet", query = "SELECT a FROM Address a WHERE a.street = :street"),
     @NamedQuery(name = "Address.findByHouse", query = "SELECT a FROM Address a WHERE a.house = :house"),
     @NamedQuery(name = "Address.findByFlat", query = "SELECT a FROM Address a WHERE a.flat = :flat")})
-public class Address implements Serializable {
+public class Address implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -180,5 +180,11 @@ public class Address implements Serializable {
         if (!flat.equals("") && flat != null)
             s += ", " + flat;
         return  s;
+    }
+
+    @Override
+    public Address clone() throws CloneNotSupportedException {
+        Address clone = (Address) super.clone();
+        return clone;
     }
 }

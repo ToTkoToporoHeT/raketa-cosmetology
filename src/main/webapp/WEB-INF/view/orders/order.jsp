@@ -35,7 +35,7 @@
                 </div>
             </fieldset>
         </formSpring:form>
-        
+
         <formSpring:form cssClass="form-horizontal" commandName="orders" method="POST">
             <div class="row">
                 <div class="form-group">
@@ -44,7 +44,7 @@
                         <formSpring:input type="text" path="customer" cssClass="form-control" placeholder="Выберите клиента" required="true" disabled="true"/>
                     </div>
                     <div class="col-sm-2">
-                        <button type="submit" class="btn btn-default" formaction="/orders/order/show_page/select/selectCustomer">Выбрать</button>
+                        <button type="submit" class="btn btn-default" formaction="/orders/order/show_page/selectCustomer">Выбрать</button>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
         <div class="row">                    
             <div class="col-sm-5">
                 <h4>Список оказанных услуг</h4>
-                <form id="services" class="form">
+                <formSpring:form id="services" cssClass="form" commandName="orders">
                     <div class="panel panel-info">
                         <table class="table table-condensed table-bordered table-hover">
                             <thead>
@@ -73,6 +73,8 @@
                                 <c:forEach items="${orders.providedservicesList}" var="providedService" varStatus="servCount">
                                     <tr>
                                         <th class="info" style="padding: 5px; margin-left: 0px">
+                                            <formSpring:hidden path="providedservicesList[${servCount.index}].id"/>
+                                            <formSpring:hidden path="providedservicesList[${servCount.index}].service.id"/>
                                             <input type="radio" name="indexPrServ" id="serviceRadio${servCount.index}" value="${servCount.index}">
                                             ${servCount.count}
                                         </th>
@@ -91,10 +93,8 @@
                             </tbody>
                         </table>
                     </div>
-                </form>
-                <formSpring:form modelAttribute="orders">
                     <div class="modal-footer">
-                        <formSpring:button class="btn btn-primary" formaction = "/orders/order/show_page/select/selectServices">
+                        <formSpring:button class="btn btn-primary" formaction = "/providedServices/show_page/selectServices">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
                         </formSpring:button>
                         <button form="services" class="btn btn-info" formaction="/orders/order/service_delete">
@@ -109,7 +109,7 @@
             <div class="col-sm-7"> 
                 <h4>Список израсходованных материалов</h4>
 
-                <form id="materials" class="form">
+                <formSpring:form id="materials" cssClass="form" commandName="orders">
                     <div class="panel panel-info">
                         <table class="table table-condensed table-bordered table-hover">
                             <thead>
@@ -133,7 +133,9 @@
                                         <th class="info"  style="padding: 5px; margin-left: 0px">
                                             <input type="radio" name="indexUsMat" id="materialRadio${matCount.index}" value="${matCount.index}">
                                             ${matCount.count}</th>
-                                        <//formSpring:hidden path="id"/>
+                                            <formSpring:hidden path="usedmaterialsList[${matCount.index}].id"/>
+                                            <formSpring:hidden path="usedmaterialsList[${matCount.index}].count"/>
+                                            <formSpring:hidden path="usedmaterialsList[${matCount.index}].material.id"/>
                                         <td style="padding: 0; margin-left: 0px">
                                             <div class="radio" style="padding: 0;">
                                                 <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${matCount.index}">${usedMaterial.material.name}</label>
@@ -159,10 +161,8 @@
                             </tbody>                                        
                         </table>
                     </div>
-                </form>
-                <formSpring:form modelAttribute="orders">
                     <div class="modal-footer">
-                        <formSpring:button class="btn btn-primary" formaction = "/orders/order/show_page/select/selectMaterials">
+                        <formSpring:button class="btn btn-primary" formaction = "/usedMaterials/show_page/selectMaterials"><!--//"/orders/order/show_page/select/selectMaterials">-->
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
                         </formSpring:button>
                         <button form="materials" class="btn btn-info" type="submit" formaction="/orders/order/material_delete">

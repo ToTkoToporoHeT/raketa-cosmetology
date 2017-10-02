@@ -35,6 +35,7 @@
                                         <c:forEach items="${allServices.providedservicesList}" var="providedService" varStatus="serviceNumber">
                                             <tr>
                                                 <th class="info"  style="padding: 5px; margin-left: 0px">
+                                                    <formSpring:hidden path="providedservicesList[${serviceNumber.index}].id"/>
                                                     <formSpring:checkbox value="${providedService.service.id}" path="providedservicesList[${serviceNumber.index}].service.id" id="serviceRadio${serviceNumber.count}"/>
                                                 ${serviceNumber.count}</th>
                                             <td style="padding: 0; margin-left: 0px">

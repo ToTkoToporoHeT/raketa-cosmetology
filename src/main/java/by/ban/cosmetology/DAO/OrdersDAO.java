@@ -5,6 +5,7 @@
  */
 package by.ban.cosmetology.DAO;
 
+import by.ban.cosmetology.model.Materials;
 import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Usedmaterials;
@@ -70,6 +71,9 @@ public class OrdersDAO {
         Orders orderOld = findOrderById(order.getId());
         for (Usedmaterials usMat : orderOld.getUsedmaterialsList()) {
             if (!order.getUsedmaterialsList().contains(usMat)) {
+                int usMatCount = usMat.getCount();
+                int matCountOld = usMat.getMaterial().getCount();
+                usMat.getMaterial().setCount(matCountOld + usMatCount);
                 entityManager.remove(usMat);
             }
         }

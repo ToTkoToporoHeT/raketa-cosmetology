@@ -10,7 +10,8 @@ import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Usedmaterials;
 import by.ban.cosmetology.service.MaterialsService;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,26 +30,38 @@ public class UsedMaterialsController {
     MaterialsService materialsService;
 
     @RequestMapping("/show_page/selectMaterials")
-    public String selectUsedMaterials(@ModelAttribute Orders order, Model model) {
+    public String selectUsedMaterials(@ModelAttribute Orders orders, Model model) throws CloneNotSupportedException {
         System.out.println("Controller level selectUsedMaterials is called");
 
-        model.addAttribute("orderTemp", order);
+        //создается список всех материалов
+        Map<Integer, Usedmaterials> mapAllMaterials = new HashMap<>();
+        for (Materials m : materialsService.getAllMaterials()) {
+            Usedmaterials um = new Usedmaterials(m);
+            mapAllMaterials.put(m.getId(), um);
+        }
+        Orders oTemp = new Orders();
+        oTemp.setUsedmaterialsList(new ArrayList<>(mapAllMaterials.values()));
+        model.addAttribute("allMaterials", oTemp);
+        
+        Map<Integer, Usedmaterials> mapOrderMaterials = new HashMap<>();
+        for (Map.Entry<Integer, Usedmaterials> entry : mapAllMaterials.entrySet()) {
+            int mapKey = entry.getKey();
+            Usedmaterials um = entry.getValue().clone();
+            um.getMaterial().setId(-1);
+            mapOrderMaterials.put(mapKey, um);
+        }
+        //созданный ранее список редактируется, 
+        //в него вносятся данные о уже выбранных материалах
+        if (orders.getUsedmaterialsList() != null) {
+            for (Usedmaterials um : orders.getUsedmaterialsList()) {
+                int matId = um.getMaterial().getId();
+                um.setMaterial(mapOrderMaterials.get(matId).getMaterial());
+                um.getMaterial().setId(matId);
+                mapOrderMaterials.put(matId, um);
+            }
+        }
+        orders.setUsedmaterialsList(new ArrayList<>(mapOrderMaterials.values()));
+        model.addAttribute("orderTemp", orders);
         return "/materials/selectMaterials";
     }
-
-    @ModelAttribute("allMaterials")
-    public Orders getAllMaterials() {
-        List<Usedmaterials> usedmaterialsList = new ArrayList<>();
-        List<Materials> materialsList = materialsService.getAllMaterials();
-        for (Materials m : materialsList) {
-            /*Materials materialNew = new Materials();
-            materialNew.setName(m.getName());*/
-            Usedmaterials u = new Usedmaterials(m);
-            usedmaterialsList.add(u);
-        }
-        Orders orderResult = new Orders();
-        orderResult.setUsedmaterialsList(usedmaterialsList);
-        return orderResult;
-    }
 }
-

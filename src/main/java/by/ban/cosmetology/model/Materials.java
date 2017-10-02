@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Materials.findByName", query = "SELECT m FROM Materials m WHERE m.name = :name"),
     @NamedQuery(name = "Materials.findByCount", query = "SELECT m FROM Materials m WHERE m.count = :count"),
     @NamedQuery(name = "Materials.findByCost", query = "SELECT m FROM Materials m WHERE m.cost = :cost")})
-public class Materials implements Serializable {
+public class Materials implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -161,5 +161,11 @@ public class Materials implements Serializable {
         return "by.ban.cosmetology.model.Materials[ id=" + id + ", name=" + name + 
                 ", unit="+ unit + ", count=" + count + ", cost=" + cost + " ]";
     }
-    
+
+    @Override
+    public Materials clone() throws CloneNotSupportedException {
+        Materials clone = (Materials) super.clone();
+        if (unit != null) clone.unit = (Units) unit.clone();
+        return clone;
+    }
 }

@@ -6,6 +6,7 @@
 package by.ban.cosmetology.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -39,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
     @NamedQuery(name = "Orders.findById", query = "SELECT o FROM Orders o WHERE o.id = :id"),
     @NamedQuery(name = "Orders.findByDate", query = "SELECT o FROM Orders o WHERE o.date = :date")})
-public class Orders implements Serializable {
+public class Orders implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -80,6 +81,25 @@ public class Orders implements Serializable {
         this.date = date;
     }
 
+    public Orders(List<Object> listObjects) {
+        if (listObjects.size() > 0) {
+            if (listObjects.get(0) instanceof Usedmaterials) {
+                List<Usedmaterials> usedmaterialsListTemp = new ArrayList<>();
+                for (Object obj : listObjects){
+                    usedmaterialsListTemp.add((Usedmaterials) obj);
+                }
+                this.usedmaterialsList = usedmaterialsListTemp;
+            }
+            if (listObjects.get(0) instanceof Providedservices) {
+                List<Providedservices> providedservicesListTemp = new ArrayList<>();
+                for (Object obj : listObjects){
+                    providedservicesListTemp.add((Providedservices) obj);
+                }
+                this.providedservicesList = providedservicesListTemp;
+            }
+        }
+    }
+
     public Integer getId() {
         return id;
     }
@@ -95,7 +115,7 @@ public class Orders implements Serializable {
     public void setNumber(String number) {
         this.number = number;
     }
-    
+
     public Date getDate() {
         return date;
     }
@@ -163,6 +183,18 @@ public class Orders implements Serializable {
         return "Order {" + "Id = " + id + ", Номер = " + number + ", Дата = " + date + ", Клиент = " + customer + ", Работник=" + manager + ",\nОказанные услуги = " + providedservicesList + ",\nИспользованные материалы=" + usedmaterialsList + '}';
     }
 
-    
-    
+    @Override
+    public Orders clone() throws CloneNotSupportedException {
+        Orders clone = (Orders) super.clone();
+        if (customer != null) {
+            clone.customer = (Customers) customer.clone();
+        }
+        if (manager != null) {
+            clone.manager = (Staff) manager.clone();
+        }
+        if (date != null) {
+            clone.date = (Date) date.clone();
+        }
+        return clone;
+    }
 }

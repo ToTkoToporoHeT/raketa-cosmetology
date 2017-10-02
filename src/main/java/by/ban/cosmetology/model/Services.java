@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Services.findById", query = "SELECT s FROM Services s WHERE s.id = :id"),
     @NamedQuery(name = "Services.findByName", query = "SELECT s FROM Services s WHERE s.name = :name"),
     @NamedQuery(name = "Services.findByCost", query = "SELECT s FROM Services s WHERE s.cost = :cost")})
-public class Services implements Serializable {
+public class Services implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -124,6 +124,12 @@ public class Services implements Serializable {
     @Override
     public String toString() {
         return "by.ban.cosmetology.model.Services[ id=" + id + ", name=" + name + ", cost=" + cost + "]";
+    }
+
+    @Override
+    public Services clone() throws CloneNotSupportedException {
+        Services clone = (Services) super.clone();
+        return clone; //To change body of generated methods, choose Tools | Templates.
     }
     
 }

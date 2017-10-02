@@ -18,7 +18,7 @@
                             <div class="panel-body">
                                 <div class="row">                                
                                     <div class="col-sm-12">
-                                        <input id="search" type="text" class="form-control" width="10%" placeholder="Искать...">
+                                        <input id="search" type="text" class="form-control" placeholder="Искать...">
                                     </div>
                                 </div><!-- /.row -->
                             </div>
@@ -38,33 +38,35 @@
                                         <c:forEach items="${allMaterials.usedmaterialsList}" var="usedMaterial" varStatus="materialNumber">
                                             <tr>
                                                 <th class="info"  style="padding: 5px; margin-left: 0px">
+                                                    <formSpring:hidden path="usedmaterialsList[${materialNumber.index}].id"/>
                                                     <formSpring:checkbox value="${usedMaterial.material.id}" path="usedmaterialsList[${materialNumber.index}].material.id" id="materialRadio${materialNumber.count}"/>
-                                                ${materialNumber.count}</th>
-                                            <td style="padding: 0; margin-left: 0px">
-                                                <div class="checkbox" style="padding: 0;">
-                                                    <formSpring:label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].material.name">${usedMaterial.material.name}</formSpring:label>
-                                                </div>
-                                            </td>
-                                            <td style="padding: 0; margin-left: 0px">
-                                                <div class="checkbox" style="padding: 0;">
-                                                    <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >${usedMaterial.material.unit}</label>
-                                                </div>
-                                            </td>
-                                            <td style="padding: 0; margin-left: 0px">
-                                                <div class="checkbox" style="padding: 0;">
-                                                    <formSpring:input type="number" style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].count"/>
-                                                </div>
-                                            </td>
-                                            <td style="padding: 0; margin-left: 0px">
-                                                <div class="checkbox" style="padding: 0;">
-                                                    <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >${usedMaterial.material.count}</label>
-                                                </div>
-                                            </td>
-                                            <td style="padding: 0; margin-left: 0px">
-                                                <div class="checkbox" style="padding: 0;">
-                                                    <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >${usedMaterial.material.cost}</label>
-                                                </div>
-                                            </td>
+                                                    ${materialNumber.count}
+                                                </th>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="checkbox" style="padding: 0;">
+                                                        <formSpring:label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].material.name">${usedMaterial.material.name}</formSpring:label>
+                                                        </div>
+                                                    </td>
+                                                    <td style="padding: 0; margin-left: 0px">
+                                                        <div class="checkbox" style="padding: 0;">
+                                                            <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >${usedMaterial.material.unit}</label>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="checkbox" style="padding: 0;">
+                                                        <formSpring:input type="number" style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].count"/>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="checkbox" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >${usedMaterial.material.count}</label>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="checkbox" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >${usedMaterial.material.cost}</label>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </c:forEach>
 
