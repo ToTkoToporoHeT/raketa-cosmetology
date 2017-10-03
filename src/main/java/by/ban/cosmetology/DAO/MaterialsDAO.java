@@ -86,7 +86,13 @@ public class MaterialsDAO {
     public boolean deleteMaterial(int idMaterial) {
         System.out.println("DAO level deleteMaterial is called");
  
-        String qlString = "delete from Materials where id=?";
+        Materials material = findMaterialById(idMaterial);
+        String qlString="";
+        if (material.getUsedmaterialsList().size() > 0){
+        //qlString = "update Materials set delete=true where id=?";
+        } else {
+        qlString = "delete from Materials where id=?";
+        }
         Query query = entityManager.createNativeQuery(qlString);
         query.setParameter(1, idMaterial);
         int result = query.executeUpdate();

@@ -55,6 +55,7 @@ public class OrdersDAO {
         System.out.println("DAO level addOrder is called");
 
         entityManager.persist(order);
+        entityManager.merge(order);
         return true;
     }
 

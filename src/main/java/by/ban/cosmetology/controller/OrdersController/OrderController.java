@@ -6,10 +6,8 @@
 package by.ban.cosmetology.controller.OrdersController;
 
 import by.ban.cosmetology.model.Customers;
-import by.ban.cosmetology.model.Materials;
 import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Providedservices;
-import by.ban.cosmetology.model.Services;
 import by.ban.cosmetology.model.Usedmaterials;
 import by.ban.cosmetology.service.CustomersService;
 import by.ban.cosmetology.service.MaterialsService;
@@ -20,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,7 +68,6 @@ public class OrderController {
                 + actionStr + " order");
 
         String action = actionStr;
-        Assert.notNull(action);
         model.addAttribute("action", action);
 
         if (action.equals("add")) {
@@ -86,7 +81,6 @@ public class OrderController {
             Orders orders = ordersService.findOrderById(order.getId());
             Hibernate.initialize(orders.getProvidedservicesList());
             Hibernate.initialize(orders.getUsedmaterialsList());
-            Assert.notNull(orders);
             model.addAttribute("orders", orders);
         }
 
@@ -115,7 +109,6 @@ public class OrderController {
 
         customer = customersService.findCustomerByLogin(customer.getLogin());
         orders.setCustomer(customer);
-        Assert.notNull(orders.getCustomer());
 
         return "/orders/order";
     }
@@ -162,7 +155,6 @@ public class OrderController {
 
         if (indexUsMat != null) {
             orders.getUsedmaterialsList().remove(indexUsMat.intValue());
-            Assert.notNull(orders.getUsedmaterialsList());
         }
         return "redirect:/orders/order/show_page/add";
     }
@@ -173,7 +165,6 @@ public class OrderController {
 
         if (indexPrServ != null) {
             orders.getProvidedservicesList().remove(indexPrServ.intValue());
-            Assert.notNull(orders.getProvidedservicesList());
         }
         return "redirect:/orders/order/show_page/add";
     }
@@ -183,7 +174,6 @@ public class OrderController {
         System.out.println("Controller level deleteAllMatFOrder is called for " + action + " order");
 
         orders.setUsedmaterialsList(new ArrayList<Usedmaterials>());
-        Assert.notNull(orders.getUsedmaterialsList());
         return "/orders/order";
     }
 
@@ -192,7 +182,6 @@ public class OrderController {
         System.out.println("Controller level deleteAllServFOrder is called for " + action + " order");
 
         orders.setProvidedservicesList(new ArrayList<Providedservices>());
-        Assert.notNull(orders.getProvidedservicesList());
         return "/orders/order";
     }
 

@@ -22,13 +22,13 @@
                         <div class='col-sm-4'>
                             <label class="col-sm-2 control-label" for="numberInput">Номер</label>
                             <div class="col-sm-10">
-                                <formSpring:input id="numberInput" path="number" cssClass="form-control" autofocus="${action == 'add' ? 'true' : 'false'}"/>  
+                                <formSpring:input id="numberInput" path="number" cssClass="form-control" autofocus="${action == 'add' ? 'true' : 'false'}" required="true"/>  
                             </div>
                         </div>
                         <div class='col-sm-3'>
                             <label class="col-sm-2 control-label" for="datePick">Дата</label>
                             <div class="col-sm-10">
-                                <formSpring:input id="datePick" type="date" path="date" cssClass="form-control"/>  
+                                <formSpring:input id="datePick" type="date" path="date" cssClass="form-control" required="true"/>  
                             </div>
                         </div>
                     </div>
@@ -176,7 +176,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button form="mainForm" class="btn btn-primary">
+            <button form="mainForm" class="btn btn-primary" type="submit">
                 Сохранить
             </button>
             <a class="btn btn-default" href="/orders/order/${action}/cancel">
