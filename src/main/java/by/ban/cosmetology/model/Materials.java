@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Materials.findAll", query = "SELECT m FROM Materials m"),
+    @NamedQuery(name = "Materials.findAllActive", query = "SELECT m FROM Materials m WHERE m.forDelete = :del"),
     @NamedQuery(name = "Materials.findById", query = "SELECT m FROM Materials m WHERE m.id = :id"),
     @NamedQuery(name = "Materials.findByName", query = "SELECT m FROM Materials m WHERE m.name = :name"),
     @NamedQuery(name = "Materials.findByCount", query = "SELECT m FROM Materials m WHERE m.count = :count"),
@@ -59,6 +61,9 @@ public class Materials implements Serializable, Cloneable {
     @NotNull
     @Column(name = "cost")
     private Double cost;
+    @Basic(optional = false)
+    @Column(name = "forDelete")
+    private boolean forDelete;
     @JoinColumn(name = "unit", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Units unit;
@@ -134,6 +139,14 @@ public class Materials implements Serializable, Cloneable {
 
     public void setUsedmaterialsList(List<Usedmaterials> usedmaterialsList) {
         this.usedmaterialsList = usedmaterialsList;
+    }
+
+    public boolean isForDelete() {
+        return forDelete;
+    }
+
+    public void setForDelete(boolean forDelete) {
+        this.forDelete = forDelete;
     }
 
     @Override

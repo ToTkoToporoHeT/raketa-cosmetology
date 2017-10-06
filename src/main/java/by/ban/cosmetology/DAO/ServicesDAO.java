@@ -28,7 +28,8 @@ public class ServicesDAO {
     public List<Services> getAllServices(){
         System.out.println("DAO level getAllServices is called");
         
-        TypedQuery<Services> tq = entityManager.createNamedQuery("Services.findAll", Services.class);
+        TypedQuery<Services> tq = entityManager.createNamedQuery("Services.findAllActive", Services.class);
+        tq.setParameter("del", false);
         
         return tq.getResultList();
     }
@@ -57,6 +58,13 @@ public class ServicesDAO {
         return result > 0; // result show how many rows was updated.
     }
     
+    public boolean updateService(Services service){
+        System.out.println("DAO level updateService is called");
+        
+        entityManager.merge(service);
+        return true;
+    }
+    
     public boolean addService(String name, double cost) {
         System.out.println("DAO level addService is called");
  
@@ -73,11 +81,13 @@ public class ServicesDAO {
     public boolean deleteService(int idService) {
         System.out.println("DAO level deleteService is called");
  
-        String qlString = "delete from Services where id=?";
-        Query query = entityManager.createNativeQuery(qlString);
-        query.setParameter(1, idService);
-        int result = query.executeUpdate();
- 
-        return result > 0;
+        Services service = findServiceById(idService);
+        if (service.getProvidedservicesList().size() > 0) {
+            service.setForDelete(true);
+        } else {
+            entityManager.remove(service);
+        }
+
+        return !service.isForDelete();
     }
 }

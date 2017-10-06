@@ -39,7 +39,11 @@
                                             <tr>
                                                 <th class="info"  style="padding: 5px; margin-left: 0px">
                                                     <formSpring:hidden path="usedmaterialsList[${materialNumber.index}].id"/>
-                                                    <formSpring:checkbox value="${usedMaterial.material.id}" path="usedmaterialsList[${materialNumber.index}].material.id" id="materialRadio${materialNumber.count}"/>
+                                                    <c:if test="${usedMaterial.material.forDelete}">
+                                                        <formSpring:hidden path="usedmaterialsList[${materialNumber.index}].material.id"/>
+                                                        <formSpring:hidden path="usedmaterialsList[${materialNumber.index}].count"/>
+                                                    </c:if>
+                                                    <formSpring:checkbox value="${usedMaterial.material.id}" path="usedmaterialsList[${materialNumber.index}].material.id" id="materialRadio${materialNumber.count}" disabled="${usedMaterial.material.forDelete}"/>
                                                     ${materialNumber.count}
                                                 </th>
                                                 <td style="padding: 0; margin-left: 0px">
@@ -54,7 +58,7 @@
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="checkbox" style="padding: 0;">
-                                                        <formSpring:input type="number" style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].count"/>
+                                                        <formSpring:input type="number" style="padding: 5px; margin-left: 0px" cssClass="form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].count" disabled="${usedMaterial.material.forDelete}"/>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
@@ -69,9 +73,8 @@
                                                 </td>
                                             </tr>
                                         </c:forEach>
-
                                     </tbody>
-                                </div>
+                                </div>1921
                             </table>
                         </div>
                     </div>

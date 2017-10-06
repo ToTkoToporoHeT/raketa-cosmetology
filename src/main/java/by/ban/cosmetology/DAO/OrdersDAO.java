@@ -8,11 +8,14 @@ package by.ban.cosmetology.DAO;
 import by.ban.cosmetology.model.Materials;
 import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Providedservices;
+import by.ban.cosmetology.model.Services;
 import by.ban.cosmetology.model.Usedmaterials;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +42,9 @@ public class OrdersDAO {
 
     public Orders findOrderById(Integer id) {
         System.out.println("DAO level findOrderById is called");
+        
         Orders order = entityManager.find(Orders.class, id);
+        
         return order;
     }
 
@@ -55,14 +60,25 @@ public class OrdersDAO {
         System.out.println("DAO level addOrder is called");
 
         entityManager.persist(order);
-        entityManager.merge(order);
         return true;
     }
 
     public boolean deleteOrder(Orders order) {
         System.out.println("DAO level deleteOrder is called");
-
+        
         entityManager.remove(order);
+        for (Usedmaterials um : order.getUsedmaterialsList()) {
+            if (um.getMaterial().isForDelete() && um.getMaterial().getUsedmaterialsList().size() <= 1) {
+                Materials material = entityManager.find(Materials.class, um.getMaterial().getId());
+                entityManager.remove(material);
+            }
+        }
+        for (Providedservices ps : order.getProvidedservicesList()) {
+            if (ps.getService().isForDelete() && ps.getService().getProvidedservicesList().size() <= 1) {
+                Services service = entityManager.find(Services.class, ps.getService().getId());
+                entityManager.remove(service);
+            }
+        }
         return true;
     }
 
@@ -74,7 +90,7 @@ public class OrdersDAO {
             if (!order.getUsedmaterialsList().contains(usMat)) {
                 int usMatCount = usMat.getCount();
                 int matCountOld = usMat.getMaterial().getCount();
-                usMat.getMaterial().setCount(matCountOld + usMatCount);
+                usMat.getMaterial().setCount(matCountOld + usMatCount);//откатывает количество материалов на складе
                 entityManager.remove(usMat);
             }
         }

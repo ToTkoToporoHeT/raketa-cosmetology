@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Services.findAll", query = "SELECT s FROM Services s"),
+    @NamedQuery(name = "Services.findAllActive", query = "SELECT s FROM Services s WHERE s.forDelete = :del"),
     @NamedQuery(name = "Services.findById", query = "SELECT s FROM Services s WHERE s.id = :id"),
     @NamedQuery(name = "Services.findByName", query = "SELECT s FROM Services s WHERE s.name = :name"),
     @NamedQuery(name = "Services.findByCost", query = "SELECT s FROM Services s WHERE s.cost = :cost")})
@@ -52,6 +54,10 @@ public class Services implements Serializable, Cloneable {
     @NotNull
     @Column(name = "cost")
     private Double cost;
+    @Basic(optional = false)
+    @Column(name = "forDelete")
+    private boolean forDelete;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "service")
     private List<Providedservices> providedservicesList;
 
@@ -90,6 +96,14 @@ public class Services implements Serializable, Cloneable {
 
     public void setCost(Double cost) {
         this.cost = cost;
+    }
+    
+    public boolean isForDelete() {
+        return forDelete;
+    }
+
+    public void setForDelete(boolean forDelete) {
+        this.forDelete = forDelete;
     }
 
     @XmlTransient

@@ -40,10 +40,7 @@ public class ProvidedServicesController {
             Providedservices ps = new Providedservices(s);
             mapAllServices.put(s.getId(), ps);
         }
-        Orders oTemp = new Orders();
-        oTemp.setProvidedservicesList(new ArrayList<>(mapAllServices.values()));
-        model.addAttribute("allServices", oTemp);
-        
+                
         Map<Integer, Providedservices> mapOrderServices = new HashMap<>();
         for (Map.Entry<Integer, Providedservices> entry : mapAllServices.entrySet()) {
             int mapKey = entry.getKey();
@@ -56,11 +53,25 @@ public class ProvidedServicesController {
         if (orders.getProvidedservicesList() != null) {
             for (Providedservices ps : orders.getProvidedservicesList()) {
                 int servId = ps.getService().getId();
-                ps.setService(mapOrderServices.get(servId).getService());
-                ps.getService().setId(servId);
-                mapOrderServices.put(servId, ps);
+                Providedservices psTemp = mapOrderServices.get(servId);
+                if (psTemp == null) {
+                    //Если услуга используемая в Providedservices помечена на удаление, 
+                    //то метод getAllServices его не вернет, а значит psTemp будет раняться null
+                    //код ниже помещает такие Providedservices в конец списка выбора, а на странице их изменение блокируется
+                    psTemp = new Providedservices(servicesService.findServiceById(servId));
+                    ps.setService(psTemp.getService());
+                    mapAllServices.put(servId, psTemp);
+                    mapOrderServices.put(servId, ps);
+                } else {
+                    ps.setService(psTemp.getService());
+                    ps.getService().setId(servId);
+                    mapAllServices.put(servId, ps);
+                }
             }
         }
+        Orders oTemp = new Orders();
+        oTemp.setProvidedservicesList(new ArrayList<>(mapAllServices.values()));
+        model.addAttribute("allServices", oTemp);
         orders.setProvidedservicesList(new ArrayList<>(mapOrderServices.values()));
         model.addAttribute("orderTemp", orders);
         return "/services/selectServices";

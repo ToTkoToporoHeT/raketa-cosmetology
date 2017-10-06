@@ -18,38 +18,40 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author dazz
  */
-
 @Repository
 @Transactional
 public class MaterialsDAO {
-    
+
     @PersistenceContext
     private EntityManager entityManager;
-    private UnitsDAO unitsDAO;
-    
-    public List<Materials> getAllMaterials(){
+
+    //Получает все материалы у которых не помеченные на удаление (у которых forDelete = 0)
+    //Выводить пользователю помеченные на удаление материалы нет необходимости
+    public List<Materials> getAllMaterials() {
         System.out.println("DAO level getAllMaterials is called");
-        TypedQuery<Materials> tq = entityManager.createNamedQuery("Materials.findAll", Materials.class);
         
+        TypedQuery<Materials> tq = entityManager.createNamedQuery("Materials.findAllActive", Materials.class);
+        tq.setParameter("del", false);
+
         return tq.getResultList();
     }
-    
-    public Materials findMaterialById(int id){
+
+    public Materials findMaterialById(int id) {
         System.out.println("DAO level findMaterialById is called");
-        
+
         return entityManager.find(Materials.class, id);
     }
-    
-    public Materials findMaterialByName(String name){
+
+    public Materials findMaterialByName(String name) {
         System.out.println("DAO level findMaterialByName is called");
-        
+
         return entityManager.find(Materials.class, name);
     }
-    
+
     public boolean updateMaterial(int id, String name, int unit, int count, double cost) {
         System.out.println("DAO level updateMaterial is called");
- 
-        String query= "update Materials set name = ?, unit =?, count = ?, cost = ? where id = ?";
+
+        String query = "update Materials set name = ?, unit =?, count = ?, cost = ? where id = ?";
         Query nativeQuery = entityManager.createNativeQuery(query);
         nativeQuery.setParameter(1, name);
         nativeQuery.setParameter(2, unit);
@@ -60,43 +62,39 @@ public class MaterialsDAO {
         return result > 0;
         //entityManager.refresh(new Materials(id, name, unitsDAO.findUnitById(unit), count, cost));
     }
-    
-    public boolean updateMaterial(Materials material){
+
+    public boolean updateMaterial(Materials material) {
         System.out.println("DAO level updateMaterial is called");
- 
+
         entityManager.merge(material);
         return true;
     }
-    
+
     public boolean addMaterial(String name, int unit, int count, double cost) {
         System.out.println("DAO level addMaterial is called");
- 
+
         String qlString = "insert into Materials (name,unit,count,cost) values (?,?,?,?)";
         Query query = entityManager.createNativeQuery(qlString);
         query.setParameter(1, name);
         query.setParameter(2, unit);
         query.setParameter(3, count);
         query.setParameter(4, cost);
-        
+
         int result = query.executeUpdate();
- 
+
         return result > 0;
     }
- 
+
     public boolean deleteMaterial(int idMaterial) {
         System.out.println("DAO level deleteMaterial is called");
- 
+
         Materials material = findMaterialById(idMaterial);
-        String qlString="";
-        if (material.getUsedmaterialsList().size() > 0){
-        //qlString = "update Materials set delete=true where id=?";
+        if (material.getUsedmaterialsList().size() > 0) {
+            material.setForDelete(true);
         } else {
-        qlString = "delete from Materials where id=?";
+            entityManager.remove(material);
         }
-        Query query = entityManager.createNativeQuery(qlString);
-        query.setParameter(1, idMaterial);
-        int result = query.executeUpdate();
- 
-        return result > 0;
+
+        return !material.isForDelete();
     }
 }

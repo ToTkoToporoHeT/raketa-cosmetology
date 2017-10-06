@@ -39,10 +39,7 @@ public class UsedMaterialsController {
             Usedmaterials um = new Usedmaterials(m);
             mapAllMaterials.put(m.getId(), um);
         }
-        Orders oTemp = new Orders();
-        oTemp.setUsedmaterialsList(new ArrayList<>(mapAllMaterials.values()));
-        model.addAttribute("allMaterials", oTemp);
-        
+
         Map<Integer, Usedmaterials> mapOrderMaterials = new HashMap<>();
         for (Map.Entry<Integer, Usedmaterials> entry : mapAllMaterials.entrySet()) {
             int mapKey = entry.getKey();
@@ -55,11 +52,25 @@ public class UsedMaterialsController {
         if (orders.getUsedmaterialsList() != null) {
             for (Usedmaterials um : orders.getUsedmaterialsList()) {
                 int matId = um.getMaterial().getId();
-                um.setMaterial(mapOrderMaterials.get(matId).getMaterial());
-                um.getMaterial().setId(matId);
-                mapOrderMaterials.put(matId, um);
+                Usedmaterials umTemp = mapOrderMaterials.get(matId);
+                if (umTemp == null) {
+                    //Если материал используемый в Usedmaterials помечен на удаление, 
+                    //то метод getAllMaterials его не вернет, а значит umTemp будет раняться null
+                    //код ниже помещает такие Usedmaterials в конец списка выбора, а на странице их изменение блокируется
+                    umTemp = new Usedmaterials(materialsService.findMaterialById(matId));
+                    um.setMaterial(umTemp.getMaterial());
+                    mapAllMaterials.put(matId, umTemp);
+                    mapOrderMaterials.put(matId, um);
+                } else {
+                    um.setMaterial(umTemp.getMaterial());
+                    um.getMaterial().setId(matId);
+                    mapOrderMaterials.put(matId, um);
+                }
             }
         }
+        Orders oTemp = new Orders();
+        oTemp.setUsedmaterialsList(new ArrayList<>(mapAllMaterials.values()));
+        model.addAttribute("allMaterials", oTemp);
         orders.setUsedmaterialsList(new ArrayList<>(mapOrderMaterials.values()));
         model.addAttribute("orderTemp", orders);
         return "/materials/selectMaterials";

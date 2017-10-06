@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import org.hibernate.Hibernate;
-import org.springframework.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -79,8 +78,12 @@ public class OrderController {
                 return "redirect:/orders/showAllOrders";
             }
             Orders orders = ordersService.findOrderById(order.getId());
-            Hibernate.initialize(orders.getProvidedservicesList());
-            Hibernate.initialize(orders.getUsedmaterialsList());
+            if (!Hibernate.isInitialized(orders.getProvidedservicesList())) {
+                Hibernate.initialize(orders.getProvidedservicesList());
+            }
+            if (Hibernate.isInitialized(order.getUsedmaterialsList())) {
+                Hibernate.initialize(orders.getUsedmaterialsList());
+            }
             model.addAttribute("orders", orders);
         }
 

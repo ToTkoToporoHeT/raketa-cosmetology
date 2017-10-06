@@ -7,6 +7,7 @@ package by.ban.cosmetology.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,7 +42,7 @@ public class Providedservices implements Serializable, Cloneable {
     @ManyToOne(optional = false)
     private Orders order;
     @JoinColumn(name = "serviceId", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     private Services service;
 
     public Providedservices() {

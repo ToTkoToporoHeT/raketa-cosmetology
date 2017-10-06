@@ -36,7 +36,10 @@
                                             <tr>
                                                 <th class="info"  style="padding: 5px; margin-left: 0px">
                                                     <formSpring:hidden path="providedservicesList[${serviceNumber.index}].id"/>
-                                                    <formSpring:checkbox value="${providedService.service.id}" path="providedservicesList[${serviceNumber.index}].service.id" id="serviceRadio${serviceNumber.count}"/>
+                                                    <c:if test="${providedService.service.forDelete}">
+                                                        <formSpring:hidden path="providedservicesList[${serviceNumber.index}].service.id"/>
+                                                    </c:if>
+                                                    <formSpring:checkbox value="${providedService.service.id}" path="providedservicesList[${serviceNumber.index}].service.id" id="serviceRadio${serviceNumber.count}" disabled="${providedService.service.forDelete}"/>
                                                 ${serviceNumber.count}</th>
                                             <td style="padding: 0; margin-left: 0px">
                                                 <div class="checkbox" style="padding: 0;">
