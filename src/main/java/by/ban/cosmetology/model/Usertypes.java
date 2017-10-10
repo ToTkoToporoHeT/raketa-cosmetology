@@ -47,6 +47,11 @@ public class Usertypes implements Serializable, Cloneable {
     @Size(min = 1, max = 15)
     @Column(name = "type")
     private String type;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 15)
+    @Column(name = "accessConst")
+    private String accessConst;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userType")
     private List<Staff> staffList;
 
@@ -76,6 +81,14 @@ public class Usertypes implements Serializable, Cloneable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getAccessConst() {
+        return accessConst;
+    }
+
+    public void setAccessConst(String accessConst) {
+        this.accessConst = accessConst;
     }
 
     @XmlTransient

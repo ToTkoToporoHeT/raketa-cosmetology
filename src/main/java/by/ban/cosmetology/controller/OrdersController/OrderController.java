@@ -21,6 +21,8 @@ import java.util.Iterator;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -192,8 +194,7 @@ public class OrderController {
     public String addOrder(Orders orders, SessionStatus sessionStatus) {
         System.out.println("Controller level addOrder is called");
 
-        //!!!ПЕРЕДЕЛАТЬ!!! доставать staff из сессии 
-        orders.setManager(staffService.getAllStaff().get(0));
+        orders.setManager(staffService.findStaffByLogin(getStaffLogin()));
         ordersService.addOrder(orders);
         if (!sessionStatus.isComplete()) {
             sessionStatus.setComplete();
@@ -229,5 +230,11 @@ public class OrderController {
         }
 
         return "redirect:/orders/showAllOrders";
+    }
+    
+    //Получает логин менеджера из Spring security
+    private String getStaffLogin(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 }

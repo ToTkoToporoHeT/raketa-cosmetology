@@ -59,7 +59,7 @@
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" value="add" href="/services/showAllServices">
+                    <a class="btn btn-default" href= "javascript:history.back()">
                         Отмена
                     </a>
                 </div>

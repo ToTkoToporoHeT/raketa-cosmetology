@@ -9,6 +9,7 @@ import by.ban.cosmetology.model.Staff;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,26 +21,38 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class StaffDAO {
-    
+
     @PersistenceContext
     EntityManager entityManager;
-    
+
     public List<Staff> getAllStaff() {
         System.out.println("DAO level getAllStaff is called");
+
         TypedQuery<Staff> tq = entityManager.createNamedQuery("Staff.findAll", Staff.class);
         List<Staff> staffs = tq.getResultList();
-        for (Staff staff : staffs) {
-            entityManager.persist(staff);
-        }
+
         return staffs;
     }
 
     public Staff findStaffById(Integer id) {
         System.out.println("DAO level findStaffById is called");
-        Staff staff = entityManager.find(Staff.class, id);
-        return staff;
+
+        return entityManager.find(Staff.class, id);
     }
-    
+
+    public Staff findStaffByLogin(String login) {
+        System.out.println("DAO level findStaffByLogin is called");
+
+        TypedQuery<Staff> tq = entityManager.createNamedQuery("Staff.findByLogin", Staff.class);
+        tq.setParameter("login", login);
+        List<Staff> staffs = tq.getResultList();
+        
+        if (staffs.size() > 0) {
+            return staffs.get(0);
+        }
+        return null;
+    }
+
     public boolean updateStaff(Staff staff) {
         System.out.println("DAO level updateStaff is called");
 
@@ -55,10 +68,15 @@ public class StaffDAO {
     }
 
     public boolean deleteStaff(Integer id) {
-        System.out.println("DAO level deleteCustomer is called");
+        System.out.println("DAO level deleteStaff is called");
 
         Staff staff = findStaffById(id);
-        entityManager.remove(staff);
-        return true;
+        if (staff.getOrdersList().size() > 0) {
+            staff.setEnabled(false);
+        } else {
+            entityManager.remove(staff);
+        }
+
+        return staff.isEnabled();
     }
 }

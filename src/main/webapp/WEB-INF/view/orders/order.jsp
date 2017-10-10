@@ -7,6 +7,7 @@
 <%@taglib prefix="page" tagdir="/WEB-INF/tags/"%>
 
 <page:mainTamplate>
+    <jsp:attribute name="currentPage">${action == 'add' ? 'addOrder' : ''}</jsp:attribute>
     <jsp:attribute name="title">${action == 'add' ? 'Создать' : 'Посмотреть'} договор</jsp:attribute>
 
     <jsp:body> 

@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Staff.findByFirstName", query = "SELECT s FROM Staff s WHERE s.firstName = :firstName"),
     @NamedQuery(name = "Staff.findByMiddleName", query = "SELECT s FROM Staff s WHERE s.middleName = :middleName"),
     @NamedQuery(name = "Staff.findByLastName", query = "SELECT s FROM Staff s WHERE s.lastName = :lastName"),
+    @NamedQuery(name = "Staff.findByLogin", query = "SELECT s FROM Staff s WHERE s.login = :login"),
     @NamedQuery(name = "Staff.findByPassword", query = "SELECT s FROM Staff s WHERE s.password = :password")})
 public class Staff implements Serializable, Cloneable {
 
@@ -64,16 +65,24 @@ public class Staff implements Serializable, Cloneable {
     private String lastName;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "login")
+    private String login;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "password")
     private String password;
+    @Basic(optional = false)
+    @Column(name = "enabled")
+    private boolean enabled;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "manager")
     private List<Orders> ordersList;
     @JoinColumn(name = "userType", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usertypes userType;
 
-    public Staff() {
+    public Staff() { 
     }
 
     public Staff(Integer id) {
@@ -120,12 +129,28 @@ public class Staff implements Serializable, Cloneable {
         this.lastName = lastName;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @XmlTransient

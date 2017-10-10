@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author dazz
  */
 @Controller
+@Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
 @RequestMapping("/usedMaterials")
 public class UsedMaterialsController {
 

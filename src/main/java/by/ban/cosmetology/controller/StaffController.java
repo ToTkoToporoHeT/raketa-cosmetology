@@ -9,6 +9,7 @@ import by.ban.cosmetology.model.Staff;
 import by.ban.cosmetology.service.StaffService;
 import by.ban.cosmetology.service.UserTypesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author dazz
  */
 @Controller
+@Secured(value = {"ROLE_ADMIN"})
 @RequestMapping("/staff")
 public class StaffController {
     

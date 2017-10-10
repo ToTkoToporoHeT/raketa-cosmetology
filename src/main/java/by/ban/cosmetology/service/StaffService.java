@@ -33,6 +33,11 @@ public class StaffService {
         return staffDAO.findStaffById(id);
     }
     
+    public Staff findStaffByLogin(String login){
+        System.out.println("Service level findStaffById is called");
+        return staffDAO.findStaffByLogin(login);
+    }
+    
     public boolean updateStaff(Staff staff) {
         System.out.println("Service level updateStaff is called");
         return staffDAO.updateStaff(staff);

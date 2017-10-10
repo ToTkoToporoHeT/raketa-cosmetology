@@ -15,6 +15,12 @@
                 <legend>${action == 'add' ? 'Добавление' : 'Редактирование'} сотрудника</legend>
                 <formSpring:hidden path="id"/>
                 <div class="form-group">
+                    <label class="col-sm-2 control-label" for="name">Пароль</label>
+                    <div class="col-sm-10">    
+                        <formSpring:input path="login" cssClass="form-control" placeholder="Введите пароль сотрудника" required="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-2 control-label" for="name">Фамилия</label>
                     <div class="col-sm-10">    
                         <formSpring:input type="text" autofocus="${action == 'add' ? 'true' : ''}" path="lastName" cssClass="form-control" placeholder="Введите фамилию сотрудника" required="true"/>
@@ -36,7 +42,6 @@
                     <label class="col-sm-2 control-label" for="name">Тип учетной записи</label>
                     <div class="col-sm-10">
                         <formSpring:select path="userType.id" cssClass="form-control">
-                            <formSpring:option value="2" label="${userType == null ? 'Персонал' : userType.type}"/>
                             <formSpring:options items="${userTypes}" itemValue="id" itemLabel="type"/>
                         </formSpring:select>
                     </div>
@@ -44,14 +49,14 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="name">Пароль</label>
                     <div class="col-sm-10">    
-                        <formSpring:password path="password" cssClass="form-control" placeholder="Введите пароль сотрудника" required="true"/>
+                        <formSpring:input path="password" cssClass="form-control" placeholder="Введите пароль сотрудника" required="true"/>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" value="add" href="/staff/showAllStaff">
+                    <a class="btn btn-default" href="/staff/showAllStaff">
                         Отмена
                     </a>
                 </div>

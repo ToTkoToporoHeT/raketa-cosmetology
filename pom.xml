@@ -27,6 +27,8 @@
         <spring-framework.data.version>1.9.1.RELEASE</spring-framework.data.version>
         <!-- Spring -->
         <spring-framework.version>4.2.4.RELEASE</spring-framework.version>
+        <!-- Spring Security -->
+        <spring-security.version>4.0.4.RELEASE</spring-security.version>
     </properties>
     
     <dependencyManagement>
@@ -110,7 +112,36 @@
             <version>2.5.2</version>
             <scope>provided</scope>
         </dependency>
-    </dependencies>
+        
+        <!--Spring Security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <!--To start using the security namespace in your application context-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <!--Provides Spring Security’s JSP tag implementations.-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring-security.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+         <!--Common Java Annotations.
+        For this app it includes security annotation: @RolesAllowed; @DenyAll, @RunAs, @PermitAll
+         -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>jsr250-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>    
 
     <build>
         <plugins>
