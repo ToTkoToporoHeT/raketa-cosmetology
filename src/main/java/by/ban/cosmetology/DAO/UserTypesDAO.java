@@ -27,11 +27,9 @@ public class UserTypesDAO {
     public List<Usertypes> getAllUserTypes(){
         System.out.println("DAO level getAllUserTypes is called");
         
-        TypedQuery<Usertypes> tq = entityManager.createNamedQuery("Usertypes.findAll", Usertypes.class);
+        TypedQuery<Usertypes> tq = entityManager.createNamedQuery("Usertypes.findAlmostAll", Usertypes.class);
         List<Usertypes> usertypesList = tq.getResultList();
-        for (Usertypes usertype : usertypesList) {
-            entityManager.persist(usertype);
-        }
+        
         return usertypesList;
     }
     

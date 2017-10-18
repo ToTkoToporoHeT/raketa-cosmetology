@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usertypes.findAll", query = "SELECT u FROM Usertypes u"),
+    @NamedQuery(name = "Usertypes.findAlmostAll", query = "SELECT u FROM Usertypes u WHERE u.accessConst != 'ROLE_ROOT'"),
     @NamedQuery(name = "Usertypes.findById", query = "SELECT u FROM Usertypes u WHERE u.id = :id"),
     @NamedQuery(name = "Usertypes.findByType", query = "SELECT u FROM Usertypes u WHERE u.type = :type")})
 public class Usertypes implements Serializable, Cloneable {

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@tag description="Main interface for web-app" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
@@ -37,8 +38,8 @@
         </script>
     </head>
     <body>
-        <security:authorize access= "hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" var= "isUser"/>
-        <security:authorize access="hasRole('ROLE_ADMIN')" var="isAdmin"/>
+        <security:authorize access= "hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_ROOT')" var= "isUser"/>
+        <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')" var="isAdmin"/>
 
         <c:url var="showMaterials" value="/materials/showAllMaterials"/>
         <c:url var="showServices" value="/services/showAllServices"/>
@@ -62,7 +63,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="index.html">Косметология</a>
+                        <a class="navbar-brand" href="/index.html">Косметология</a>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
@@ -85,28 +86,30 @@
                                 </ul>
                             </li>
                         </ul>
-                        <ul class="nav navbar-nav navbar-right">
+                        <c:if test="${not fn:contains(currentPage, 'error')}">
+                            <ul class="nav navbar-nav navbar-right">
 
-                            <c:if test= "${not isUser}">
-                                <li style= "padding-top: 15px; padding-bottom: 15px;">
-                                    <font size="1">Вы не вошли в приложение</font>
-                                </li>
-                                <li>
-                                    <a href= "<c:url value= "/login.html"/>">Войти</a>
-                                </li>
-                            </c:if>
+                                <c:if test= "${not isUser}">
+                                    <li style= "padding-top: 15px; padding-bottom: 15px;">
+                                        <font size="1">Вы не вошли в приложение</font>
+                                    </li>
+                                    <li>
+                                        <a href= "<c:url value= "/login.html"/>">Войти</a>
+                                    </li>
+                                </c:if>
 
-                            <c:if test= "${isUser}">
-                                <li style= "padding-top: 15px; padding-bottom: 15px;">
-                                    <font size="1">Вы вошли как:</font>
-                                    <security:authentication property= "principal.username"/>
-                                </li>
-                                <li>
-                                    <a href= "<c:url value= "/j_spring_security_logout"/>">Выход</a>
-                                </li>
-                            </c:if>
+                                <c:if test= "${isUser}">
+                                    <li style= "padding-top: 15px; padding-bottom: 15px;">
+                                        <font size="1">Вы вошли как:</font>
+                                        <security:authentication property= "principal.username"/>
+                                    </li>
+                                    <li>
+                                        <a href= "<c:url value= "/j_spring_security_logout"/>">Выход</a>
+                                    </li>
+                                </c:if>
 
-                        </ul>
+                            </ul>
+                        </c:if>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->
             </nav>          

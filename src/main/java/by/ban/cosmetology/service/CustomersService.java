@@ -31,9 +31,14 @@ public class CustomersService {
         return custromersDAO.getAllCustomers();
     }
 
-    public Customers findCustomerByLogin(String login) {
-        System.out.println("Service level findCustomerByLogin is called");
-        return custromersDAO.findCustomerByLogin(login);
+    public Customers findCustomer(Integer id) {
+        System.out.println("Service level findCustomer by Id is called");
+        return custromersDAO.findCustomer(id);
+    }
+    
+    public Customers findCustomer(String login) {
+        System.out.println("Service level findCustomer by Login is called");
+        return custromersDAO.findCustomer(login);
     }
 
     public boolean updateCustomer(Customers customer) {
@@ -62,9 +67,9 @@ public class CustomersService {
         return true;
     }
 
-    public boolean deleteCustomer(String customerLogin) {
+    public boolean deleteCustomer(Integer id) {
         System.out.println("Service level deleteCustomer is called");
-        return custromersDAO.deleteCustomer(customerLogin);
+        return custromersDAO.deleteCustomer(id);
     }
 
     //Добавляет полученный Customer во все Telephonenumbers 

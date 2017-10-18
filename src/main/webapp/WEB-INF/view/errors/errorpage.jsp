@@ -5,7 +5,7 @@
 <%@taglib prefix="page" tagdir="/WEB-INF/tags" %>
 
 <page:mainTamplate>
-    
+    <jsp:attribute name="currentPage">error 404</jsp:attribute>
     <jsp:attribute name="title">Произошла ошибка</jsp:attribute>
     
     <jsp:body>

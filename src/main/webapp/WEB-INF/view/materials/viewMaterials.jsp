@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags" %>
@@ -53,12 +54,16 @@
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">${material.count}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">
+                                                            <fmt:formatNumber value="${material.count}"/>
+                                                        </label>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">${material.cost}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">
+                                                            <fmt:formatNumber value="${material.cost}" minFractionDigits="2"/>
+                                                        </label>
                                                     </div>
                                                 </td>
                                             </tr>

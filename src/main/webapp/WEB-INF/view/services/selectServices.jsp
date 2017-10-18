@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags" %>
@@ -40,17 +41,19 @@
                                                         <formSpring:hidden path="providedservicesList[${serviceNumber.index}].service.id"/>
                                                     </c:if>
                                                     <formSpring:checkbox value="${providedService.service.id}" path="providedservicesList[${serviceNumber.index}].service.id" id="serviceRadio${serviceNumber.count}" disabled="${providedService.service.forDelete}"/>
-                                                ${serviceNumber.count}</th>
-                                            <td style="padding: 0; margin-left: 0px">
-                                                <div class="checkbox" style="padding: 0;">
-                                                    <formSpring:label style="padding: 5px; margin-left: 0px" cssClass="checkbox form-control" for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].service.name">${providedService.service.name}</formSpring:label>
-                                                </div>
-                                            </td>
-                                            <td style="padding: 0; margin-left: 0px">
-                                                <div class="checkbox" style="padding: 0;">
-                                                    <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="serviceRadio${serviceNumber.count}" >${providedService.service.cost}</label>
-                                                </div>
-                                            </td>
+                                                    ${serviceNumber.count}</th>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="checkbox" style="padding: 0;">
+                                                        <formSpring:label style="padding: 5px; margin-left: 0px" cssClass="checkbox form-control" for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].service.name">${providedService.service.name}</formSpring:label>
+                                                        </div>
+                                                    </td>
+                                                    <td style="padding: 0; margin-left: 0px">
+                                                        <div class="checkbox" style="padding: 0;">
+                                                            <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="serviceRadio${serviceNumber.count}">
+                                                            <fmt:formatNumber value="${providedService.service.cost}" minFractionDigits="2"/>
+                                                        </label>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>

@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -34,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Staff.findAll", query = "SELECT s FROM Staff s"),
+    @NamedQuery(name = "Staff.findAlmostAll", query = "SELECT s FROM Staff s WHERE s.login != 'root'"),
     @NamedQuery(name = "Staff.findById", query = "SELECT s FROM Staff s WHERE s.id = :id"),
     @NamedQuery(name = "Staff.findByFirstName", query = "SELECT s FROM Staff s WHERE s.firstName = :firstName"),
     @NamedQuery(name = "Staff.findByMiddleName", query = "SELECT s FROM Staff s WHERE s.middleName = :middleName"),
@@ -48,40 +50,54 @@ public class Staff implements Serializable, Cloneable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "firstName")
-    private String firstName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
-    @Column(name = "middleName")
-    private String middleName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
-    @Column(name = "lastName")
-    private String lastName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "login")
+    @NotEmpty(message = "Обязательное поле")
+    @Size(max = 20, message = "Длинна строки должна быть не больше 20 символов")
+    @Column(name = "login", unique = true)
     private String login;
+    
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @NotEmpty(message = "Обязательное поле")
+    @Size(min = 4, max = 20, message = "Пароль должен быть больше 4 и меньше 20 символов")
     @Column(name = "password")
     private String password;
+    
+    @Basic(optional = false)
+    @NotNull
+    @NotEmpty(message = "Обязательное поле")
+    @Size(max = 25, message = "Длинна строки должна быть не больше 25 символов")
+    @Column(name = "lastName")
+    private String lastName;
+    
+    @Basic(optional = false)
+    @NotNull
+    @NotEmpty(message = "Обязательное поле")
+    @Size(max = 25, message = "Длинна строки должна быть не больше 25 символов")
+    @Column(name = "firstName")
+    private String firstName;
+    
+    @Basic(optional = false)
+    @NotNull
+    @NotEmpty(message = "Обязательное поле")
+    @Size(max = 25, message = "Длинна строки должна быть не больше 25 символов")
+    @Column(name = "middleName")
+    private String middleName;
+    
     @Basic(optional = false)
     @Column(name = "enabled")
     private boolean enabled;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "manager")
     private List<Orders> ordersList;
+    
     @JoinColumn(name = "userType", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usertypes userType;
 
+    
     public Staff() { 
     }
 
@@ -95,6 +111,11 @@ public class Staff implements Serializable, Cloneable {
         this.middleName = middleName;
         this.lastName = lastName;
         this.password = password;
+    }
+
+    public Staff(boolean enabled, Usertypes userType) {
+        this.enabled = enabled;
+        this.userType = userType;
     }
 
     public Integer getId() {
@@ -192,7 +213,15 @@ public class Staff implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return lastName + " " + firstName.charAt(0) + "." + middleName.charAt(0) + ".";
+        char nameFirstChar = ' ';
+        char midNameFirstChar = ' ';
+        if (firstName != null && !firstName.isEmpty()){
+            nameFirstChar = firstName.charAt(0);
+        }
+        if (middleName != null && !middleName.isEmpty()){
+            midNameFirstChar = middleName.charAt(0);
+        }
+        return lastName + " " + nameFirstChar + "." + midNameFirstChar + ".";
     }
 
     @Override

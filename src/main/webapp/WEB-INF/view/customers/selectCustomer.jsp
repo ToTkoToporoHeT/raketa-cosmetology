@@ -9,7 +9,7 @@
     <jsp:attribute name="title">Выбор клиента</jsp:attribute>
 
     <jsp:body>         
-        <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="customer" method="post" action="/orders">
+        <formSpring:form cssClass="form-horizontal" role="main" method="post" action="/orders">
             <div class="row">
                 <div class="col-sm-10">
                     <div class="form-group">
@@ -18,7 +18,7 @@
                             <div class="panel-body">
                                 <div class="row">                                
                                     <div class="col-sm-12">
-                                        <input id="search" type="text" class="form-control" width="10%" placeholder="Искать...">
+                                        <input id="search" type="text" class="form-control" placeholder="Искать...">
                                     </div>
                                 </div><!-- /.row -->
                             </div>
@@ -39,32 +39,32 @@
                                         <c:forEach items="${customers}" var="customer" varStatus="customerNumber">
                                             <tr>
                                                 <th class="info" style="padding: 5px; margin-left: 0px">
-                                                    <input type="radio" name="login" id="customerRadio${customer.login}" value="${customer.login}" required="true">
+                                                    <input type="radio" name="customerId" id="customerRadio${customer.id}" value="${customer.id}" required="true">
                                                     ${customerNumber.count}</th>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.lastName}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.id}">${customer.lastName}</label>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.firstName}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.id}">${customer.firstName}</label>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.middleName}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.id}">${customer.middleName}</label>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.addressId}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.id}">${customer.addressId}</label>
                                                     </div>
                                                 </td>                                                
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <ul style="padding: 0; margin-left: 0px">
                                                         <div class="radio" style="padding: 0;">
-                                                            <label class="radio" for="customerRadio${customer.login}">
+                                                            <label class="radio" for="customerRadio${customer.id}">
                                                                 <c:forEach items="${customer.telephonenumbersList}" var="telNumb">
                                                                     <c:if test="${telNumb.telephoneNumber != ''}">
                                                                         <li>${telNumb}</li>
@@ -76,7 +76,7 @@
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.login}">${customer.login}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.id}">${customer.login}</label>
                                                     </div>
                                                 </td>
                                             </tr>

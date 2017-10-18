@@ -19,10 +19,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -45,29 +47,36 @@ public class Address implements Serializable, Cloneable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
-    @Size(min = 2, max = 30)
+    @NotEmpty(message = "Обязательное поле")
+    @Size(max = 30, message = "Размер должен быть не больше 25 символов")
     @Column(name = "Country")
     private String country;
+    
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @NotEmpty(message = "Обязательное поле")
+    @Size(max = 30, message = "Размер должен быть не больше 25 символов")
     @Column(name = "City")
     private String city;
+    
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    @Size(max = 30, message = "Размер должен быть не больше 25 символов")
     @Column(name = "Street")
     private String street;
+    
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 15)
+    @Size(max = 4, message = "Размер должен быть не больше 4 символов")
     @Column(name = "House")
     private String house;
-    @Size(max = 15)
+    
+    @Basic(optional = false)
+    @Size(max = 5, message = "Размер должен быть не больше 5 символов")
     @Column(name = "Flat")
     private String flat;
+    
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "addressId")
     private List<Customers> customersList;
 

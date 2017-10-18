@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -40,15 +41,24 @@ public class Usedmaterials implements Serializable, Cloneable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "count")
     private Integer count;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "cost")
+    private Double cost;
+    
     @JoinColumn(name = "orderId", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Orders orderId;
+    
     @JoinColumn(name = "materialId", referencedColumnName = "id")
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
+    @ManyToOne(optional = false)
     private Materials material;
 
     public Usedmaterials() {
@@ -87,6 +97,14 @@ public class Usedmaterials implements Serializable, Cloneable {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
     }
 
     public Orders getOrderId() {

@@ -9,7 +9,6 @@ import by.ban.cosmetology.model.Staff;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,7 @@ public class StaffDAO {
     public List<Staff> getAllStaff() {
         System.out.println("DAO level getAllStaff is called");
 
-        TypedQuery<Staff> tq = entityManager.createNamedQuery("Staff.findAll", Staff.class);
+        TypedQuery<Staff> tq = entityManager.createNamedQuery("Staff.findAlmostAll", Staff.class);
         List<Staff> staffs = tq.getResultList();
 
         return staffs;

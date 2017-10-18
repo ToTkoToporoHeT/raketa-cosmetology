@@ -19,7 +19,7 @@
                             <div class="panel-body">
                                 <div class="row">                                
                                     <div class="col-sm-12">
-                                        <input id="search" type="text" class="form-control" width="10%" placeholder="Искать...">
+                                        <input id="search" type="text" class="form-control" placeholder="Искать...">
                                     </div>
                                 </div><!-- /.row -->
                             </div>
@@ -27,10 +27,12 @@
                                 <thead>
                                     <tr class="info" role="row">
                                         <th class="info" width="5%" valign="middle">№</th>
+                                        <th>Логин</th>
                                         <th>Фамилия</th>
                                         <th>Имя</th>
                                         <th>Отчесто</th>
-                                        <th>Тип пользователя</th>
+                                        <th>Тип<br>пользователя</th>
+                                        <th>Статус<br>учетной записи</th>
                                     </tr>
                                 </thead> 
                                 <div class="controls">
@@ -40,6 +42,11 @@
                                                 <th class="info" style="padding: 5px; margin-left: 0px">
                                                     <input type="radio" name="id" id="customerRadio${worker.id}" value="${worker.id}">
                                                     ${workerNumber.count}</th>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${worker.id}">${worker.login}</label>
+                                                    </div>
+                                                </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
                                                         <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${worker.id}">${worker.lastName}</label>
@@ -59,7 +66,12 @@
                                                     <div class="radio" style="padding: 0;">
                                                         <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${worker.id}">${worker.userType}</label>
                                                     </div>
-                                                </td>    
+                                                </td>   
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${worker.id}">${worker.enabled == true ? 'активна' : 'заблокирована'}</label>
+                                                    </div>
+                                                </td>   
                                         </c:forEach>
                                     </tbody>
                                 </div>

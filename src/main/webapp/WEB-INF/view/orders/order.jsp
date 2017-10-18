@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
@@ -50,9 +51,9 @@
                 }
                 document.getElementById('numbertext').setAttribute('class', 'col-sm-10');
 
-                resetError(elems.date.parentNode);
-                if (!elems.date.value) {
-                    showError(elems.date.parentNode, 'Введите дату!');
+                resetError(elems.prepare_date.parentNode);
+                if (!elems.prepare_date.value) {
+                    showError(elems.prepare_date.parentNode, 'Введите дату!');
                     result = false;
                 }
                 document.getElementById('datatext').setAttribute('class', 'col-sm-10');
@@ -72,15 +73,15 @@
                         <div id="numberdiv" class='col-sm-5 col-md-4 col-lg-4'>
                             <label class="col-sm-2 control-label" for="numberInput">Номер</label>
                             <div id="numbertext" class="col-sm-10">
-                                <formSpring:input id="numberInput" path="number" cssClass="form-control" autofocus="${action == 'add' ? 'true' : 'false'}" required="true" aria-describedby="inputError2Status"/>  
-                                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                                <span id="inputError2Status" class="sr-only">(error)</span>
+                                <formSpring:errors path="number" cssClass="label label-danger"/>
+                                <formSpring:input id="numberInput" path="number" cssClass="form-control" autofocus="${action == 'add' ? 'true' : 'false'}" aria-describedby="inputError2Status"/>  
                             </div>
                         </div>
                         <div class='col-sm-4 col-md-3 col-lg-3'>
                             <label class="col-sm-2 control-label" for="datePick">Дата</label>
                             <div id="datatext" class="col-sm-10">
-                                <formSpring:input id="datePick" type="date" path="date" cssClass="form-control" required="true"/>  
+                                <formSpring:errors path="prepare_date" cssClass="label label-danger"/>
+                                <formSpring:input id="datePick" type="date" path="prepare_date" cssClass="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -92,8 +93,9 @@
             <div class="row">
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="name">Клиент</label>
-                    <div class="col-sm-8">    
-                        <formSpring:input type="text" path="customer" cssClass="form-control" placeholder="Выберите клиента" required="true" disabled="${true ? 'true' : 'false'}"/>
+                    <div class="col-sm-8"> 
+                        <formSpring:errors path="customer" cssClass="label label-danger"/>
+                        <formSpring:input type="text" path="customer" cssClass="form-control" placeholder="Выберите клиента" disabled="true"/>
                     </div>
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-default" formaction="/orders/order/show_page/selectCustomer">Выбрать</button>
@@ -117,8 +119,16 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <td colspan="2"><h4>Итого:</h4></td>
-                                    <td></td>
+                                    <c:set var="serviceSum" value="${0}"/>
+                                    <c:forEach items="${orders.providedservicesList}" var="provService">
+                                        <c:set var="serviceSum" value="${serviceSum + provService.cost}"/>
+                                    </c:forEach>
+                                    <td colspan="2">
+                                        <h4>Итого:</h4>
+                                    </td>
+                                    <td>
+                                        <h5><fmt:formatNumber value="${serviceSum}" minFractionDigits="2"/></h5>
+                                    </td>
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -137,7 +147,9 @@
                                         </td>
                                         <td style="padding: 0; margin-left: 0px">
                                             <div class="radio" style="padding: 0;">
-                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${servCount.index}">${providedService.service.cost}</label>
+                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${servCount.index}">
+                                                    <fmt:formatNumber value="${providedService.cost}" minFractionDigits="2"/>
+                                                </label>
                                             </div>
                                         </td>
                                     </tr>
@@ -175,8 +187,12 @@
                             </thead>
                             <tfoot>
                                 <tr>
+                                    <c:set var="materialsSum" value="${0}"/>
+                                    <c:forEach items="${orders.usedmaterialsList}" var="usedMaterial">
+                                        <c:set var="materialsSum" value="${materialsSum + usedMaterial.cost * usedMaterial.count}"/>
+                                    </c:forEach>
                                     <td colspan="4"><h4>Итого:</h4></td>
-                                    <td></td>
+                                    <td><h5><fmt:formatNumber value="${materialsSum}" minFractionDigits="2"/></h5></td>
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -205,7 +221,9 @@
                                         </td>
                                         <td style="padding: 0; margin-left: 0px">
                                             <div class="radio" style="padding: 0;">
-                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${matCount.index}">${usedMaterial.material.cost}</label>
+                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${matCount.index}">
+                                                    <fmt:formatNumber value="${usedMaterial.cost * usedMaterial.count}" minFractionDigits="2"/>
+                                                </label>
                                             </div>
                                         </td>
                                     </tr>
@@ -228,7 +246,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button form="mainForm" onclick="return validateAllForm(this.form)" class="btn btn-primary" type="submit"> <!--onclick="return validateAllForm(this.form)"--> 
+            <button form="mainForm" class="btn btn-primary" type="submit"><!--onclick="return validateAllForm(this.form)"-->
                 Сохранить
             </button>
             <a class="btn btn-default" onclick="return confirm('Вы дейстительно хотите отменить ${action == 'add' ? 'создание' : 'редактирование'} документа?')" href="/orders/order/${action}/cancel">

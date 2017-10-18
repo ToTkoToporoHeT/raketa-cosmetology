@@ -9,10 +9,12 @@ import by.ban.cosmetology.model.Materials;
 import by.ban.cosmetology.service.MaterialsService;
 import by.ban.cosmetology.service.UnitsService;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author dazz
  */
 @Controller
-@Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+@Secured(value = {"ROLE_ADMIN", "ROLE_USER", "ROLE_ROOT"})
 @RequestMapping(value = "/materials")
 public class MaterialsController {
 
@@ -37,62 +39,73 @@ public class MaterialsController {
     @RequestMapping(value = "/showAllMaterials", method = RequestMethod.GET)
     public ModelAndView showAllMaterials() {
         System.out.println("Controller level showAllMaterials is called");
+
         List<Materials> materials = materialsService.getAllMaterials();
         ModelAndView modelAndView = new ModelAndView("/materials/viewMaterials");
+
         modelAndView.addObject("materials", materials);
         modelAndView.addObject("units", unitsService.getAllUnits());
 
         return modelAndView;
-    }    
+    }
 
     @RequestMapping(value = "/material/show_page/{action}")
     public String showMaterialPage(@ModelAttribute("material") Materials material,
             @PathVariable String action, Model model) {
         System.out.println("Controller level showMaterialPage is called for "
                 + action + " material");
-        
-        model.addAttribute(action);
+
+        model.addAttribute("action", action);
+        model.addAttribute("units", unitsService.getAllUnits());
+
         if (action.equals("add")) {
             model.addAttribute("material", new Materials());
-            model.addAttribute("units", unitsService.getAllUnits());
-        }
-        else if (action.equals("edit")){
+        } else if (action.equals("edit")) {
             Integer idMaterialFC = material.getId();
-            if (idMaterialFC == null)
+
+            if (idMaterialFC == null) {
                 return "redirect:/materials/showAllMaterials";
+            }
+
             Materials materialFC = materialsService.findMaterialById(idMaterialFC);
             model.addAttribute("material", materialFC);
-            model.addAttribute("units", unitsService.getAllUnits());
         }
 
         return "/materials/material";
     }
 
-    @RequestMapping(value = "/material/add")
-    public String addMaterial(@ModelAttribute("material") Materials material,
-            @RequestParam int materialUnitId) {
-        System.out.println("Controller level addMaterial is called");
+    @RequestMapping(value = "/material/{action}")
+    public String addOrUpdateMaterial(@ModelAttribute("material") @Valid Materials material,
+            BindingResult result, Model model, @PathVariable String action) {
 
-        boolean result = materialsService.addMaterial(material.getName(), materialUnitId, material.getCount(), material.getCost());
+        if (result.hasErrors()) {
+            model.addAttribute("action", action);
+            model.addAttribute("units", unitsService.getAllUnits());
+
+            return "/materials/material";
+        }
+
+        System.out.println("Controller level " + action + "Material is called");
+
+        switch (action) {
+            case "add": {
+                materialsService.addMaterial(material.getName(), material.getUnit().getId(), material.getCount(), material.getCost());
+                break;
+            }
+            case "edit": {
+                materialsService.updateMaterial(material.getId(), material.getName(), material.getUnit().getId(), material.getCount(), material.getCost());
+                break;
+            }
+        }
 
         return "redirect:/materials/showAllMaterials";
     }
-    
-    @RequestMapping(value = "/material/edit")
-    public String editMaterial(@ModelAttribute("material") Materials material,
-            @RequestParam int materialUnitId) {
-        System.out.println("Controller level editMaterial is called");
-        
-        boolean result = materialsService.updateMaterial(material.getId(), material.getName(), materialUnitId, material.getCount(), material.getCost());
 
-        return "redirect:/materials/showAllMaterials";
-    }
-    
     @RequestMapping(value = "/material/delete", method = RequestMethod.POST)
     public String deleteMaterial(@RequestParam("id") int materialId) {
         System.out.println("Controller level deleteMaterial is called");
 
-        boolean result = materialsService.deleteMaterial(materialId);
+        materialsService.deleteMaterial(materialId);
 
         return "redirect:/materials/showAllMaterials";
     }

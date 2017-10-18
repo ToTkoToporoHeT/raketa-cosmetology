@@ -12,6 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,10 +21,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -33,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Customers.findAll", query = "SELECT c FROM Customers c"),
+    @NamedQuery(name = "Customers.findAllActive", query = "SELECT с FROM Customers с WHERE с.enabled = :enabled"),
     @NamedQuery(name = "Customers.findByLogin", query = "SELECT c FROM Customers c WHERE c.login = :login"),
     @NamedQuery(name = "Customers.findByFirstName", query = "SELECT c FROM Customers c WHERE c.firstName = :firstName"),
     @NamedQuery(name = "Customers.findByMiddleName", query = "SELECT c FROM Customers c WHERE c.middleName = :middleName"),
@@ -42,33 +48,53 @@ public class Customers implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
-    @Column(name = "login")
+    @Column(name = "id")
+    private Integer id;
+    
+    @Basic(optional = false)
+    @Email(message = "Введите пожалуйста корректный e-mail")
+    @Size(max = 40, message = "Размер должен быть не меньше 40 символов")
+    @Column(name = "login", unique = true)
     private String login;
+    
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "firstName")
-    private String firstName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
-    @Column(name = "middleName")
-    private String middleName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
+    @NotEmpty(message = "Обязательное поле")
+    @Size(max = 25, message = "Размер должен быть не больше 25 символов")
     @Column(name = "lastName")
     private String lastName;
+    
+    @Basic(optional = false)
+    @NotNull
+    @NotEmpty(message = "Обязательное поле")
+    @Size(max = 25, message = "Размер должен быть не больше 25 символов")
+    @Column(name = "firstName")
+    private String firstName;
+    
+    @Basic(optional = false)
+    @NotNull
+    @NotEmpty(message = "Обязательное поле")
+    @Size(max = 25, message = "Размер должен быть не больше 25 символов")
+    @Column(name = "middleName")
+    private String middleName;
+        
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
+    @Valid
     private List<Telephonenumbers> telephonenumbersList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private List<Orders> ordersList;
+    
     @JoinColumn(name = "addressId", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @Valid
     private Address addressId;
+    
+    @Basic(optional = false)
+    @Column(name = "enabled")
+    private boolean enabled;
 
     public Customers() {
     }
@@ -82,6 +108,18 @@ public class Customers implements Serializable, Cloneable {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
+    }
+
+    public Customers(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getLogin() {
@@ -142,6 +180,14 @@ public class Customers implements Serializable, Cloneable {
         this.addressId = addressId;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -164,7 +210,15 @@ public class Customers implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return lastName + " " + firstName.charAt(0) + "." + middleName.charAt(0) + ".";
+        char nameFirstChar = ' ';
+        char midNameFirstChar = ' ';
+        if (firstName != null && !firstName.isEmpty()){
+            nameFirstChar = firstName.charAt(0);
+        }
+        if (middleName != null && !middleName.isEmpty()){
+            midNameFirstChar = middleName.charAt(0);
+        }
+        return lastName + " " + nameFirstChar + "." + midNameFirstChar + ".";
     }
 
     @Override

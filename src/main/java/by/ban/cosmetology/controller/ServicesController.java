@@ -8,10 +8,12 @@ package by.ban.cosmetology.controller;
 import by.ban.cosmetology.model.Services;
 import by.ban.cosmetology.service.ServicesService;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author dazz
  */
 @Controller
-@Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+@Secured(value = {"ROLE_ADMIN", "ROLE_USER", "ROLE_ROOT"})
 @RequestMapping(value = "/services")
 public class ServicesController {
 
@@ -63,21 +65,28 @@ public class ServicesController {
         return "/services/service";
     }
 
-    @RequestMapping(value = "/service/add")
-    public String addService(@ModelAttribute("service") Services service) {
-        System.out.println("Controller level addService is called");
+    @RequestMapping(value = "/service/{action}")
+    public String addOrUpdateService(@ModelAttribute("service") @Valid Services service, BindingResult result, 
+            Model model, @PathVariable String action) {
+        
+        if (result.hasErrors()){
+            model.addAttribute("action", action);
+            
+            return "/services/service";
+        }
+        
+        System.out.println("Controller level " + action + "Service is called");
 
-        boolean result = servicesService.addService(service.getName(), service.getCost());
-
-        return "redirect:/services/showAllServices";
-    }
-
-    @RequestMapping(value = "/service/edit")
-    public String editService(@ModelAttribute("service") Services service) {
-        System.out.println("Controller level editService is called");
-
-        boolean result = servicesService.updateService(service.getId(), service.getName(), service.getCost());
-
+        switch(action){
+            case "add":{
+                servicesService.addService(service.getName(), service.getCost());
+                break;
+            }
+            case "edit":{
+                servicesService.updateService(service.getId(), service.getName(), service.getCost());
+            }
+        }
+        
         return "redirect:/services/showAllServices";
     }
 

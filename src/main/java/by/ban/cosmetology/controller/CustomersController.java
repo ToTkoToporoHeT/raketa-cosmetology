@@ -7,13 +7,18 @@ package by.ban.cosmetology.controller;
 
 import by.ban.cosmetology.model.Customers;
 import by.ban.cosmetology.model.Telephonenumbers;
+import by.ban.cosmetology.model.validators.CustomerValidator;
 import by.ban.cosmetology.service.CustomersService;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,17 +32,19 @@ import org.springframework.web.servlet.ModelAndView;
  * @author dazz
  */
 @Controller
-@Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+@Secured(value = {"ROLE_ADMIN", "ROLE_USER", "ROLE_ROOT"})
 @RequestMapping("/customers")
 @SessionAttributes(types = Customers.class)
 public class CustomersController {
 
     @Autowired
     private CustomersService customersService;
+    @Autowired
+    private CustomerValidator customerValidator;
 
-    @ModelAttribute("customer")
-    public Customers populateCustomer() {
-        return new Customers();
+    @InitBinder
+    public void dataBinding(WebDataBinder binder) {
+        binder.addValidators(customerValidator);
     }
 
     @RequestMapping("/showAllCustomers")
@@ -58,51 +65,68 @@ public class CustomersController {
                 + action + " customer");
 
         model.addAttribute(action);
+        
         if (action.equals("add")) {
-            Customers tempCustomer = new Customers();
+            Customers tempCustomer = new Customers(true);
             List<Telephonenumbers> telephonenumbers = new ArrayList<>();
+            
             for (int i = 0; i < 3; i++) {
                 telephonenumbers.add(new Telephonenumbers());
             }
             tempCustomer.setTelephonenumbersList(telephonenumbers);
+            
             model.addAttribute("customer", tempCustomer);
+            
         } else if (action.equals("edit")) {
-            String loginCustomerFC = customer.getLogin();
-            if (loginCustomerFC == null) {
+            Integer idCustomerFC = customer.getId();
+            
+            if (idCustomerFC == null) {
                 return "redirect:/customers/showAllCustomers";
             }
-            customer = customersService.findCustomerByLogin(loginCustomerFC);
-            int telCount = customer.getTelephonenumbersList().size();
-            for (int i = 0; i < 3 - telCount; i++){
+            
+            customer = customersService.findCustomer(idCustomerFC);
+            int telCount = customer.getTelephonenumbersList().size();            
+            for (int i = 0; i < 3 - telCount; i++) {
                 customer.getTelephonenumbersList().add(new Telephonenumbers());
-            }                
+            }
+            
             model.addAttribute("customer", customer);
         }
 
         return "/customers/customer";
     }
 
-    @RequestMapping(value = "/customer/add")
-    public String addCustomer(@ModelAttribute("customer") Customers customer) {
-        System.out.println("Controller level addCustomer is called");
+    @RequestMapping(value = "/customer/{action}")
+    public String addOrUpdateCustomer(@ModelAttribute("customer") @Valid Customers customer, BindingResult result,
+            Model model, @PathVariable String action) {
 
-        boolean result = customersService.addCustomer(customer);
-        return "redirect:/customers/showAllCustomers";
-    }
+        if (result.hasErrors()) {
+            model.addAttribute("action", action);
 
-    @RequestMapping(value = "/customer/edit")
-    public String editCustomer(@ModelAttribute("customer") Customers customer) {
-        System.out.println("Controller level editCustomer is called");
+            return "/customers/customer";
+        }
+        
+        System.out.println("Controller level " + action + "Customer is called");
 
-        boolean result = customersService.updateCustomer(customer);
+        switch (action) {
+            case "add": {
+                customersService.addCustomer(customer);
+                break;
+            }
+            case "edit": {
+                customersService.updateCustomer(customer);
+                break;
+            }
+        }
+
         return "redirect:/customers/showAllCustomers";
     }
 
     @RequestMapping(value = "/customer/delete", method = RequestMethod.POST)
-    public String deleteCustomer(@RequestParam("login") String customerLogin) {
+    public String deleteCustomer(@RequestParam("id") Integer customerId) {
         System.out.println("Controller level deleteCustomer is called");
 
-        boolean result = customersService.deleteCustomer(customerLogin);
+        boolean result = customersService.deleteCustomer(customerId);
 
         return "redirect:/customers/showAllCustomers";
     }

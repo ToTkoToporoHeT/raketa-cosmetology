@@ -15,11 +15,11 @@
         <!--used to define the set of URL patterns that the application is interested in
         and to configure how they should be handled. It is used to construct the
         FilterInvocationSecurityMetadataSource used by the FilterSecurityInterceptor-->
-        <intercept-url pattern="/orders/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+        <intercept-url pattern="/orders/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_ROOT')"/>
         <!--Если попытаться войти без логина на страницу в этом маппинге (например http://localhost:8080/user/),
         то будет переброшено на страницу, указанную в form-login login-page='pageName.html' -->
-        <intercept-url pattern="/index*" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')"/>
-        <intercept-url pattern="/login*" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')"/>
+        <intercept-url pattern="/index*" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_ANONYMOUS', 'ROLE_ROOT')"/>
+        <intercept-url pattern="/login*" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_ANONYMOUS', 'ROLE_ROOT')"/>
  
         <form-login login-page= "/login.html?isRedirected=true"
                     username-parameter= "j_username"
@@ -33,7 +33,7 @@
         <anonymous username="guest" granted-authority="ROLE_ANONYMOUS"/>
  
         <!--Save logged user in cookie with name key='name' -->
-        <remember-me key= "myKey" token-validity-seconds= "300"/>
+        <remember-me key= "myKey" token-validity-seconds= "3600"/>
  
         <csrf disabled= "true"/>
  

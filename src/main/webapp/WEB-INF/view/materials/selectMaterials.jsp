@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags" %>
@@ -8,7 +9,17 @@
 <page:mainTamplate>
     <jsp:attribute name="title">Выбор материалов</jsp:attribute>
 
-    <jsp:body>         
+    <jsp:body>   
+        <script>
+            function setRequered(tabelRowNumber){
+                var chekbox = document.getElementById("materialRadio" + tabelRowNumber);
+                if (chekbox.checked){
+                    document.getElementById("materialInput" + tabelRowNumber).setAttribute("required", "true");
+                } else {
+                    document.getElementById("materialInput" + tabelRowNumber).removeAttribute("required");
+                }
+            }
+        </script>
         <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="orderTemp" method="post">
             <div class="row">
                 <div class="col-sm-10">
@@ -43,7 +54,7 @@
                                                         <formSpring:hidden path="usedmaterialsList[${materialNumber.index}].material.id"/>
                                                         <formSpring:hidden path="usedmaterialsList[${materialNumber.index}].count"/>
                                                     </c:if>
-                                                    <formSpring:checkbox value="${usedMaterial.material.id}" path="usedmaterialsList[${materialNumber.index}].material.id" id="materialRadio${materialNumber.count}" disabled="${usedMaterial.material.forDelete}"/>
+                                                    <formSpring:checkbox id="materialRadio${materialNumber.count}" onclick="setRequered(${materialNumber.count})" value="${usedMaterial.material.id}" path="usedmaterialsList[${materialNumber.index}].material.id" disabled="${usedMaterial.material.forDelete}"/>
                                                     ${materialNumber.count}
                                                 </th>
                                                 <td style="padding: 0; margin-left: 0px">
@@ -58,23 +69,27 @@
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="checkbox" style="padding: 0;">
-                                                        <formSpring:input type="number" style="padding: 5px; margin-left: 0px" cssClass="form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].count" disabled="${usedMaterial.material.forDelete}"/>
+                                                        <formSpring:input required="" type="number" id="materialInput${materialNumber.count}" style="padding: 5px; margin-left: 0px" cssClass="form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].count" disabled="${usedMaterial.material.forDelete}"/>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="checkbox" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >${usedMaterial.material.count}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >
+                                                            <fmt:formatNumber value="${usedMaterial.material.count}"/>
+                                                        </label>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="checkbox" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >${usedMaterial.material.cost}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >
+                                                            <fmt:formatNumber value="${usedMaterial.material.cost}" minFractionDigits="2"/>
+                                                        </label>
                                                     </div>
                                                 </td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
-                                </div>1921
+                                </div>
                             </table>
                         </div>
                     </div>
@@ -89,14 +104,14 @@
                                 </tr>                        
                             </table>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="back" formaction="/orders/order/show_page/add">
+                        <a class="btn btn-default" href= "javascript:history.back()">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></td>
                                     <td align="center"> Назад</td>
                                 </tr>                        
                             </table>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

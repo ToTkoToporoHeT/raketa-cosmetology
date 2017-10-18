@@ -39,11 +39,13 @@ public class Telephonenumbers implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
-    @Size(min = 0, max = 17)
+    @Size(min = 0, max = 17, message = "Размер должен быть не больше 17 символов")
     @Column(name = "telephoneNumber")
     private String telephoneNumber;
-    @JoinColumn(name = "Customer", referencedColumnName = "login")
+    
+    @JoinColumn(name = "customer", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Customers customer;
 

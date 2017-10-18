@@ -33,18 +33,29 @@ public class CustomersDAO {
 
     public List<Customers> getAllCustomers() {
         System.out.println("DAO level getAllCustomers is called");
-        TypedQuery<Customers> tq = entityManager.createNamedQuery("Customers.findAll", Customers.class);
-        List<Customers> customers = tq.getResultList();
-        for (Customers cust : customers) {
-            entityManager.persist(cust);
-        }
-        return customers;
+
+        TypedQuery<Customers> tq = entityManager.createNamedQuery("Customers.findAllActive", Customers.class);
+        tq.setParameter("enabled", true);
+
+        return tq.getResultList();
     }
 
-    public Customers findCustomerByLogin(String login) {
-        System.out.println("DAO level findCustomerByLogin is called");
-        Customers customer = entityManager.find(Customers.class, login);
-        return customer;
+    public Customers findCustomer(Integer id) {
+        System.out.println("DAO level findCustomer by Id is called");
+
+        return entityManager.find(Customers.class, id);
+    }
+
+    public Customers findCustomer(String login) {
+        System.out.println("DAO level findCustomer by Login is called");
+
+        TypedQuery<Customers> tq = entityManager.createNamedQuery("Customers.findByLogin", Customers.class);
+        tq.setParameter("login", login);
+        List<Customers> customersList = tq.getResultList();
+        if (customersList.size() > 0) {
+            return customersList.get(0);
+        }
+        return null;
     }
 
     public boolean updateCustomer(Customers customer) {
@@ -52,7 +63,7 @@ public class CustomersDAO {
 
         //Удаляет номер телефона из БД, если он был удален на клиенте
         //(присвоено значение поля telephoneNumber = "")
-        List<Telephonenumbers> telephonenumbersList = findCustomerByLogin(customer.getLogin()).getTelephonenumbersList();
+        List<Telephonenumbers> telephonenumbersList = findCustomer(customer.getId()).getTelephonenumbersList();
         for (Telephonenumbers tel : telephonenumbersList) {
             boolean telExist = false;
             for (Telephonenumbers contrTel : customer.getTelephonenumbersList()) {
@@ -65,7 +76,7 @@ public class CustomersDAO {
                 entityManager.remove(telForDelete);
             }
         }
-        
+
         entityManager.merge(customer);
         return true;
     }
@@ -80,17 +91,20 @@ public class CustomersDAO {
         return true;
     }
 
-    public boolean deleteCustomer(String customerLogin) {
+    public boolean deleteCustomer(Integer id) {
         System.out.println("DAO level deleteCustomer is called");
 
-        Customers customer = findCustomerByLogin(customerLogin);
-        entityManager.remove(customer);
-
-        TypedQuery<Customers> typedQuery = entityManager.createNamedQuery("Customers.findByAddressId", Customers.class).setParameter("addressId", customer.getAddressId());
-        if (typedQuery.getResultList().isEmpty()) {
-            entityManager.remove(customer.getAddressId());
+        Customers customer = findCustomer(id);
+        if (customer.getOrdersList().size() > 0) {
+            customer.setEnabled(false);
+        } else {
+            entityManager.remove(customer);
+            TypedQuery<Customers> typedQuery = entityManager.createNamedQuery("Customers.findByAddressId", Customers.class).setParameter("addressId", customer.getAddressId());
+            if (typedQuery.getResultList().isEmpty()) {
+                entityManager.remove(customer.getAddressId());
+            }
         }
-
-        return true;
+        
+        return customer.isEnabled();
     }
 }

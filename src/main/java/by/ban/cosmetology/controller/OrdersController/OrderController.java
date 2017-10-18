@@ -9,6 +9,7 @@ import by.ban.cosmetology.model.Customers;
 import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Usedmaterials;
+import by.ban.cosmetology.model.validators.OrderValidator;
 import by.ban.cosmetology.service.CustomersService;
 import by.ban.cosmetology.service.MaterialsService;
 import by.ban.cosmetology.service.OrdersService;
@@ -18,16 +19,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import javax.validation.Valid;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,7 +42,7 @@ import org.springframework.web.bind.support.SessionStatus;
  */
 @Controller
 @RequestMapping("/orders/order")
-@SessionAttributes(types = {Orders.class, String.class})
+@SessionAttributes(types = {Orders.class, String.class}, names = {"orders", "action"})
 public class OrderController {
 
     @Autowired
@@ -53,12 +55,16 @@ public class OrderController {
     private ServicesService servicesService;
     @Autowired
     private StaffService staffService;
+    @Autowired
+    private OrderValidator orderValidator;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
+        binder.addValidators(orderValidator);
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, "date", new CustomDateEditor(
+        binder.registerCustomEditor(Date.class, "prepare_date", new CustomDateEditor(
                 dateFormat, true));
     }
 
@@ -74,18 +80,21 @@ public class OrderController {
         if (action.equals("add")) {
             //Если страница открыта для добавления/создания, то создать новый Orders и положить в модель
             model.addAttribute("orders", new Orders());
+
         } else if (action.equals("edit")) {
             //Если страница открыта для редактирования, найти Orders в базе по id и положить в модель
             if (order.getId() == null) {
                 return "redirect:/orders/showAllOrders";
             }
-            Orders orders = ordersService.findOrderById(order.getId());
+
+            Orders orders = ordersService.findOrder(order.getId());
             if (!Hibernate.isInitialized(orders.getProvidedservicesList())) {
                 Hibernate.initialize(orders.getProvidedservicesList());
             }
             if (Hibernate.isInitialized(order.getUsedmaterialsList())) {
                 Hibernate.initialize(orders.getUsedmaterialsList());
             }
+
             model.addAttribute("orders", orders);
         }
 
@@ -109,10 +118,10 @@ public class OrderController {
     }
 
     @RequestMapping("/selectCustomer")
-    public String selectCustomer(Orders orders, String action, Customers customer, Model model) {
+    public String selectCustomer(Orders orders, String action, @RequestParam Integer customerId, Model model) {
         System.out.println("Controller level selectCustomer is called for " + action + " order");
 
-        customer = customersService.findCustomerByLogin(customer.getLogin());
+        Customers customer = customersService.findCustomer(customerId);
         orders.setCustomer(customer);
 
         return "/orders/order";
@@ -130,6 +139,7 @@ public class OrderController {
                 iter.remove();
             } else {
                 ps.setService(servicesService.findServiceById(servId));
+                ps.setCost(ps.getService().getCost());
                 ps.setOrder(orders);
             }
         }
@@ -148,6 +158,7 @@ public class OrderController {
                 iter.remove();
             } else {
                 um.setMaterial(materialsService.findMaterialById(matId));
+                um.setCost(um.getMaterial().getCost());
                 um.setOrderId(orders);
             }
         }
@@ -190,23 +201,27 @@ public class OrderController {
         return "/orders/order";
     }
 
-    @RequestMapping("/add")
-    public String addOrder(Orders orders, SessionStatus sessionStatus) {
-        System.out.println("Controller level addOrder is called");
+    @RequestMapping("/{action}")
+    public String addOrUpdateOrder(@Valid Orders orders, BindingResult result, 
+            Model model, @ModelAttribute("action") String action, SessionStatus sessionStatus) {
 
-        orders.setManager(staffService.findStaffByLogin(getStaffLogin()));
-        ordersService.addOrder(orders);
-        if (!sessionStatus.isComplete()) {
-            sessionStatus.setComplete();
+        if (result.hasErrors()) {
+            return "/orders/order";
         }
-        return "redirect:/orders/showAllOrders";
-    }
 
-    @RequestMapping("/edit")
-    public String editOrder(Orders orders, SessionStatus sessionStatus) {
-        System.out.println("Controller level editOrder is called");
+        System.out.println("Controller level " + action + "Order is called");
 
-        ordersService.updateOrder(orders);
+        switch (action) {
+            case "add": {
+                ordersService.addOrder(orders);
+                break;
+            }
+            case "edit": {
+                ordersService.updateOrder(orders);
+                break;
+            }
+        }
+
         if (!sessionStatus.isComplete()) {
             sessionStatus.setComplete();
         }
@@ -230,11 +245,5 @@ public class OrderController {
         }
 
         return "redirect:/orders/showAllOrders";
-    }
-    
-    //Получает логин менеджера из Spring security
-    private String getStaffLogin(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
     }
 }

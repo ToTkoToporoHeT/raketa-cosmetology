@@ -35,16 +35,18 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="name">Наименование</label>
-                    <div class="col-sm-10">    
-                        <formSpring:input autofocus="${action == 'add' ? 'true' : ''}" type="text" path="name" cssClass="form-control" placeholder="Введите наименование" required="true"/>
+                    <div class="col-sm-10">  
+                        <formSpring:errors path="name" cssClass="label label-danger"/>
+                        <formSpring:input autofocus="${action == 'add' ? 'true' : ''}" type="text" path="name" cssClass="form-control" placeholder="Введите наименование"/>
                     </div>
                 </div>                
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="cost">Стоимость одной единицы</label>
                     <div class="col-sm-10">
+                        <formSpring:errors path="cost" cssClass="label label-danger"/>
                         <formSpring:input type="text" oninput="up(this)" id="cost" path="cost" cssClass="form-control" 
                                           placeholder="Введите стоимость единицы материала" 
-                                          required="true" min="0" formnovalidate="true"/>
+                                          min="0" formnovalidate="true"/>
                         <script>
                             document.getElementById('cost').onkeypress = function (e) {                                
                                 if (this.value.indexOf(".") != '-1' || this.value.indexOf(",") != '-1') { // позволяет ввести или одну точку, или одну запятую

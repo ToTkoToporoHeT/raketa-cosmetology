@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author dazz
  */
 @Controller
-@Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+@Secured(value = {"ROLE_ADMIN", "ROLE_USER", "ROLE_ROOT"})
 @RequestMapping("/providedServices")
 public class ProvidedServicesController {
 

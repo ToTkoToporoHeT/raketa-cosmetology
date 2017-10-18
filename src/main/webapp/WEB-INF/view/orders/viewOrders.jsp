@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags" %>
 
 <page:mainTamplate>
     <jsp:attribute name="title">Список договоров</jsp:attribute>
     <jsp:attribute name="currentPage">viewOrders</jsp:attribute>
 
-    <jsp:body>         
+    <jsp:body>    
+        <security:authorize access="hasRole('ROLE_ROOT')" var="isRoot"/>
         <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="order" method="get" action="/orders">
             <div class="row">
                 <div class="col-sm-10">
@@ -30,7 +33,10 @@
                                         <th>Номер</th>
                                         <th>Дата</th>
                                         <th>ФИО клиента</th>
-                                        <th>ФИО сотрудника</th>
+                                            <c:if test="${isRoot}">
+                                            <th>ФИО сотрудника</th>
+                                            </c:if>
+                                        <th>Сумма</th>
                                     </tr>
                                 </thead> 
                                 <div class="controls">
@@ -47,7 +53,7 @@
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">${order.date}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">${order.prepare_date}</label>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
@@ -55,11 +61,29 @@
                                                         <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">${order.customer}</label>
                                                     </div>
                                                 </td>
+                                                <c:if test="${isRoot}">
+                                                    <td style="padding: 0; margin-left: 0px">
+                                                        <div class="radio" style="padding: 0;">
+                                                            <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">${order.manager}</label>
+                                                        </div>
+                                                    </td>  
+                                                </c:if>
+                                                <c:set var="servicesSum" value="${0}"/>
+                                                <c:set var="materialsSum" value="${0}"/>
+                                                <c:forEach items="${order.providedservicesList}" var="provService">
+                                                    <c:set var="servicesSum" value="${servicesSum + provService.cost}"/>
+                                                </c:forEach>
+                                                <c:forEach items="${order.usedmaterialsList}" var="usedMaterial">
+                                                    <c:set var="materialsSum" value="${materialsSum + usedMaterial.cost * usedMaterial.count}"/>
+                                                </c:forEach>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">${order.manager}</label>
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">
+                                                            <fmt:formatNumber value="${servicesSum + materialsSum}" minFractionDigits="2"/>
+                                                        </label>
                                                     </div>
-                                                </td>    
+                                                </td>  
+                                            </tr>
                                         </c:forEach>
                                     </tbody>
                                 </div>
