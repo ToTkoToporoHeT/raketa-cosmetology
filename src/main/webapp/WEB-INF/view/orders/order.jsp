@@ -148,7 +148,7 @@
                                         <td style="padding: 0; margin-left: 0px">
                                             <div class="radio" style="padding: 0;">
                                                 <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${servCount.index}">
-                                                    <fmt:formatNumber value="${providedService.cost}" minFractionDigits="2"/>
+                                                    <fmt:formatNumber value="${providedService.cost}" minFractionDigits="4"/>
                                                 </label>
                                             </div>
                                         </td>

@@ -45,7 +45,7 @@ public class Units implements Serializable, Cloneable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 5)
-    @Column(name = "unit")
+    @Column(name = "unit", unique = true)
     private String unit;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "unit")
     private List<Materials> materialsList;

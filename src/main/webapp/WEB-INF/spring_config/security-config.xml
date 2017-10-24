@@ -20,6 +20,7 @@
         то будет переброшено на страницу, указанную в form-login login-page='pageName.html' -->
         <intercept-url pattern="/index*" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_ANONYMOUS', 'ROLE_ROOT')"/>
         <intercept-url pattern="/login*" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_ANONYMOUS', 'ROLE_ROOT')"/>
+        <intercept-url pattern="/import/**" access="hasRole('ROLE_ROOT')"/>
  
         <form-login login-page= "/login.html?isRedirected=true"
                     username-parameter= "j_username"

@@ -41,14 +41,31 @@
                     </div>
                 </div>                
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="cost">Стоимость одной единицы</label>
+                    <label class="col-sm-2 control-label" for="cost">Стоимость услуги</label>
                     <div class="col-sm-10">
                         <formSpring:errors path="cost" cssClass="label label-danger"/>
                         <formSpring:input type="text" oninput="up(this)" id="cost" path="cost" cssClass="form-control" 
                                           placeholder="Введите стоимость единицы материала" 
                                           min="0" formnovalidate="true"/>
                         <script>
-                            document.getElementById('cost').onkeypress = function (e) {                                
+                            document.getElementById('cost').onkeypress = function (e) {
+                                if (this.value.indexOf(".") != '-1' || this.value.indexOf(",") != '-1') { // позволяет ввести или одну точку, или одну запятую
+                                    return !(/[.,А-Яа-яA-Za-z]/.test(String.fromCharCode(e.charCode)));
+                                }
+                                return !(/[А-Яа-яA-Za-z ]/.test(String.fromCharCode(e.charCode)));
+                            }
+                        </script>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="costFF">Стоимость услуг для иностранных граждан</label>
+                    <div class="col-sm-10">
+                        <formSpring:errors path="costFF" cssClass="label label-danger"/>
+                        <formSpring:input type="text" oninput="up(this)" id="costFF" path="costFF" cssClass="form-control" 
+                                          placeholder="Введите стоимость единицы материала" 
+                                          min="0" formnovalidate="true"/>
+                        <script>
+                            document.getElementById('cost').onkeypress = function (e) {
                                 if (this.value.indexOf(".") != '-1' || this.value.indexOf(",") != '-1') { // позволяет ввести или одну точку, или одну запятую
                                     return !(/[.,А-Яа-яA-Za-z]/.test(String.fromCharCode(e.charCode)));
                                 }

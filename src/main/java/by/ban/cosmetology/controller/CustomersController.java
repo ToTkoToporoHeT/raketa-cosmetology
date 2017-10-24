@@ -34,7 +34,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @Secured(value = {"ROLE_ADMIN", "ROLE_USER", "ROLE_ROOT"})
 @RequestMapping("/customers")
-@SessionAttributes(types = Customers.class)
 public class CustomersController {
 
     @Autowired
@@ -58,59 +57,67 @@ public class CustomersController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/customer/show_page/{action}")
-    public String showCustomerPage(@ModelAttribute("customer") Customers customer,
-            @PathVariable String action, Model model) {
-        System.out.println("Controller level showCustomerPage is called for "
-                + action + " customer");
+    @RequestMapping(value = "/customer/show_page/add")
+    public String showAddPage(@RequestParam String requestFrom, Model model) {
+        System.out.println("Controller level showAddPage is called");
 
-        model.addAttribute(action);
-        
-        if (action.equals("add")) {
-            Customers tempCustomer = new Customers(true);
-            List<Telephonenumbers> telephonenumbers = new ArrayList<>();
-            
-            for (int i = 0; i < 3; i++) {
-                telephonenumbers.add(new Telephonenumbers());
-            }
-            tempCustomer.setTelephonenumbersList(telephonenumbers);
-            
-            model.addAttribute("customer", tempCustomer);
-            
-        } else if (action.equals("edit")) {
-            Integer idCustomerFC = customer.getId();
-            
-            if (idCustomerFC == null) {
-                return "redirect:/customers/showAllCustomers";
-            }
-            
-            customer = customersService.findCustomer(idCustomerFC);
-            int telCount = customer.getTelephonenumbersList().size();            
-            for (int i = 0; i < 3 - telCount; i++) {
-                customer.getTelephonenumbersList().add(new Telephonenumbers());
-            }
-            
-            model.addAttribute("customer", customer);
+        model.addAttribute("action", "add");
+        model.addAttribute("requestFrom", requestFrom);
+
+        Customers tempCustomer = new Customers(true);
+        List<Telephonenumbers> telephonenumbers = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            telephonenumbers.add(new Telephonenumbers());
         }
+        tempCustomer.setTelephonenumbersList(telephonenumbers);
+
+        model.addAttribute("customer", tempCustomer);
+
+        return "/customers/customer";
+    }
+
+    @RequestMapping(value = "/customer/show_page/edit")
+    public String showEditPage(@ModelAttribute("customer") Customers customer, Model model) {
+        System.out.println("Controller level showEditPage is called");
+
+        model.addAttribute("action", "edit");
+
+        Integer idCustomerFC = customer.getId();
+
+        if (idCustomerFC == null) {
+            return "redirect:/customers/showAllCustomers";
+        }
+
+        customer = customersService.findCustomer(idCustomerFC);
+        int telCount = customer.getTelephonenumbersList().size();
+        for (int i = 0; i < 3 - telCount; i++) {
+            customer.getTelephonenumbersList().add(new Telephonenumbers());
+        }
+
+        model.addAttribute("customer", customer);
 
         return "/customers/customer";
     }
 
     @RequestMapping(value = "/customer/{action}")
     public String addOrUpdateCustomer(@ModelAttribute("customer") @Valid Customers customer, BindingResult result,
-            Model model, @PathVariable String action) {
+            @PathVariable String action, @RequestParam String requestFrom, Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("action", action);
 
             return "/customers/customer";
         }
-        
+
         System.out.println("Controller level " + action + "Customer is called");
 
         switch (action) {
             case "add": {
                 customersService.addCustomer(customer);
+                if (requestFrom.equals("selectCustomer")) {
+                    return "redirect:/orders/order/show_page/selectCustomer";
+                }
                 break;
             }
             case "edit": {

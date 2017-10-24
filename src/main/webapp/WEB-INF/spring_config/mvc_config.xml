@@ -32,6 +32,20 @@
         <property name="prefix" value="/WEB-INF/view" />
         <property name="suffix" value=".jsp" />
     </bean>
+    
+     <!-- File Upload bean config-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- set the maximum file size in bytes -->
+        <property name="maxUploadSize" value="1000000"/>
+    </bean>
+ 
+    <!--Excel and PDF xml view configuration -->
+    <bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="order" value="0" />
+        <property name="location">
+            <value>/WEB-INF/spring_config/excel-config.xml</value>
+        </property>
+    </bean>
  
     <mvc:view-controller path="/" view-name="/index"/>
     <mvc:view-controller path="/index.html" view-name="/index"/>

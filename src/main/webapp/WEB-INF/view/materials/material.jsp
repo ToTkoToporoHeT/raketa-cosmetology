@@ -17,7 +17,7 @@
 <script>
     function up(e) {
         if (e.value.indexOf(".") != '-1') {
-            e.value = e.value.substring(0, e.value.indexOf(".") + 3);
+            e.value = e.value.substring(0, e.value.indexOf(".") + 5);
         }
     }
 </script>

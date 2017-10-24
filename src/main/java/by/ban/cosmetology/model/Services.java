@@ -57,8 +57,14 @@ public class Services implements Serializable, Cloneable {
     @Basic(optional = false)
     @NotNull(message = "Обязательное поле")
     @Min(value = 0, message = "Цена не может быть отрицательной")
-    @Column(name = "cost")
+    @Column(name = "cost", unique = true)
     private Double cost;
+    
+    @Basic(optional = false)
+    @NotNull(message = "Обязательное поле")
+    @Min(value = 0, message = "Цена не может быть отрицательной")
+    @Column(name = "costFF")
+    private Double costFF;
     @Basic(optional = false)
     
     @Column(name = "forDelete")
@@ -73,11 +79,26 @@ public class Services implements Serializable, Cloneable {
     public Services(Integer id) {
         this.id = id;
     }
+    
+    public Services(String name) {
+        this.name = name.trim();
+    }
 
+    public Services(String name, Double cost) {
+        this.name = name.trim();
+        this.cost = cost;
+    }
+    
     public Services(Integer id, String name, double cost) {
         this.id = id;
-        this.name = name;
+        this.name = name.trim();
         this.cost = cost;
+    }
+    
+    public Services(Integer id, double costFF, String name) {
+        this.id = id;
+        this.name = name.trim();
+        this.costFF = costFF;
     }
 
     public Integer getId() {
@@ -93,7 +114,7 @@ public class Services implements Serializable, Cloneable {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public Double getCost() {
@@ -102,6 +123,14 @@ public class Services implements Serializable, Cloneable {
 
     public void setCost(Double cost) {
         this.cost = cost;
+    }
+
+    public Double getCostFF() {
+        return costFF;
+    }
+
+    public void setCostFF(Double costFF) {
+        this.costFF = costFF;
     }
     
     public boolean isForDelete() {
@@ -119,6 +148,11 @@ public class Services implements Serializable, Cloneable {
 
     public void setProvidedservicesList(List<Providedservices> providedservicesList) {
         this.providedservicesList = providedservicesList;
+    }
+    
+    public void update(Services service){
+        cost = service.getCost();
+        costFF = service.getCostFF();
     }
 
     @Override

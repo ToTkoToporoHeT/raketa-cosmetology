@@ -59,7 +59,7 @@ public class ProvidedServicesController {
                     //Если услуга используемая в Providedservices помечена на удаление, 
                     //то метод getAllServices его не вернет, а значит psTemp будет раняться null
                     //код ниже помещает такие Providedservices в конец списка выбора, а на странице их изменение блокируется
-                    psTemp = new Providedservices(servicesService.findServiceById(servId));
+                    psTemp = new Providedservices(servicesService.findService(servId));
                     ps.setService(psTemp.getService());
                     mapAllServices.put(servId, psTemp);
                     mapOrderServices.put(servId, ps);

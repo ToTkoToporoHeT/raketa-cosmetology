@@ -8,6 +8,7 @@ package by.ban.cosmetology.service;
 import by.ban.cosmetology.DAO.UnitsDAO;
 import by.ban.cosmetology.model.Units;
 import java.util.List;
+import javax.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +24,25 @@ public class UnitsService {
     
     public List<Units> getAllUnits(){
         System.out.println("Service level getAllUnits is called");
+        
         return unitsDAO.getAllUnits();        
     }
     
-    public Units findUnitById(int id){
-        System.out.println("Service level findUnitById is called");
-        return unitsDAO.findUnitById(id);        
+    public Units findUnit(int id){
+        System.out.println("Service level findUnit is called");
+        
+        return unitsDAO.findUnit(id);        
+    }
+    
+    public Units findUnit(String name){
+        System.out.println("Service level findUnit is called");
+        
+        Units unit = null;
+        try {
+            unit = unitsDAO.findUnit(name);
+        } catch (NoResultException noResultException) {
+            noResultException.printStackTrace();
+        }
+        return unit;        
     }
 }

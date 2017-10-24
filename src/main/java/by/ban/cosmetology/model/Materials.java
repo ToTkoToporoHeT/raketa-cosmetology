@@ -54,7 +54,7 @@ public class Materials implements Serializable, Cloneable {
     @NotNull
     @NotEmpty(message = "Обязательное поле")
     @Size(max = 100, message = "Длинна строки должна быть не больше 100 символов")
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
     
     @Basic(optional = false)
@@ -89,14 +89,14 @@ public class Materials implements Serializable, Cloneable {
 
     public Materials(Integer id, String name, int count, double cost) {
         this.id = id;
-        this.name = name;
+        this.name = name.trim();
         this.count = count;
         this.cost = cost;
     }
     
     public Materials(Integer id, String name, Units unit, int count, double cost) {
         this.id = id;
-        this.name = name;
+        this.name = name.trim();
         this.count = count;
         this.cost = cost;
         this.unit = unit;
@@ -115,7 +115,7 @@ public class Materials implements Serializable, Cloneable {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public Integer getCount() {
@@ -159,6 +159,13 @@ public class Materials implements Serializable, Cloneable {
         this.forDelete = forDelete;
     }
 
+    public void update(Materials material){
+        name = material.getName();
+        count = material.getCount();
+        cost = material.getCost();
+        unit = material.getUnit();
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -29,23 +29,29 @@ public class MaterialsDAO {
     //Выводить пользователю помеченные на удаление материалы нет необходимости
     public List<Materials> getAllMaterials() {
         System.out.println("DAO level getAllMaterials is called");
-        
+
         TypedQuery<Materials> tq = entityManager.createNamedQuery("Materials.findAllActive", Materials.class);
         tq.setParameter("del", false);
 
         return tq.getResultList();
     }
 
-    public Materials findMaterialById(int id) {
-        System.out.println("DAO level findMaterialById is called");
+    public Materials findMaterial(int id) {
+        System.out.println("DAO level findMaterial by Id is called");
 
         return entityManager.find(Materials.class, id);
     }
 
-    public Materials findMaterialByName(String name) {
-        System.out.println("DAO level findMaterialByName is called");
+    public Materials findMaterial(String name) {
+        System.out.println("DAO level findMaterial by Name is called");
 
-        return entityManager.find(Materials.class, name);
+        TypedQuery<Materials> tq = entityManager.createNamedQuery("Materials.findByName", Materials.class);
+        tq.setParameter("name", name);
+        List<Materials> materials = tq.getResultList();
+        
+        if (materials.size() > 0)
+            return materials.get(0);
+        return null;
     }
 
     public boolean updateMaterial(int id, String name, int unit, int count, double cost) {
@@ -84,11 +90,18 @@ public class MaterialsDAO {
 
         return result > 0;
     }
+    
+    public boolean addMaterial(Materials material) {
+        System.out.println("DAO level addMaterial is called");
+        
+        entityManager.persist(material);
+        return true;
+    }
 
     public boolean deleteMaterial(int idMaterial) {
         System.out.println("DAO level deleteMaterial is called");
 
-        Materials material = findMaterialById(idMaterial);
+        Materials material = MaterialsDAO.this.findMaterial(idMaterial);
         if (material.getUsedmaterialsList().size() > 0) {
             material.setForDelete(true);
         } else {

@@ -62,7 +62,7 @@
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
                                                         <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">
-                                                            <fmt:formatNumber value="${material.cost}" minFractionDigits="2"/>
+                                                            <fmt:formatNumber value="${material.cost}" minFractionDigits="4"/>
                                                         </label>
                                                     </div>
                                                 </td>

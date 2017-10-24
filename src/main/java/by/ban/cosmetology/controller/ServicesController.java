@@ -58,7 +58,7 @@ public class ServicesController {
             if (idServiceFC == null) {
                 return "redirect:/services/showAllServices";
             }
-            Services serviceFC = servicesService.findServiceById(idServiceFC);
+            Services serviceFC = servicesService.findService(idServiceFC);
             model.addAttribute("service", serviceFC);
         }
 
@@ -79,11 +79,11 @@ public class ServicesController {
 
         switch(action){
             case "add":{
-                servicesService.addService(service.getName(), service.getCost());
+                servicesService.addService(service.getName(), service.getCost(), service.getCostFF());
                 break;
             }
             case "edit":{
-                servicesService.updateService(service.getId(), service.getName(), service.getCost());
+                servicesService.updateService(service.getId(), service.getName(), service.getCost(), service.getCostFF());
             }
         }
         

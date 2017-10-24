@@ -49,6 +49,10 @@ public class OrdersDAO {
         TypedQuery<Orders> tq = entityManager.createNamedQuery("Orders.findByStaff", Orders.class);
         tq.setParameter("manager", manager);
         List<Orders> orders = tq.getResultList();
+        
+        for (Orders order : orders){
+            initializePSendUM(order);
+        }
 
         return orders;
     }

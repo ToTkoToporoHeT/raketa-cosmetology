@@ -44,7 +44,12 @@ public class CustomersService {
     public boolean updateCustomer(Customers customer) {
         System.out.println("Service level updateCustomer is called");
 
+        //Если логин(e-mail) пуст, то сделать его null
+        if (customer.getLogin().isEmpty()){
+            customer.setLogin(null);
+        }
         customer = prepareCustomer(customer);
+        
         //Выясняет был ли изменен адрес и изменяет его, если это так
         Address address = customer.getAddressId();
         if (addressService.addressIsChanged(address)) {
@@ -56,12 +61,17 @@ public class CustomersService {
         } else {
             custromersDAO.updateCustomer(customer);
         }
+        
         return true;
     }
 
     public boolean addCustomer(Customers customer) {
         System.out.println("Service level addCustomer is called");
 
+        //Если логин(e-mail) пуст, то сделать его null
+        if (customer.getLogin().isEmpty()){
+            customer.setLogin(null);
+        }
         customer = prepareCustomer(customer);
         custromersDAO.addCustomer(customer);
         return true;

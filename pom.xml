@@ -133,9 +133,9 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-         <!--Common Java Annotations.
-        For this app it includes security annotation: @RolesAllowed; @DenyAll, @RunAs, @PermitAll
-         -->
+        <!--Common Java Annotations.
+       For this app it includes security annotation: @RolesAllowed; @DenyAll, @RunAs, @PermitAll
+        -->
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>jsr250-api</artifactId>
@@ -166,6 +166,12 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>3.12</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/ooxml-schemas -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>ooxml-schemas</artifactId>
+            <version>1.1</version>
         </dependency>
     </dependencies>    
 

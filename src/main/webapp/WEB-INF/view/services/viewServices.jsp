@@ -28,8 +28,9 @@
                                 <thead>
                                     <tr class="info" role="row">
                                         <th class="info" width="5%" valign="middle">№</th>
-                                        <th width="70%">Наименование</th>
-                                        <th width="25%">Стоимость</th>
+                                        <th width="61%">Наименование</th>
+                                        <th width="12%">Стоимость</th>
+                                        <th width="12%">Стоимость<br>для ИГ</th>
                                     </tr>
                                 </thead> 
                                 <div class="controls">
@@ -48,6 +49,13 @@
                                                     <div class="radio" style="padding: 0;">
                                                         <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${service.id}">
                                                             <fmt:formatNumber value="${service.cost}" minFractionDigits="2"/>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="radio" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${service.id}">
+                                                            <fmt:formatNumber value="${service.costFF}" minFractionDigits="2"/>
                                                         </label>
                                                     </div>
                                                 </td>

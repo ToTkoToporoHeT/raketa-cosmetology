@@ -8,8 +8,11 @@
 <page:mainTamplate>
     <jsp:attribute name="title">Выбор клиента</jsp:attribute>
 
-    <jsp:body>         
-        <formSpring:form cssClass="form-horizontal" role="main" method="post" action="/orders">
+    <jsp:body> 
+        <c:url value="/customers/customer/show_page/add" var="addCustomer">            
+            <c:param name="requestFrom" value="selectCustomer"/>
+        </c:url>
+        <formSpring:form cssClass="form-horizontal" role="main" method="post">
             <div class="row">
                 <div class="col-sm-10">
                     <div class="form-group">
@@ -97,15 +100,15 @@
                                 </tr>                        
                             </table>
                         </button>
-                        <button tupe="submit" class="btn btn-default" formaction="/customers/customer/show_page/add">
+                        <a class="btn btn-default" href="${addCustomer}">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
                                     <td align="center"> Добавить</td>
                                 </tr>                        
                             </table>
-                        </button>
-                        <a class="btn btn-default" value="back" href="/orders/order/show_page/add">
+                        </a>
+                        <a class="btn btn-default" value="back" href="/orders/order/show_page/${action}">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></td>

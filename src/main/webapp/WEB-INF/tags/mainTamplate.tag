@@ -40,6 +40,7 @@
     <body>
         <security:authorize access= "hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_ROOT')" var= "isUser"/>
         <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')" var="isAdmin"/>
+        <security:authorize access="hasRole('ROLE_ROOT')" var="isRoot"/>
 
         <c:url var="showMaterials" value="/materials/showAllMaterials"/>
         <c:url var="showServices" value="/services/showAllServices"/>
@@ -47,6 +48,9 @@
         <c:url var="viewStaff" value="/staff/showAllStaff"/>
         <c:url var="viewOrders" value="/orders/showAllOrders"/>
         <c:url var="addOrder" value="/orders/order/create_page/add"/>
+
+        <!--Администрирование ROOT-->
+        <c:url var="importData" value="/import/createPage"/>
 
         <c:url var="materialsTest" value="/materials/showMaterialsTest"/>
         <c:url var="test" value="/customers/test"/>
@@ -85,6 +89,14 @@
                                     <li class="${currentPage == 'viewServices' ? 'active' : ''}"><a href="${showServices}">Услуги</a></li>
                                 </ul>
                             </li>
+                            <c:if test="${isRoot}">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Администрирование <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="${currentPage == 'importData' ? 'active' : ''}"><a href="${importData}">Импорт данных</a></li>
+                                    </ul>
+                                </li>
+                            </c:if>
                         </ul>
                         <c:if test="${not fn:contains(currentPage, 'error')}">
                             <ul class="nav navbar-nav navbar-right">

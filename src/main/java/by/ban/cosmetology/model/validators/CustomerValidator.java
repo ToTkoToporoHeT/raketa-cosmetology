@@ -32,11 +32,14 @@ public class CustomerValidator implements Validator{
     public void validate(Object target, Errors errors) {
         Customers customer = (Customers) target;
         if (!isUniqueLogin(customer)){
-            errors.rejectValue("login", "login.notUnicue", "Такой логин уже существует");
+            errors.rejectValue("login", "login.notUnicue", "Такой e-mail уже существует");
         }
     }
     
     private boolean isUniqueLogin(Customers customer){
+        if (customer.getLogin().isEmpty()){
+            return true;
+        }
         
         Customers customerFromBD = customersService.findCustomer(customer.getLogin());
         

@@ -9,10 +9,12 @@
 <page:mainTamplate>
     <jsp:attribute name="title">${action == 'add' ? 'Добавить' : 'Редактировать'} клиента</jsp:attribute>
 
-    <jsp:body>        
-        <formSpring:form cssClass="form-horizontal" modelAttribute="customer" method="POST" action="/customers/customer/${action}" role="main">
+    <jsp:body>
+        
+        <formSpring:form cssClass="form-horizontal" modelAttribute="customer" method="POST" action="/customers/customer/${action}?requestFrom=${requestFrom}" role="main">
             <fieldset>
                 <legend>${action == 'add' ? 'Добавление' : 'Редактирование'} клиента</legend>
+                <formSpring:hidden path="id"/>
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="login">E-mail</label>
                     <div class="col-sm-10"> 
@@ -45,6 +47,7 @@
                     <div class="col-sm-8">
                         <fieldset>
                             <legend>Адрес прописки</legend>
+                            <formSpring:hidden path="addressId.id"/>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="country">Страна</label>
                                 <div class="col-sm-10">
@@ -109,7 +112,7 @@
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" href="/customers/showAllCustomers">
+                    <a class="btn btn-default" href="javascript:history.back()">
                         Отмена
                     </a>
                 </div>

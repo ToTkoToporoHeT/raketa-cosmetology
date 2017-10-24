@@ -9,7 +9,10 @@
     <jsp:attribute name="title">Клиенты</jsp:attribute>
     <jsp:attribute name="currentPage">viewCustomers</jsp:attribute>
 
-    <jsp:body>         
+    <jsp:body> 
+        <c:url value="/customers/customer/show_page/add" var="addCustomer">
+            <c:param name="requestFrom" value="viewCustomers"/>
+        </c:url>        
         <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="customer" method="post" action="/customers">
             <div class="row">
                 <div class="col-sm-10">
@@ -90,7 +93,7 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="btn-group btn-group-vertical" role="group" aria-label="...">
-                        <button tupe="submit" class="btn btn-default" formaction="/customers/customer/show_page/add">
+                        <button tupe="submit" class="btn btn-default" formaction="${addCustomer}">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>

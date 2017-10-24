@@ -138,7 +138,7 @@ public class OrderController {
             if (servId == null) {
                 iter.remove();
             } else {
-                ps.setService(servicesService.findServiceById(servId));
+                ps.setService(servicesService.findService(servId));
                 ps.setCost(ps.getService().getCost());
                 ps.setOrder(orders);
             }
