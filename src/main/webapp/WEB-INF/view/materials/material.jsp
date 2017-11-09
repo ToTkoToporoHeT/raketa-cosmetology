@@ -14,15 +14,6 @@
     }
 </style>
 
-<script>
-    function up(e) {
-        if (e.value.indexOf(".") != '-1') {
-            e.value = e.value.substring(0, e.value.indexOf(".") + 5);
-        }
-    }
-</script>
-
-
 <page:mainTamplate>
     <jsp:attribute name="title">${action == add ? 'Добавить' : 'Редактировать'} материал</jsp:attribute>
 
@@ -59,17 +50,10 @@
                     <label class="col-sm-2 control-label" for="cost">Стоимость одной единицы</label>
                     <div class="col-sm-10">
                         <formSpring:errors path="cost" cssClass="label label-danger"/>
-                        <formSpring:input type="text" oninput="up(this)" id="cost" path="cost" cssClass="form-control" 
+                        <formSpring:input type="text" oninput="cropFraction(this, 4)" onkeydown="formatCost(this)"
+                                          id="cost" path="cost" cssClass="form-control" 
                                           placeholder="Введите стоимость единицы материала" 
                                           min="0" formnovalidate="true"/>
-                        <script>
-                            document.getElementById('cost').onkeypress = function (e) {                                
-                                if (this.value.indexOf(".") != '-1' || this.value.indexOf(",") != '-1') { // позволяет ввести или одну точку, или одну запятую
-                                    return !(/[.,А-Яа-яA-Za-z]/.test(String.fromCharCode(e.charCode)));
-                                }
-                                return !(/[А-Яа-яA-Za-z ]/.test(String.fromCharCode(e.charCode)));
-                            }
-                        </script>
                     </div>
                 </div>
                 <div class="modal-footer">

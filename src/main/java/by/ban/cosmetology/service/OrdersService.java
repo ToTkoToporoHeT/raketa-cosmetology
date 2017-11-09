@@ -40,11 +40,11 @@ public class OrdersService {
         System.out.println("Service level getAllOrders is called");
 
         Staff manager = staffService.findStaffByLogin(getStaffLogin());
-        
-        if (manager.getLogin().equals("root")){
+
+        if (manager.getLogin().equals("root")) {
             return ordersDAO.getAllOrders();
         }
-        
+
         return ordersDAO.getAllOrders(manager);
     }
 
@@ -63,15 +63,17 @@ public class OrdersService {
     public boolean addOrder(Orders order) {
         System.out.println("Service level addOrder is called");
 
+        setEmptyNumber(order);
         order.setManager(staffService.findStaffByLogin(getStaffLogin()));
         calculateMaterialsBalance(order, CalcAction.MINUS);
-        
+
         return ordersDAO.addOrder(order);
     }
 
     public boolean updateOrder(Orders order) {
         System.out.println("Service level updateOrder is called");
 
+        setEmptyNumber(order);
         calculateMaterialsBalance(order, CalcAction.EDIT);
 
         return ordersDAO.updateOrder(order);
@@ -91,6 +93,7 @@ public class OrdersService {
         ordersDAO.deleteOrder(order);
     }
 
+    //вычисляет кол-во материалов оставшихся на складе
     private List<Usedmaterials> calculateMaterialsBalance(Orders order, CalcAction calcAction) {
         List<Usedmaterials> usedmaterialsList = order.getUsedmaterialsList();
 
@@ -148,5 +151,12 @@ public class OrdersService {
     private String getStaffLogin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
+    }
+
+    //если номер - пустая строка, то 
+    private void setEmptyNumber(Orders order) {
+        if (order.getNumber().isEmpty()) {
+            order.setNumber(null);
+        }
     }
 }

@@ -52,8 +52,7 @@ public class Orders implements Serializable, Cloneable {
     private Integer id;
     
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 3, max = 7, message = "Необходимо ввести больше 3 и меньше 7 символов")
+    @Size(max = 7, message = "Номер не может быть длиннее 7 символов")
     @Column(name = "number", unique = true)
     private String number;
     

@@ -11,7 +11,7 @@
     <jsp:attribute name="currentPage">viewMaterials</jsp:attribute>
 
     <jsp:body>         
-        <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="material" method="post" action="/materials">
+        <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="material" method="post">
             <div class="row">
                 <div class="col-sm-10">
                     <div class="form-group">
@@ -20,7 +20,7 @@
                             <div class="panel-body">
                                 <div class="row">                                
                                     <div class="col-sm-12">
-                                        <input id="search" type="text" class="form-control" width="10%" placeholder="Искать...">
+                                        <input id="search" type="text" class="form-control" placeholder="Искать...">
                                     </div>
                                 </div><!-- /.row -->
                             </div>

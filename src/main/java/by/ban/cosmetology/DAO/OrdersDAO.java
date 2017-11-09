@@ -49,8 +49,8 @@ public class OrdersDAO {
         TypedQuery<Orders> tq = entityManager.createNamedQuery("Orders.findByStaff", Orders.class);
         tq.setParameter("manager", manager);
         List<Orders> orders = tq.getResultList();
-        
-        for (Orders order : orders){
+
+        for (Orders order : orders) {
             initializePSendUM(order);
         }
 
@@ -90,8 +90,10 @@ public class OrdersDAO {
         System.out.println("DAO level addOrder is called");
 
         entityManager.persist(order);
-        for (Usedmaterials um : order.getUsedmaterialsList()) {
-            entityManager.merge(um.getMaterial());
+        if (order.getUsedmaterialsList() != null) {
+            for (Usedmaterials um : order.getUsedmaterialsList()) {
+                entityManager.merge(um.getMaterial());
+            }
         }
 
         return true;
@@ -99,7 +101,7 @@ public class OrdersDAO {
 
     public boolean deleteOrder(Orders order) {
         System.out.println("DAO level deleteOrder is called");
-
+        
         entityManager.remove(order);
         removeDeleted(order);
 
@@ -110,17 +112,21 @@ public class OrdersDAO {
     //которые были удалены во время редактирования договора
     private void clearRedudantUMandPS(Orders order) {
         Orders orderOld = findOrder(order.getId());
-        for (Usedmaterials usMat : orderOld.getUsedmaterialsList()) {
-            if (!order.getUsedmaterialsList().contains(usMat)) {
-                int usMatCount = usMat.getCount();
-                int matCountOld = usMat.getMaterial().getCount();
-                usMat.getMaterial().setCount(matCountOld + usMatCount);//откатывает количество материалов на складе
-                entityManager.remove(usMat);
+        if (orderOld.getUsedmaterialsList() != null) {
+            for (Usedmaterials usMat : orderOld.getUsedmaterialsList()) {
+                if (!order.getUsedmaterialsList().contains(usMat)) {
+                    int usMatCount = usMat.getCount();
+                    int matCountOld = usMat.getMaterial().getCount();
+                    usMat.getMaterial().setCount(matCountOld + usMatCount);//откатывает количество материалов на складе
+                    entityManager.remove(usMat);
+                }
             }
         }
-        for (Providedservices prServ : orderOld.getProvidedservicesList()) {
-            if (!order.getProvidedservicesList().contains(prServ)) {
-                entityManager.remove(prServ);
+        if (orderOld.getProvidedservicesList() != null) {
+            for (Providedservices prServ : orderOld.getProvidedservicesList()) {
+                if (!order.getProvidedservicesList().contains(prServ)) {
+                    entityManager.remove(prServ);
+                }
             }
         }
     }

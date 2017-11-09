@@ -58,7 +58,7 @@ public class Usedmaterials implements Serializable, Cloneable {
     private Orders orderId;
     
     @JoinColumn(name = "materialId", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     private Materials material;
 
     public Usedmaterials() {

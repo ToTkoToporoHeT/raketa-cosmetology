@@ -7,7 +7,6 @@ package by.ban.cosmetology.service;
 
 import by.ban.cosmetology.DAO.ServicesDAO;
 import by.ban.cosmetology.model.Services;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;

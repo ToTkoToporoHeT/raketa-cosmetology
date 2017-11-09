@@ -5,8 +5,11 @@
  */
 package by.ban.cosmetology.controller;
 
+import by.ban.cosmetology.editors.DecimalEditor;
 import by.ban.cosmetology.model.Services;
 import by.ban.cosmetology.service.ServicesService;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +37,23 @@ public class ServicesController {
 
     @Autowired
     private ServicesService servicesService;
-
+        
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        NumberFormat nf = NumberFormat.getInstance();
+        if (nf instanceof DecimalFormat){
+            DecimalFormat df = (DecimalFormat) nf;
+            
+            String pattern = "##0.00";
+            df.applyPattern(pattern);
+            df.setGroupingUsed(true);
+            df.setGroupingSize(3);
+            
+            nf = df;
+        }
+        binder.registerCustomEditor(Double.class, new DecimalEditor(Double.class, nf, true));
+    }
+    
     @RequestMapping(value = "/showAllServices", method = RequestMethod.GET)
     public ModelAndView showAllServices() {
         System.out.println("Controller level showAllServices is called");

@@ -47,14 +47,14 @@
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${service.id}">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${service.id}">
                                                             <fmt:formatNumber value="${service.cost}" minFractionDigits="2"/>
                                                         </label>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${service.id}">
+                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${service.id}">
                                                             <fmt:formatNumber value="${service.costFF}" minFractionDigits="2"/>
                                                         </label>
                                                     </div>

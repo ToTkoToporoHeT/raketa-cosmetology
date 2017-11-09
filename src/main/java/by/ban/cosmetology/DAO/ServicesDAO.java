@@ -48,7 +48,6 @@ public class ServicesDAO {
         return entityManager.find(Services.class, id);
     }
 
-    //Возмножно когда понадобиться использовать стоит переделать
     public Services findService(String name){
         System.out.println("DAO level findService by Name is called");
         

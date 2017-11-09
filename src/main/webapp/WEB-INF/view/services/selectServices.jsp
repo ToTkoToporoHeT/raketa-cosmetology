@@ -27,7 +27,8 @@
                                 <thead>
                                     <tr class="info" role="row">
                                         <th class="info" width="5%" valign="middle">№</th>
-                                        <th width="50%">Наименование</th>
+                                        <th>Наименование</th>
+                                        <th width="7">Ставка</th>
                                         <th width="13%">Стоимость</th>
                                     </tr>
                                 </thead> 
@@ -39,17 +40,25 @@
                                                     <formSpring:hidden path="providedservicesList[${serviceNumber.index}].id"/>
                                                     <c:if test="${providedService.service.forDelete}">
                                                         <formSpring:hidden path="providedservicesList[${serviceNumber.index}].service.id"/>
+                                                        <formSpring:hidden path="providedservicesList[${serviceNumber.index}].rate"/>
                                                     </c:if>
                                                     <formSpring:checkbox value="${providedService.service.id}" path="providedservicesList[${serviceNumber.index}].service.id" id="serviceRadio${serviceNumber.count}" disabled="${providedService.service.forDelete}"/>
                                                     ${serviceNumber.count}</th>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="checkbox" style="padding: 0;">
-                                                        <formSpring:label style="padding: 5px; margin-left: 0px" cssClass="checkbox form-control" for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].service.name">${providedService.service.name}</formSpring:label>
-                                                        </div>
-                                                    </td>
-                                                    <td style="padding: 0; margin-left: 0px">
-                                                        <div class="checkbox" style="padding: 0;">
-                                                            <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="serviceRadio${serviceNumber.count}">
+                                                        <formSpring:label style="padding: 5px; margin-left: 0px" cssClass="checkbox" for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].service.name">
+                                                            ${providedService.service.name}
+                                                        </formSpring:label>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="checkbox" style="padding: 0;">
+                                                        <formSpring:input required="" type="number" id="serviceInput${serviceNumber.count}" style="padding: 5px; margin-left: 0px" cssClass="form-control" for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].rate" disabled="${providedService.service.forDelete}"/>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 0; margin-left: 0px">
+                                                    <div class="checkbox" style="padding: 0;">
+                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox" for="serviceRadio${serviceNumber.count}">
                                                             <fmt:formatNumber value="${providedService.service.cost}" minFractionDigits="2"/>
                                                         </label>
                                                     </div>
@@ -72,7 +81,7 @@
                                 </tr>                        
                             </table>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="back" formaction="/orders/order/show_page/add">
+                        <button tupe="button" class="btn btn-default" value="back" formaction="/orders/order/show_page/{action}">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></td>

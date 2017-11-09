@@ -114,16 +114,17 @@
                                 <tr class="info" role="row" height="${tableHeadHeight}">
                                     <th width="45px">№</th>
                                     <th>Наименование</th>
-                                    <th whidth="10%">Стоимость</th>
+                                    <th width="5">Тариф</th>
+                                    <th width="10%">Стоимость</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <c:set var="serviceSum" value="${0}"/>
                                     <c:forEach items="${orders.providedservicesList}" var="provService">
-                                        <c:set var="serviceSum" value="${serviceSum + provService.cost}"/>
+                                        <c:set var="serviceSum" value="${serviceSum + provService.cost * provService.rate}"/>
                                     </c:forEach>
-                                    <td colspan="2">
+                                    <td colspan="3">
                                         <h4>Итого:</h4>
                                     </td>
                                     <td>
@@ -136,6 +137,7 @@
                                     <tr>
                                         <th class="info" style="padding: 5px; margin-left: 0px">
                                             <formSpring:hidden path="providedservicesList[${servCount.index}].id"/>
+                                            <formSpring:hidden path="providedservicesList[${servCount.index}].rate"/>
                                             <formSpring:hidden path="providedservicesList[${servCount.index}].service.id"/>
                                             <input type="radio" name="indexPrServ" id="serviceRadio${servCount.index}" value="${servCount.index}">
                                             ${servCount.count}
@@ -148,7 +150,14 @@
                                         <td style="padding: 0; margin-left: 0px">
                                             <div class="radio" style="padding: 0;">
                                                 <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${servCount.index}">
-                                                    <fmt:formatNumber value="${providedService.cost}" minFractionDigits="4"/>
+                                                    <fmt:formatNumber value="${providedService.rate}"/>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td style="padding: 0; margin-left: 0px">
+                                            <div class="radio" style="padding: 0;">
+                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${servCount.index}">
+                                                    <fmt:formatNumber value="${providedService.cost}" minFractionDigits="2"/>
                                                 </label>
                                             </div>
                                         </td>

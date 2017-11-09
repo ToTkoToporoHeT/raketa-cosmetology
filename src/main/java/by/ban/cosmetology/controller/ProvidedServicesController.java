@@ -35,10 +35,10 @@ public class ProvidedServicesController {
     public String selectProvServ(@ModelAttribute Orders orders, Model model) throws CloneNotSupportedException {
         System.out.println("Controller level selectProvServ is called");
 
-        //создается список всех материалов
+        //создается список всех услуг
         Map<Integer, Providedservices> mapAllServices = new HashMap<>();
         for (Services s : servicesService.getAllServices()) {
-            Providedservices ps = new Providedservices(s);
+            Providedservices ps = new Providedservices(1 ,s);
             mapAllServices.put(s.getId(), ps);
         }
                 
@@ -50,7 +50,7 @@ public class ProvidedServicesController {
             mapOrderServices.put(mapKey, ps);
         }
         //созданный ранее список редактируется, 
-        //в него вносятся данные о уже выбранных материалах
+        //в него вносятся данные о уже выбранных услугах
         if (orders.getProvidedservicesList() != null) {
             for (Providedservices ps : orders.getProvidedservicesList()) {
                 int servId = ps.getService().getId();
@@ -61,13 +61,13 @@ public class ProvidedServicesController {
                     //код ниже помещает такие Providedservices в конец списка выбора, а на странице их изменение блокируется
                     psTemp = new Providedservices(servicesService.findService(servId));
                     ps.setService(psTemp.getService());
+                    
                     mapAllServices.put(servId, psTemp);
-                    mapOrderServices.put(servId, ps);
                 } else {
                     ps.setService(psTemp.getService());
                     ps.getService().setId(servId);
-                    mapAllServices.put(servId, ps);
                 }
+                    mapOrderServices.put(servId, ps);
             }
         }
         Orders oTemp = new Orders();

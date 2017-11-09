@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,6 +48,13 @@ public class Providedservices implements Serializable, Cloneable {
     @Column(name = "cost")
     private Double cost;
     
+    @Basic(optional = false)
+    @NotNull(message = "Обязательное поле")
+    @Min(value = 1, message = "Должно быть больше 0")
+    @Max(value = 5, message = "Должно быть меньше 6")
+    @Column(name = "rate")
+    private Integer rate;
+    
     @JoinColumn(name = "orderId", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Orders order;
@@ -64,6 +72,11 @@ public class Providedservices implements Serializable, Cloneable {
 
     public Providedservices(Services serviceId) {
         this.service = serviceId;
+    }
+
+    public Providedservices(Integer rate, Services service) {
+        this.rate = rate;
+        this.service = service;
     }
 
     public Providedservices(Orders orderId, Services service) {
@@ -85,6 +98,14 @@ public class Providedservices implements Serializable, Cloneable {
 
     public void setCost(Double cost) {
         this.cost = cost;
+    }
+
+    public Integer getRate() {
+        return rate;
+    }
+
+    public void setRate(Integer rate) {
+        this.rate = rate;
     }
 
     public Orders getOrder() {

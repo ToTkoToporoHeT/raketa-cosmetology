@@ -59,12 +59,12 @@
                                                 </th>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="checkbox" style="padding: 0;">
-                                                        <formSpring:label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].material.name">${usedMaterial.material.name}</formSpring:label>
+                                                        <formSpring:label style="padding: 5px; margin-left: 0px" class="checkbox" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].material.name">${usedMaterial.material.name}</formSpring:label>
                                                         </div>
                                                     </td>
                                                     <td style="padding: 0; margin-left: 0px">
                                                         <div class="checkbox" style="padding: 0;">
-                                                            <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >${usedMaterial.material.unit}</label>
+                                                            <label style="padding: 5px; margin-left: 0px" class="checkbox" for="materialRadio${materialNumber.count}" >${usedMaterial.material.unit}</label>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
@@ -74,14 +74,14 @@
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="checkbox" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >
+                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox" for="materialRadio${materialNumber.count}" >
                                                             <fmt:formatNumber value="${usedMaterial.material.count}"/>
                                                         </label>
                                                     </div>
                                                 </td>
                                                 <td style="padding: 0; margin-left: 0px">
                                                     <div class="checkbox" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox form-control" for="materialRadio${materialNumber.count}" >
+                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox" for="materialRadio${materialNumber.count}" >
                                                             <fmt:formatNumber value="${usedMaterial.material.cost}" minFractionDigits="2"/>
                                                         </label>
                                                     </div>
@@ -104,7 +104,7 @@
                                 </tr>                        
                             </table>
                         </button>
-                        <a class="btn btn-default" href= "javascript:history.back()">
+                        <a class="btn btn-default" href= "/orders/order/show_page/{action}">
                             <table width="100%">
                                 <tr>
                                     <td align="left" width="20"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></td>

@@ -29,14 +29,14 @@ public class MaterialsService {
         return materialsDAO.getAllMaterials();
     }
     
-    public Materials findMaterialById(int id){
-        System.out.println("Service level findMaterialById is called");
+    public Materials findMaterial(int id){
+        System.out.println("Service level findMaterial by Id is called");
         
         return materialsDAO.findMaterial(id);
     }
     
-    public Materials findMaterialByName(String name){
-        System.out.println("Service level findMaterialByName is called");
+    public Materials findMaterial(String name){
+        System.out.println("Service level findMaterial by Name is called");
         
         return materialsDAO.findMaterial(name);
     }
@@ -75,7 +75,7 @@ public class MaterialsService {
         System.out.println("Service level importMaterials is called");
         
         for (Map.Entry<String, Materials> entry : materials.entrySet()){            
-            Materials material = findMaterialByName(entry.getKey());
+            Materials material = findMaterial(entry.getKey());
             
             if (material != null){
                 addMaterial(entry.getValue());

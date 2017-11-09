@@ -35,6 +35,47 @@
                     });
                 });
             });
+
+            /*Функция получает введенные с клавиатуры символы, 
+             * подключается: <input onkeypress="this.nextSibling.innerHTML = getChar(event)+''"><b></b>
+             // event.type должен быть keypress
+             function getChar(event) {
+             if (event.which == null) { // IE
+             if (event.keyCode < 32)
+             return null; // спец. символ
+             return String.fromCharCode(event.keyCode)
+             }
+             
+             if (event.which != 0 && event.charCode != 0) { // все кроме IE
+             if (event.which < 32)
+             return null; // спец. символ
+             return String.fromCharCode(event.which); // остальные
+             }
+             
+             return null; // спец. символ
+             }*/
+
+            //оставлят после разделителя дроби fractCount символов
+            function cropFraction(e, fractCount) {
+                var seporIndex = e.value.indexOf(".");
+                if (seporIndex == '-1')
+                    seporIndex = e.value.indexOf(",");
+
+                if (seporIndex != '-1') {
+                    if (seporIndex + fractCount < e.value.length) {
+                        e.value = e.value.substring(0, seporIndex + fractCount + 1);
+                    }
+                }
+            }
+
+            function formatCost(docElement) {
+                docElement.onkeypress = function (e) {
+                    if (docElement.value.indexOf(".") != '-1' || docElement.value.indexOf(",") != '-1') {// позволяет ввести или одну точку, или одну запятую
+                        return (/[0-9]/.test(String.fromCharCode(e.charCode)));
+                    }
+                    return (/[,.0-9]/.test(String.fromCharCode(e.charCode)));
+                }
+            }
         </script>
     </head>
     <body>

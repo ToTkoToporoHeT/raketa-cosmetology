@@ -14,15 +14,6 @@
     }
 </style>
 
-<script>
-    function up(e) {
-        if (e.value.indexOf(".") != '-1') {
-            e.value = e.value.substring(0, e.value.indexOf(".") + 3);
-        }
-    }
-</script>
-
-
 <page:mainTamplate>
     <jsp:attribute name="title">${action == 'add' ? 'Добавить' : 'Редактировать'} услугу</jsp:attribute>
 
@@ -44,41 +35,27 @@
                     <label class="col-sm-2 control-label" for="cost">Стоимость услуги</label>
                     <div class="col-sm-10">
                         <formSpring:errors path="cost" cssClass="label label-danger"/>
-                        <formSpring:input type="text" oninput="up(this)" id="cost" path="cost" cssClass="form-control" 
+                        <formSpring:input type="text" oninput="cropFraction(this, 2)" onkeydown="formatCost(this)"
+                                          id="cost" path="cost" cssClass="form-control" 
                                           placeholder="Введите стоимость единицы материала" 
                                           min="0" formnovalidate="true"/>
-                        <script>
-                            document.getElementById('cost').onkeypress = function (e) {
-                                if (this.value.indexOf(".") != '-1' || this.value.indexOf(",") != '-1') { // позволяет ввести или одну точку, или одну запятую
-                                    return !(/[.,А-Яа-яA-Za-z]/.test(String.fromCharCode(e.charCode)));
-                                }
-                                return !(/[А-Яа-яA-Za-z ]/.test(String.fromCharCode(e.charCode)));
-                            }
-                        </script>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="costFF">Стоимость услуг для иностранных граждан</label>
                     <div class="col-sm-10">
                         <formSpring:errors path="costFF" cssClass="label label-danger"/>
-                        <formSpring:input type="text" oninput="up(this)" id="costFF" path="costFF" cssClass="form-control" 
+                        <formSpring:input type="text" oninput="cropFraction(this, 2)" onkeydown="formatCost(this)"
+                                          id="costFF" path="costFF" cssClass="form-control" 
                                           placeholder="Введите стоимость единицы материала" 
                                           min="0" formnovalidate="true"/>
-                        <script>
-                            document.getElementById('cost').onkeypress = function (e) {
-                                if (this.value.indexOf(".") != '-1' || this.value.indexOf(",") != '-1') { // позволяет ввести или одну точку, или одну запятую
-                                    return !(/[.,А-Яа-яA-Za-z]/.test(String.fromCharCode(e.charCode)));
-                                }
-                                return !(/[А-Яа-яA-Za-z ]/.test(String.fromCharCode(e.charCode)));
-                            }
-                        </script>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" href= "javascript:history.back()">
+                    <a class="btn btn-default" href= "/services/showAllServices">
                         Отмена
                     </a>
                 </div>

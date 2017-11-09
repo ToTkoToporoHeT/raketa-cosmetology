@@ -71,7 +71,7 @@
                                                 <c:set var="servicesSum" value="${0}"/>
                                                 <c:set var="materialsSum" value="${0}"/>
                                                 <c:forEach items="${order.providedservicesList}" var="provService">
-                                                    <c:set var="servicesSum" value="${servicesSum + provService.cost}"/>
+                                                    <c:set var="servicesSum" value="${servicesSum + provService.cost * provService.rate}"/>
                                                 </c:forEach>
                                                 <c:forEach items="${order.usedmaterialsList}" var="usedMaterial">
                                                     <c:set var="materialsSum" value="${materialsSum + usedMaterial.cost * usedMaterial.count}"/>

@@ -54,8 +54,6 @@ public class OrderController {
     @Autowired
     private ServicesService servicesService;
     @Autowired
-    private StaffService staffService;
-    @Autowired
     private OrderValidator orderValidator;
 
     @InitBinder
@@ -157,7 +155,7 @@ public class OrderController {
             if (matId == null) {
                 iter.remove();
             } else {
-                um.setMaterial(materialsService.findMaterialById(matId));
+                um.setMaterial(materialsService.findMaterial(matId));
                 um.setCost(um.getMaterial().getCost());
                 um.setOrderId(orders);
             }
