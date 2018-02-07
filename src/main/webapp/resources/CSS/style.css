@@ -1,0 +1,35 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 06.02.2018, 11:03:47
+    Author     : dazzer
+*/
+
+/*.fixed-grup {
+    position: fixed;
+    top: 0;
+    right: 0;
+}*/
+
+.table-fixedH {        
+    overflow-y: scroll;
+    min-height: 600px; 
+    max-height: 600px;
+    background-color: #BFFBD9;
+}
+
+.table-fixedH tr {
+    background-color: #FFFFFF;
+}
+
+.table-fixedH tbody tr td{
+    padding: 0px;
+    margin: 0px;
+}
+
+.table-fixedH tbody tr td .radio {
+    padding: 5px;
+}

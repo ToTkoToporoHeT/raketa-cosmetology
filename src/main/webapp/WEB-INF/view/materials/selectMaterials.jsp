@@ -11,9 +11,9 @@
 
     <jsp:body>   
         <script>
-            function setRequered(tabelRowNumber){
+            function setRequered(tabelRowNumber) {
                 var chekbox = document.getElementById("materialRadio" + tabelRowNumber);
-                if (chekbox.checked){
+                if (chekbox.checked) {
                     document.getElementById("materialInput" + tabelRowNumber).setAttribute("required", "true");
                 } else {
                     document.getElementById("materialInput" + tabelRowNumber).removeAttribute("required");
@@ -33,18 +33,18 @@
                                     </div>
                                 </div><!-- /.row -->
                             </div>
-                            <table id="table" class="table table-condensed table-bordered table-hover ">
-                                <thead>
-                                    <tr class="info" role="row">
-                                        <th class="info" width="5%" valign="middle">№</th>
-                                        <th width="50%">Наименование</th>
-                                        <th width="10%">Единицы измерения</th>
-                                        <th width="11%">Количество</th>
-                                        <th width="11%">На складе</th>
-                                        <th width="13%">Стоимость единицы</th>
-                                    </tr>
-                                </thead> 
-                                <div class="controls">
+                            <div class="controls table-fixedH">
+                                <table id="table" class="table table-condensed table-bordered table-hover ">
+                                    <thead>
+                                        <tr class="info" role="row">
+                                            <th class="info" width="5%" valign="middle">№</th>
+                                            <th width="50%">Наименование</th>
+                                            <th width="10%">Единицы измерения</th>
+                                            <th width="11%">Количество</th>
+                                            <th width="11%">На складе</th>
+                                            <th width="13%">Стоимость единицы</th>
+                                        </tr>
+                                    </thead> 
                                     <tbody>
                                         <c:forEach items="${allMaterials.usedmaterialsList}" var="usedMaterial" varStatus="materialNumber">
                                             <tr>
@@ -89,8 +89,8 @@
                                             </tr>
                                         </c:forEach>
                                     </tbody>
-                                </div>
-                            </table>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

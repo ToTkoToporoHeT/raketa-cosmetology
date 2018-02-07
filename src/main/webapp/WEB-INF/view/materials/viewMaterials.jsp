@@ -24,44 +24,44 @@
                                     </div>
                                 </div><!-- /.row -->
                             </div>
-                            <table id="table" class="table table-condensed table-bordered table-hover ">
-                                <thead>
-                                    <tr class="info" role="row">
-                                        <th class="info" width="5%" valign="middle">№</th>
-                                        <th width="50%">Наименование</th>
-                                        <th width="10%">Ед. измерения</th>
-                                        <th width="20%">Количество</th>
-                                        <th width="15%">Стоимость</th>
-                                    </tr>
-                                </thead> 
-                                <div class="controls">
+                            <div class="controls table-fixedH">
+                                <table id="table" class="table table-condensed table-bordered table-hover">
+                                    <thead>
+                                        <tr class="info" role="row">
+                                            <th class="info" width="5%" valign="middle">№</th>
+                                            <th width="50%">Наименование</th>
+                                            <th width="10%">Ед. измерения</th>
+                                            <th width="20%">Количество</th>
+                                            <th width="15%">Стоимость</th>
+                                        </tr>
+                                    </thead> 
                                     <tbody>
 
                                         <c:forEach items="${materials}" var="material" varStatus="materialNumber">
                                             <tr>
-                                                <th class="info"  style="padding: 5px; margin-left: 0px">
+                                                <th class="info">
                                                     <input type="radio" name="id" id="materialRadio${material.id}" value="${material.id}">
                                                     ${materialNumber.count}</th>
-                                                <td style="padding: 0; margin-left: 0px">
+                                                <td>
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">${material.name}</label>
+                                                        <label class="radio" for="materialRadio${material.id}">${material.name}</label>
                                                     </div>
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
+                                                <td>
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">${material.unit}</label>
+                                                        <label class="radio" for="materialRadio${material.id}">${material.unit}</label>
                                                     </div>
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
+                                                <td>
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">
+                                                        <label class="radio" for="materialRadio${material.id}">
                                                             <fmt:formatNumber value="${material.count}"/>
                                                         </label>
                                                     </div>
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
+                                                <td>
                                                     <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${material.id}">
+                                                        <label class="radio" for="materialRadio${material.id}">
                                                             <fmt:formatNumber value="${material.cost}" minFractionDigits="4"/>
                                                         </label>
                                                     </div>
@@ -70,8 +70,8 @@
                                         </c:forEach>
 
                                     </tbody>
-                                </div>
-                            </table>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
