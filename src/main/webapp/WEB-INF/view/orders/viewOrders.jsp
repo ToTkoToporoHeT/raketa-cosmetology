@@ -25,21 +25,21 @@
                                         <input id="search" type="text" class="form-control" placeholder="Искать...">
                                     </div>
                                 </div><!-- /.row -->
-                            </div>
-                            <table id="table" class="table table-condensed table-bordered table-hover ">
-                                <thead>
-                                    <tr class="info" role="row">
-                                        <th class="info" width="5%" valign="middle">№</th>
-                                        <th>Номер</th>
-                                        <th>Дата</th>
-                                        <th>ФИО клиента</th>
-                                            <c:if test="${isRoot}">
-                                            <th>ФИО сотрудника</th>
-                                            </c:if>
-                                        <th>Сумма</th>
-                                    </tr>
-                                </thead> 
-                                <div class="controls">
+                            </div>                            
+                            <div class="table-fixedH">
+                                <table id="table" class="table table-condensed table-bordered table-hover ">
+                                    <thead>
+                                        <tr class="info" role="row">
+                                            <th class="info" width="5%" valign="middle">№</th>
+                                            <th>Номер</th>
+                                            <th>Дата</th>
+                                            <th>ФИО клиента</th>
+                                                <c:if test="${isRoot}">
+                                                <th>ФИО сотрудника</th>
+                                                </c:if>
+                                            <th>Сумма</th>
+                                        </tr>
+                                    </thead> 
                                     <tbody>
                                         <c:forEach items="${orders}" var="order" varStatus="orderNumber">
                                             <tr>
@@ -85,9 +85,9 @@
                                                 </td>  
                                             </tr>
                                         </c:forEach>
-                                    </tbody>
-                                </div>
-                            </table>
+                                    </tbody>                                
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

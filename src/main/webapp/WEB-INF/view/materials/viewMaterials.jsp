@@ -43,26 +43,30 @@
                                                     <input type="radio" name="id" id="materialRadio${material.id}" value="${material.id}">
                                                     ${materialNumber.count}</th>
                                                 <td>
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label class="radio" for="materialRadio${material.id}">${material.name}</label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label class="radio" for="materialRadio${material.id}">${material.unit}</label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label class="radio" for="materialRadio${material.id}">
-                                                            <fmt:formatNumber value="${material.count}"/>
+                                                    <div class="radio">
+                                                        <label for="materialRadio${material.id}">
+                                                            <text>${material.name}</text>
                                                         </label>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label class="radio" for="materialRadio${material.id}">
-                                                            <fmt:formatNumber value="${material.cost}" minFractionDigits="4"/>
+                                                    <div class="radio">                                                        
+                                                        <label for="materialRadio${material.id}">
+                                                            <text>${material.unit}</text>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label for="materialRadio${material.id}">
+                                                            <text><fmt:formatNumber value="${material.count}"/></text>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label for="materialRadio${material.id}">
+                                                            <text><fmt:formatNumber value="${material.cost}" minFractionDigits="4"/></text>
                                                         </label>
                                                     </div>
                                                 </td>
@@ -102,6 +106,33 @@
                             </table>
                         </button>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="btn-group btn-group-vertical" data-toggle="buttons">
+                    <label class="btn btn-primary active">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked> <div class="col-lg-12">Radio 1</div>
+                    </label>
+                    <c:forEach items="${materials}" var="material" varStatus="materialNumber">
+                        <label class="btn btn-primary">
+                            <input type="radio" name="id" id="option${material.id}" autocomplete="off" value="${material.id}">
+                            <div class="col-lg-5">                             
+                                ${material.name}
+                            </div>
+                            <div class="col-lg-1">   
+                                ${materialNumber.count}
+                            </div>
+                            <div class="col-lg-1">   
+                                ${material.unit}
+                            </div>
+                            <div class="col-lg-2">   
+                                <fmt:formatNumber value="${material.count}"/>
+                            </div>
+                            <div class="col-lg-2">   
+                                <fmt:formatNumber value="${material.cost}" minFractionDigits="4"/>
+                            </div>
+                        </label>
+                    </c:forEach>
                 </div>
             </div>
         </formSpring:form> 

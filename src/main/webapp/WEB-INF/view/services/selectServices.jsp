@@ -22,21 +22,21 @@
                                         <input id="search" type="text" class="form-control" placeholder="Искать...">
                                     </div>
                                 </div><!-- /.row -->
-                            </div>
-                            <table id="table" class="table table-condensed table-bordered table-hover ">
-                                <thead>
-                                    <tr class="info" role="row">
-                                        <th class="info" width="5%" valign="middle">№</th>
-                                        <th>Наименование</th>
-                                        <th width="7">Ставка</th>
-                                        <th width="13%">Стоимость</th>
-                                    </tr>
-                                </thead> 
-                                <div class="controls">
+                            </div>                            
+                            <div class="table-fixedH">
+                                <table id="table" class="table table-condensed table-bordered table-hover ">
+                                    <thead>
+                                        <tr class="info" role="row">
+                                            <th class="info" width="5%" valign="middle">№</th>
+                                            <th>Наименование</th>
+                                            <th width="7">Ставка</th>
+                                            <th width="13%">Стоимость</th>
+                                        </tr>
+                                    </thead> 
                                     <tbody>
                                         <c:forEach items="${allServices.providedservicesList}" var="providedService" varStatus="serviceNumber">
                                             <tr>
-                                                <th class="info"  style="padding: 5px; margin-left: 0px">
+                                                <th class="info">
                                                     <formSpring:hidden path="providedservicesList[${serviceNumber.index}].id"/>
                                                     <c:if test="${providedService.service.forDelete}">
                                                         <formSpring:hidden path="providedservicesList[${serviceNumber.index}].service.id"/>
@@ -44,30 +44,30 @@
                                                     </c:if>
                                                     <formSpring:checkbox value="${providedService.service.id}" path="providedservicesList[${serviceNumber.index}].service.id" id="serviceRadio${serviceNumber.count}" disabled="${providedService.service.forDelete}"/>
                                                     ${serviceNumber.count}</th>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="checkbox" style="padding: 0;">
-                                                        <formSpring:label style="padding: 5px; margin-left: 0px" cssClass="checkbox" for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].service.name">
-                                                            ${providedService.service.name}
+                                                <td>
+                                                    <div class="checkbox">
+                                                        <formSpring:label for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].service.name">
+                                                            <text>${providedService.service.name}</text>
                                                         </formSpring:label>
                                                     </div>
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="checkbox" style="padding: 0;">
-                                                        <formSpring:input required="" type="number" id="serviceInput${serviceNumber.count}" style="padding: 5px; margin-left: 0px" cssClass="form-control" for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].rate" disabled="${providedService.service.forDelete}"/>
+                                                <td>
+                                                    <div class="checkbox">
+                                                        <formSpring:input required="" type="number" id="serviceInput${serviceNumber.count}" cssClass="form-control" for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].rate" disabled="${providedService.service.forDelete}"/>
                                                     </div>
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="checkbox" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="checkbox" for="serviceRadio${serviceNumber.count}">
-                                                            <fmt:formatNumber value="${providedService.service.cost}" minFractionDigits="2"/>
+                                                <td>
+                                                    <div class="checkbox">
+                                                        <label for="serviceRadio${serviceNumber.count}">
+                                                            <text><fmt:formatNumber value="${providedService.service.cost}" minFractionDigits="2"/></text>
                                                         </label>
                                                     </div>
                                                 </td>
                                             </tr>
                                         </c:forEach>
-                                    </tbody>
-                                </div>
-                            </table>
+                                    </tbody>                                
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

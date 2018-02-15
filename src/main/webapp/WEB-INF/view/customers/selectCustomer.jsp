@@ -25,68 +25,68 @@
                                     </div>
                                 </div><!-- /.row -->
                             </div>
-                            <table id="table" class="table table-condensed table-bordered table-hover ">
-                                <thead>
-                                    <tr class="info" role="row">
-                                        <th class="info" width="5%" valign="middle">№</th>
-                                        <th >Фамилия</th>
-                                        <th >Имя</th>
-                                        <th >Отчесто</th>
-                                        <th width="250">Адрес</th>
-                                        <th width="160">Телефоны</th>                                        
-                                        <th >E-mail</th>
-                                    </tr>
-                                </thead> 
-                                <div class="controls">
+                            <div class="table-fixedH">
+                                <table id="table" class="table table-condensed table-bordered table-hover ">
+                                    <thead>
+                                        <tr class="info" role="row">
+                                            <th class="info" width="5%" valign="middle">№</th>
+                                            <th >Фамилия</th>
+                                            <th >Имя</th>
+                                            <th >Отчесто</th>
+                                            <th width="250">Адрес</th>
+                                            <th width="160">Телефоны</th>                                        
+                                            <th >E-mail</th>
+                                        </tr>
+                                    </thead> 
                                     <tbody>
                                         <c:forEach items="${customers}" var="customer" varStatus="customerNumber">
                                             <tr>
-                                                <th class="info" style="padding: 5px; margin-left: 0px">
+                                                <th class="info">
                                                     <input type="radio" name="customerId" id="customerRadio${customer.id}" value="${customer.id}" required="true">
                                                     ${customerNumber.count}</th>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.id}">${customer.lastName}</label>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label for="customerRadio${customer.id}">${customer.lastName}</label>
                                                     </div>
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.id}">${customer.firstName}</label>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label for="customerRadio${customer.id}">${customer.firstName}</label>
                                                     </div>
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.id}">${customer.middleName}</label>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label for="customerRadio${customer.id}">${customer.middleName}</label>
                                                     </div>
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.id}">${customer.addressId}</label>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label for="customerRadio${customer.id}">${customer.addressId}</label>
                                                     </div>
                                                 </td>                                                
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <ul style="padding: 0; margin-left: 0px">
-                                                        <div class="radio" style="padding: 0;">
-                                                            <label class="radio" for="customerRadio${customer.id}">
+                                                <td>
+                                                    <div class="radio">
+                                                        <label class="radio" for="customerRadio${customer.id}">
+                                                            <ul>
                                                                 <c:forEach items="${customer.telephonenumbersList}" var="telNumb">
                                                                     <c:if test="${telNumb.telephoneNumber != ''}">
                                                                         <li>${telNumb}</li>
                                                                         </c:if>
                                                                     </c:forEach>
-                                                            </label>
-                                                        </div>
-                                                    </ul>                                                    
+                                                            </ul>  
+                                                        </label>
+                                                    </div>
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${customer.id}">${customer.login}</label>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label for="customerRadio${customer.id}">${customer.login}</label>
                                                     </div>
                                                 </td>
                                             </tr>
                                         </c:forEach>
-                                    </tbody>
-                                </div>
-                            </table>
+                                    </tbody>                                
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

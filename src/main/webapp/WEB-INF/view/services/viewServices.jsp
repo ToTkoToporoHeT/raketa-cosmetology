@@ -24,46 +24,48 @@
                                     </div>
                                 </div><!-- /.row -->
                             </div>
-                            <table id="table" class="table table-condensed table-bordered table-hover">
-                                <thead>
-                                    <tr class="info" role="row">
-                                        <th class="info" width="5%" valign="middle">№</th>
-                                        <th width="61%">Наименование</th>
-                                        <th width="12%">Стоимость</th>
-                                        <th width="12%">Стоимость<br>для ИГ</th>
-                                    </tr>
-                                </thead> 
-                                <div class="controls">
+                            <div class="table-fixedH">
+                                <table id="table" class="table table-condensed table-bordered table-hover">
+                                    <thead>
+                                        <tr class="info" role="row">
+                                            <th class="info" width="5%" valign="middle">№</th>
+                                            <th width="61%">Наименование</th>
+                                            <th width="12%">Стоимость</th>
+                                            <th width="12%">Стоимость<br>для ИГ</th>
+                                        </tr>
+                                    </thead> 
                                     <tbody>
                                         <c:forEach items="${services}" var="service" varStatus="serviceNumber">
                                             <tr>
-                                                <th class="info" style="padding: 5px; margin-left: 0px">
+                                                <th class="info">
                                                     <input type="radio" name="id" id="serviceRadio${service.id}" value="${service.id}">
                                                     ${serviceNumber.count}</th>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${service.id}">${service.name}</label>
-                                                    </div>
-                                                </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${service.id}">
-                                                            <fmt:formatNumber value="${service.cost}" minFractionDigits="2"/>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label for="serviceRadio${service.id}">
+                                                            <text>${service.name}</text>
                                                         </label>
                                                     </div>
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${service.id}">
-                                                            <fmt:formatNumber value="${service.costFF}" minFractionDigits="2"/>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label for="serviceRadio${service.id}">
+                                                            <text><fmt:formatNumber value="${service.cost}" minFractionDigits="2"/></text>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="radio">
+                                                        <label for="serviceRadio${service.id}">
+                                                            <text><fmt:formatNumber value="${service.costFF}" minFractionDigits="2"/></text>
                                                         </label>
                                                     </div>
                                                 </td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
-                                </div>
-                            </table>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

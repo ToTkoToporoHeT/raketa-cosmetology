@@ -61,7 +61,6 @@
                 return result;
             }
         </script>
-        <c:set var="tableHeadHeight" value="47"/>
 
         <formSpring:form id="mainForm" cssClass="form-horizontal" commandName="orders" method="POST" action="/orders/order/${action}" role="main">
             <fieldset>
@@ -109,61 +108,70 @@
                 <h4>Список оказанных услуг</h4>
                 <formSpring:form id="services" cssClass="form" commandName="orders">
                     <div class="panel panel-info">
-                        <table class="table table-condensed table-bordered table-hover">
-                            <thead>
-                                <tr class="info" role="row" height="${tableHeadHeight}">
-                                    <th width="45px">№</th>
-                                    <th>Наименование</th>
-                                    <th width="5">Тариф</th>
-                                    <th width="10%">Стоимость</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <c:set var="serviceSum" value="${0}"/>
-                                    <c:forEach items="${orders.providedservicesList}" var="provService">
-                                        <c:set var="serviceSum" value="${serviceSum + provService.cost * provService.rate}"/>
-                                    </c:forEach>
-                                    <td colspan="3">
-                                        <h4>Итого:</h4>
-                                    </td>
-                                    <td>
-                                        <h5><fmt:formatNumber value="${serviceSum}" minFractionDigits="2"/></h5>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <c:forEach items="${orders.providedservicesList}" var="providedService" varStatus="servCount">
-                                    <tr>
-                                        <th class="info" style="padding: 5px; margin-left: 0px">
+                        <div class="table-fixedH table-fixedH_small">
+                            <table class="table table-condensed table-bordered table-hover">
+                                <thead>
+                                    <tr class="info" role="row">
+                                        <th width="45px">№</th>
+                                        <th>Наименование</th>
+                                        <th width="5">Тариф</th>
+                                        <th width="10%">Стоимость</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${orders.providedservicesList}" var="providedService" varStatus="servCount">
+                                        <tr>
+                                            <td>
+                                                <input type="radio" name="indexPrServ" id="serviceRadio${servCount.index}" value="${servCount.index}">
+                                                <div class="radio">
+                                                    <label for="serviceRadio${servCount.index}">
+                                                        <text>${servCount.count}</text>
+                                                    </label>
+                                                </div>
+                                            </td>
                                             <formSpring:hidden path="providedservicesList[${servCount.index}].id"/>
                                             <formSpring:hidden path="providedservicesList[${servCount.index}].rate"/>
                                             <formSpring:hidden path="providedservicesList[${servCount.index}].service.id"/>
-                                            <input type="radio" name="indexPrServ" id="serviceRadio${servCount.index}" value="${servCount.index}">
-                                            ${servCount.count}
-                                        </th>
-                                        <td style="padding: 0; margin-left: 0px">
-                                            <div class="radio" style="padding: 0;">
-                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${servCount.index}">${providedService.service.name}</label>
-                                            </div>
-                                        </td>
-                                        <td style="padding: 0; margin-left: 0px">
-                                            <div class="radio" style="padding: 0;">
-                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${servCount.index}">
-                                                    <fmt:formatNumber value="${providedService.rate}"/>
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td style="padding: 0; margin-left: 0px">
-                                            <div class="radio" style="padding: 0;">
-                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="serviceRadio${servCount.index}">
-                                                    <fmt:formatNumber value="${providedService.cost}" minFractionDigits="2"/>
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>                                    
-                            </tbody>
+                                            <td>
+                                                <div class="radio">
+                                                    <label for="serviceRadio${servCount.index}">
+                                                        <text>${providedService.service.name}</text>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="radio">
+                                                    <label for="serviceRadio${servCount.index}">
+                                                        <text><fmt:formatNumber value="${providedService.rate}"/></text>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="radio">
+                                                    <label for="serviceRadio${servCount.index}">
+                                                        <text><fmt:formatNumber value="${providedService.cost}" minFractionDigits="2"/></text>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="table table-condensed table-footer">
+                            <tr>
+                                <c:set var="serviceSum" value="${0}"/>
+                                <c:forEach items="${orders.providedservicesList}" var="provService">
+                                    <c:set var="serviceSum" value="${serviceSum + provService.cost * provService.rate}"/>
+                                </c:forEach>
+                                <td colspan="2">
+                                    <h4>Итого:</h4>
+                                </td>
+                                <td width="20%">
+                                    <h5><fmt:formatNumber value="${serviceSum}" minFractionDigits="2"/></h5>
+                                </td>
+                                <td width="17px"></td>
+                            </tr>
                         </table>
                     </div>
                     <div class="modal-footer">
@@ -184,60 +192,74 @@
 
                 <formSpring:form id="materials" cssClass="form" commandName="orders">
                     <div class="panel panel-info">
-                        <table class="table table-condensed table-bordered table-hover">
-                            <thead>
-                                <tr class="info" role="row" height="${tableHeadHeight}">
-                                    <th class="info" width="45px">№</th>
-                                    <th >Наименование</th>
-                                    <th width="10%">Ед. измерения</th>
-                                    <th width="20%">Количество</th>
-                                    <th width="15%">Стоимость</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <c:set var="materialsSum" value="${0}"/>
-                                    <c:forEach items="${orders.usedmaterialsList}" var="usedMaterial">
-                                        <c:set var="materialsSum" value="${materialsSum + usedMaterial.cost * usedMaterial.count}"/>
-                                    </c:forEach>
-                                    <td colspan="4"><h4>Итого:</h4></td>
-                                    <td><h5><fmt:formatNumber value="${materialsSum}" minFractionDigits="2"/></h5></td>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <c:forEach items="${orders.usedmaterialsList}" var="usedMaterial" varStatus="matCount">
-                                    <tr>
-                                        <th class="info"  style="padding: 5px; margin-left: 0px">
-                                            <input type="radio" name="indexUsMat" id="materialRadio${matCount.index}" value="${matCount.index}">
-                                            ${matCount.count}</th>
+                        <div class="table-fixedH table-fixedH_small">
+                            <table class="table table-condensed table-bordered table-hover">
+                                <thead>
+                                    <tr class="info" role="row">
+                                        <th class="info" width="45px">№</th>
+                                        <th >Наименование</th>
+                                        <th width="10%">Ед. измерения</th>
+                                        <th width="20%">Количество</th>
+                                        <th width="15%">Стоимость</th>
+                                    </tr>
+                                </thead>                            
+                                <tbody>
+                                    <c:forEach items="${orders.usedmaterialsList}" var="usedMaterial" varStatus="matCount">
+                                        <tr>
+                                            <td>
+                                                <input type="radio" name="indexUsMat" id="materialRadio${matCount.index}" value="${matCount.index}">
+                                                <div class="radio">
+                                                    <label for="materialRadio${matCount.index}">
+                                                        <text>${matCount.count}</text>
+                                                    </label>
+                                                </div>
+                                            </td>
                                             <formSpring:hidden path="usedmaterialsList[${matCount.index}].id"/>
                                             <formSpring:hidden path="usedmaterialsList[${matCount.index}].count"/>
                                             <formSpring:hidden path="usedmaterialsList[${matCount.index}].material.id"/>
-                                        <td style="padding: 0; margin-left: 0px">
-                                            <div class="radio" style="padding: 0;">
-                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${matCount.index}">${usedMaterial.material.name}</label>
-                                            </div>
-                                        </td>
-                                        <td style="padding: 0; margin-left: 0px">
-                                            <div class="radio" style="padding: 0;">
-                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${matCount.index}">${usedMaterial.material.unit}</label>
-                                            </div>
-                                        </td>
-                                        <td style="padding: 0; margin-left: 0px">
-                                            <div class="radio" style="padding: 0;">
-                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${matCount.index}">${usedMaterial.count}</label>
-                                            </div>
-                                        </td>
-                                        <td style="padding: 0; margin-left: 0px">
-                                            <div class="radio" style="padding: 0;">
-                                                <label style="padding: 5px; margin-left: 0px" class="radio" for="materialRadio${matCount.index}">
-                                                    <fmt:formatNumber value="${usedMaterial.cost * usedMaterial.count}" minFractionDigits="2"/>
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>                                    
-                            </tbody>                                        
+                                            <td>
+                                                <div class="radio">
+                                                    <label for="materialRadio${matCount.index}">
+                                                        <text>${usedMaterial.material.name}</text>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="radio">
+                                                    <label for="materialRadio${matCount.index}">
+                                                        <text>${usedMaterial.material.unit}</text>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="radio">
+                                                    <label for="materialRadio${matCount.index}">
+                                                        <text>${usedMaterial.count}</text>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="radio">
+                                                    <label for="materialRadio${matCount.index}">
+                                                        <text><fmt:formatNumber value="${usedMaterial.cost * usedMaterial.count}" minFractionDigits="2"/></text>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>                                    
+                                </tbody>                                        
+                            </table>
+                        </div>
+                        <table class="table table-condensed table-footer">
+                            <tr>
+                                <c:set var="materialsSum" value="${0}"/>
+                                <c:forEach items="${orders.usedmaterialsList}" var="usedMaterial">
+                                    <c:set var="materialsSum" value="${materialsSum + usedMaterial.cost * usedMaterial.count}"/>
+                                </c:forEach>
+                                <td colspan="3"><h4>Итого:</h4></td>
+                                <td width="15%"><h5><fmt:formatNumber value="${materialsSum}" minFractionDigits="2"/></h5></td>
+                                <td width="17px"></td>
+                            </tr>
                         </table>
                     </div>
                     <div class="modal-footer">
@@ -255,12 +277,27 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button form="mainForm" class="btn btn-primary" type="submit"><!--onclick="return validateAllForm(this.form)"-->
-                Сохранить
-            </button>
-            <a class="btn btn-default" onclick="return confirm('Вы дейстительно хотите отменить ${action == 'add' ? 'создание' : 'редактирование'} документа?')" href="/orders/order/${action}/cancel">
-                Отмена
-            </a>
+            <div class="row">
+                <p class="col-lg-3 col-md-4 col-sm-5 col-xs-12 alert alert-info pull-left">
+                    Сумма к оплате: <fmt:formatNumber value="${materialsSum + serviceSum}" minFractionDigits="2" maxFractionDigits="2"/>
+                </p>
+                <button form="mainForm" class="btn btn-primary" type="submit"><!--onclick="return validateAllForm(this.form)"-->
+                    Сохранить
+                </button>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-info">Напечатать</a>
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Открыть в MS Word</a>
+                    </ul>
+                </div>                
+                <a class="btn btn-default" onclick="return confirm('Вы дейстительно хотите отменить ${action == 'add' ? 'создание' : 'редактирование'} документа?')" href="/orders/order/${action}/cancel">
+                    Отмена
+                </a>
+            </div>
         </div>
     </jsp:body>
 </page:mainTamplate>
