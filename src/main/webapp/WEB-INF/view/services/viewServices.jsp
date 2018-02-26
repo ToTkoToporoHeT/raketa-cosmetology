@@ -25,41 +25,30 @@
                                 </div><!-- /.row -->
                             </div>
                             <div class="table-fixedH">
-                                <table id="table" class="table table-condensed table-bordered table-hover">
+                                <table id="table" class="table table-condensed table-hover" data-sorting="true">
                                     <thead>
                                         <tr class="info" role="row">
-                                            <th class="info" width="5%" valign="middle">№</th>
-                                            <th width="61%">Наименование</th>
-                                            <th width="12%">Стоимость</th>
-                                            <th width="12%">Стоимость<br>для ИГ</th>
+                                            <th data-classes="id">№</th>
+                                            <th data-classes="name">Наименование</th>
+                                            <th data-classes="cost">Стоимость</th>
+                                            <th data-classes="cost" data-breakpoints="xs sm">Стоимость<br>для <abbr title="Иностранных граждан">ИГ</abbr></th>
                                         </tr>
                                     </thead> 
                                     <tbody>
                                         <c:forEach items="${services}" var="service" varStatus="serviceNumber">
-                                            <tr>
-                                                <th class="info">
+                                            <tr class="coloring">
+                                                <td>
                                                     <input type="radio" name="id" id="serviceRadio${service.id}" value="${service.id}">
-                                                    ${serviceNumber.count}</th>
-                                                <td>
-                                                    <div class="radio">
-                                                        <label for="serviceRadio${service.id}">
-                                                            <text>${service.name}</text>
-                                                        </label>
-                                                    </div>
+                                                    ${serviceNumber.count}
                                                 </td>
                                                 <td>
-                                                    <div class="radio">
-                                                        <label for="serviceRadio${service.id}">
-                                                            <text><fmt:formatNumber value="${service.cost}" minFractionDigits="2"/></text>
-                                                        </label>
-                                                    </div>
+                                                    ${service.name}
                                                 </td>
                                                 <td>
-                                                    <div class="radio">
-                                                        <label for="serviceRadio${service.id}">
-                                                            <text><fmt:formatNumber value="${service.costFF}" minFractionDigits="2"/></text>
-                                                        </label>
-                                                    </div>
+                                                    <fmt:formatNumber value="${service.cost}" minFractionDigits="2"/>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${service.costFF}" minFractionDigits="2"/>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -70,30 +59,18 @@
                     </div>
                 </div>
                 <div class="col-sm-2">
-                    <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+                    <div class="btn-group-vertical" role="group" aria-label="...">
                         <button tupe="submit" class="btn btn-default" formaction="/services/service/show_page/add">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
-                                    <td align="center"> Добавить</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            <span class="text">Добавить</span>
                         </button>
                         <button tupe="submit" class="btn btn-default" formaction="/services/service/show_page/edit">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></td>
-                                    <td align="center"> Редактировать</td>
-                                </tr> 
-                            </table>
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            <span class="text">Редактировать</span>
                         </button>
                         <button tupe="button" class="btn btn-default" value="delete" formaction="/services/service/delete">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></td>
-                                    <td align="center"> Удалить</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                            <span class="text">Удалить</span>
                         </button>
                     </div>
                 </div>

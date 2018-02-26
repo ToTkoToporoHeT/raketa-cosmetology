@@ -26,61 +26,62 @@
                                 </div><!-- /.row -->
                             </div>
                             <div class="table-fixedH">
-                                <table id="table" class="table table-condensed table-bordered table-hover ">
+                                <table id="table" class="table table-condensed table-hover" data-sorting="true">
                                     <thead>
                                         <tr class="info" role="row">
-                                            <th class="info" width="5%" valign="middle">№</th>
-                                            <th >Фамилия</th>
-                                            <th >Имя</th>
-                                            <th >Отчесто</th>
-                                            <th width="250">Адрес</th>
-                                            <th width="160">Телефоны</th>                                        
-                                            <th >E-mail</th>
+                                            <th data-classes="id">
+                                                №</th>
+                                            <th data-classes="last-name">
+                                                Фамилия</th>
+                                            <th data-classes="first-name"
+                                                data-breakpoints="xs sm">
+                                                Имя</th>
+                                            <th data-classes="middle-name"
+                                                data-breakpoints="xs sm">
+                                                Отчесто</th>
+                                            <th data-classes="address" 
+                                                data-breakpoints="xs sm">
+                                                Адрес</th>
+                                            <th data-classes="telephone"
+                                                data-breakpoints="xs">
+                                                Телефоны</th>                                        
+                                            <th data-classes="login"
+                                                data-breakpoints="xs sm md">
+                                                E-mail</th>
                                         </tr>
                                     </thead> 
                                     <tbody>
                                         <c:forEach items="${customers}" var="customer" varStatus="customerNumber">
-                                            <tr>
-                                                <th class="info">
-                                                    <input type="radio" name="customerId" id="customerRadio${customer.id}" value="${customer.id}" required="true">
-                                                    ${customerNumber.count}</th>
+                                            <tr class="coloring">
                                                 <td>
-                                                    <div class="radio">
-                                                        <label for="customerRadio${customer.id}">${customer.lastName}</label>
-                                                    </div>
+                                                    <input type="radio" name="customerId" id="customerRadio${customer.id}" value="${customer.id}">
+                                                    ${customerNumber.count}
                                                 </td>
                                                 <td>
-                                                    <div class="radio">
-                                                        <label for="customerRadio${customer.id}">${customer.firstName}</label>
-                                                    </div>
+                                                    ${customer.lastName}
                                                 </td>
                                                 <td>
-                                                    <div class="radio">
-                                                        <label for="customerRadio${customer.id}">${customer.middleName}</label>
-                                                    </div>
+                                                    ${customer.firstName}
                                                 </td>
                                                 <td>
-                                                    <div class="radio">
-                                                        <label for="customerRadio${customer.id}">${customer.addressId}</label>
-                                                    </div>
+                                                    ${customer.middleName}
+                                                </td>
+                                                <td>
+                                                    ${customer.addressId}
                                                 </td>                                                
                                                 <td>
-                                                    <div class="radio">
-                                                        <label class="radio" for="customerRadio${customer.id}">
-                                                            <ul>
-                                                                <c:forEach items="${customer.telephonenumbersList}" var="telNumb">
-                                                                    <c:if test="${telNumb.telephoneNumber != ''}">
-                                                                        <li>${telNumb}</li>
-                                                                        </c:if>
-                                                                    </c:forEach>
-                                                            </ul>  
-                                                        </label>
-                                                    </div>
+                                                    <ul>
+                                                        <c:forEach items="${customer.telephonenumbersList}" var="telNumb">
+                                                            <c:if test="${telNumb.telephoneNumber != ''}">
+                                                                <li>
+                                                                    ${telNumb}
+                                                                </li>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </ul>                                                    
                                                 </td>
                                                 <td>
-                                                    <div class="radio">
-                                                        <label for="customerRadio${customer.id}">${customer.login}</label>
-                                                    </div>
+                                                    ${customer.login}
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -93,28 +94,16 @@
                 <div class="col-sm-2">
                     <div class="btn-group btn-group-vertical" role="group" aria-label="...">
                         <button tupe="submit" class="btn btn-default" formaction="/orders/order/selectCustomer">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
-                                    <td align="center"> Выбрать</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            <span class="text">Выбрать</span>
                         </button>
                         <a class="btn btn-default" href="${addCustomer}">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
-                                    <td align="center"> Добавить</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            <span class="text">Добавить</span>
                         </a>
                         <a class="btn btn-default" value="back" href="/orders/order/show_page/${action}">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></td>
-                                    <td align="center"> Назад</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="text">Назад</span>
                         </a>
                     </div>
                 </div>

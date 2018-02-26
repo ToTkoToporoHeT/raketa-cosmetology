@@ -27,45 +27,50 @@
                                 </div><!-- /.row -->
                             </div>                            
                             <div class="table-fixedH">
-                                <table id="table" class="table table-condensed table-bordered table-hover ">
+                                <table id="table" class="table table-condensed table-hover" data-sorting="true">
                                     <thead>
                                         <tr class="info" role="row">
-                                            <th class="info" width="5%" valign="middle">№</th>
-                                            <th>Номер</th>
-                                            <th>Дата</th>
-                                            <th>ФИО клиента</th>
+                                            <th data-classes="id">
+                                                №</th>
+                                            <th data-classes="number" 
+                                                data-breakpoints="xs sm">
+                                                Номер</th>
+                                            <th data-classes="date">
+                                                Дата</th>
+                                            <th data-classes="name">
+                                                ФИО клиента</th>
                                                 <c:if test="${isRoot}">
-                                                <th>ФИО сотрудника</th>
+                                                <th data-classes="name"
+                                                    data-breakpoints="xs sm">
+                                                    ФИО сотрудника</th>
                                                 </c:if>
-                                            <th>Сумма</th>
+                                            <th data-classes="cost"
+                                                data-breakpoints="xs sm">
+                                                Сумма</th>
                                         </tr>
                                     </thead> 
                                     <tbody>
                                         <c:forEach items="${orders}" var="order" varStatus="orderNumber">
-                                            <tr>
-                                                <th class="info" style="padding: 5px; margin-left: 0px">
+                                            <tr class="coloring">
+                                                <td>
                                                     <input type="radio" name="id" id="customerRadio${order.id}" value="${order.id}">
-                                                    ${orderNumber.count}</th>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">${order.number}</label>
-                                                    </div>
+                                                    ${orderNumber.count}
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">${order.prepare_date}</label>
-                                                    </div>
+                                                <td>
+                                                    ${order.number}
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">${order.customer}</label>
-                                                    </div>
+                                                <td>
+                                                    <fmt:formatDate type = "date" dateStyle = "long"
+                                                                    timeStyle = "long" 
+                                                                    value="${order.prepare_date}"/>
                                                 </td>
+                                                <td>
+                                                    ${order.customer}
+                                                </td>
+
                                                 <c:if test="${isRoot}">
-                                                    <td style="padding: 0; margin-left: 0px">
-                                                        <div class="radio" style="padding: 0;">
-                                                            <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">${order.manager}</label>
-                                                        </div>
+                                                    <td>
+                                                        ${order.manager}
                                                     </td>  
                                                 </c:if>
                                                 <c:set var="servicesSum" value="${0}"/>
@@ -76,12 +81,9 @@
                                                 <c:forEach items="${order.usedmaterialsList}" var="usedMaterial">
                                                     <c:set var="materialsSum" value="${materialsSum + usedMaterial.cost * usedMaterial.count}"/>
                                                 </c:forEach>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${order.id}">
-                                                            <fmt:formatNumber value="${servicesSum + materialsSum}" minFractionDigits="2"/>
-                                                        </label>
-                                                    </div>
+
+                                                <td>
+                                                    <fmt:formatNumber value="${servicesSum + materialsSum}" minFractionDigits="2"/>
                                                 </td>  
                                             </tr>
                                         </c:forEach>
@@ -94,28 +96,16 @@
                 <div class="col-sm-2">
                     <div class="btn-group btn-group-vertical" role="group" aria-label="...">
                         <button tupe="submit" class="btn btn-default" formaction="/orders/order/create_page/add">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
-                                    <td align="center"> Добавить</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            <span class="text">Добавить</span>
                         </button>
                         <button tupe="submit" class="btn btn-default" formaction="/orders/order/create_page/edit">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></td>
-                                    <td align="center"> Редактировать</td>
-                                </tr> 
-                            </table>
+                            <span class="glyphicon glyphicon-edit" aria-hidden="edit"></span>
+                            <span class="text">Редактировать</span>
                         </button>
                         <button tupe="button" class="btn btn-default" value="delete" formaction="/orders/order/delete">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></td>
-                                    <td align="center"> Удалить</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                            <span class="text">Удалить</span>
                         </button>
                     </div>
                 </div>

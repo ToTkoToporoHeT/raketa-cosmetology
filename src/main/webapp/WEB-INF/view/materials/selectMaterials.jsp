@@ -34,21 +34,30 @@
                                 </div><!-- /.row -->
                             </div>
                             <div class="controls table-fixedH">
-                                <table id="table" class="table table-condensed table-bordered table-hover ">
+                                <table id="table" class="table table-condensed table-hover " data-sorting="true">
                                     <thead>
                                         <tr class="info" role="row">
-                                            <th class="info" width="5%" valign="middle">№</th>
-                                            <th width="50%">Наименование</th>
-                                            <th width="10%">Единицы измерения</th>
-                                            <th width="11%">Количество</th>
-                                            <th width="11%">На складе</th>
-                                            <th width="13%">Стоимость единицы</th>
+                                            <th data-classes="id">
+                                                №</th>
+                                            <th data-classes="name">
+                                                Наименование</th>
+                                            <th data-classes="unit" 
+                                                data-breakpoints="xs">
+                                                Ед. измерения</th>
+                                            <th data-classes="number-checkbox">
+                                                Израсхо-<br>довано</th>
+                                            <th data-classes="count" 
+                                                data-breakpoints="xs sm">
+                                                На складе</th>
+                                            <th data-classes="cost" 
+                                                data-breakpoints="xs">
+                                                Стоимость единицы</th>
                                         </tr>
                                     </thead> 
                                     <tbody>
                                         <c:forEach items="${allMaterials.usedmaterialsList}" var="usedMaterial" varStatus="materialNumber">
-                                            <tr>
-                                                <th class="info">
+                                            <tr class="coloring">
+                                                <td>
                                                     <formSpring:hidden path="usedmaterialsList[${materialNumber.index}].id"/>
                                                     <c:if test="${usedMaterial.material.forDelete}">
                                                         <formSpring:hidden path="usedmaterialsList[${materialNumber.index}].material.id"/>
@@ -56,20 +65,12 @@
                                                     </c:if>
                                                     <formSpring:checkbox id="materialRadio${materialNumber.count}" onclick="setRequered(${materialNumber.count})" value="${usedMaterial.material.id}" path="usedmaterialsList[${materialNumber.index}].material.id" disabled="${usedMaterial.material.forDelete}"/>
                                                     ${materialNumber.count}
-                                                </th>
-                                                <td>
-                                                    <div class="checkbox">
-                                                        <formSpring:label for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].material.name">
-                                                            <text>${usedMaterial.material.name}</text>
-                                                        </formSpring:label>
-                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <div class="checkbox">
-                                                        <label for="materialRadio${materialNumber.count}" >
-                                                            <text>${usedMaterial.material.unit}</text>
-                                                        </label>
-                                                    </div>
+                                                    ${usedMaterial.material.name}
+                                                </td>
+                                                <td>
+                                                    ${usedMaterial.material.unit}
                                                 </td>
                                                 <td>
                                                     <div class="checkbox">
@@ -77,18 +78,10 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div class="checkbox">
-                                                        <label for="materialRadio${materialNumber.count}" >
-                                                            <text><fmt:formatNumber value="${usedMaterial.material.count}"/></text>
-                                                        </label>
-                                                    </div>
+                                                    <fmt:formatNumber value="${usedMaterial.material.count}"/>
                                                 </td>
                                                 <td>
-                                                    <div class="checkbox">
-                                                        <label for="materialRadio${materialNumber.count}" >
-                                                            <text><fmt:formatNumber value="${usedMaterial.material.cost}" minFractionDigits="2"/></text>
-                                                        </label>
-                                                    </div>
+                                                    <fmt:formatNumber value="${usedMaterial.material.cost}" minFractionDigits="2"/>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -99,22 +92,14 @@
                     </div>
                 </div>
                 <div class="col-sm-2">
-                    <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+                    <div class="btn-group-vertical" role="group" aria-label="...">
                         <button tupe="submit" class="btn btn-default" formaction="/orders/order/selectMaterials">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
-                                    <td align="center"> Выбрать</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            <span class="text">Выбрать</span>
                         </button>
                         <a class="btn btn-default" href= "/orders/order/show_page/{action}">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></td>
-                                    <td align="center"> Назад</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="text">Назад</span>
                         </a>
                     </div>
                 </div>

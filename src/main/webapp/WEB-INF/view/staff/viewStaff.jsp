@@ -23,87 +23,65 @@
                                     </div>
                                 </div><!-- /.row -->
                             </div>
-                            <table id="table" class="table table-condensed table-bordered table-hover ">
-                                <thead>
-                                    <tr class="info" role="row">
-                                        <th class="info" width="5%" valign="middle">№</th>
-                                        <th>Логин</th>
-                                        <th>Фамилия</th>
-                                        <th>Имя</th>
-                                        <th>Отчесто</th>
-                                        <th>Тип<br>пользователя</th>
-                                        <th>Статус<br>учетной записи</th>
-                                    </tr>
-                                </thead> 
-                                <div class="controls">
+
+                            <div class="controls table-fixedH">
+                                <table id="table" class="table table-condensed table-hover" data-sorting="true">
+                                    <thead>
+                                        <tr class="info" role="row">
+                                            <th data-classes="id">№</th>
+                                            <th data-classes="login">Логин</th>
+                                            <th data-classes="last-name">Фамилия</th>
+                                            <th data-classes="first-name" data-breakpoints="xs sm md">Имя</th>
+                                            <th data-classes="middle-name" data-breakpoints="xs sm md">Отчесто</th>
+                                            <th data-classes="type" data-breakpoints="xs sm">Тип<br>пользователя</th>
+                                            <th data-classes="status" data-breakpoints="xs sm md">Статус<br>учетной записи</th>
+                                        </tr>
+                                    </thead> 
                                     <tbody>
                                         <c:forEach items="${staff}" var="worker" varStatus="workerNumber">
-                                            <tr>
-                                                <th class="info" style="padding: 5px; margin-left: 0px">
+                                            <tr class="coloring">
+                                                <td>
                                                     <input type="radio" name="id" id="customerRadio${worker.id}" value="${worker.id}">
-                                                    ${workerNumber.count}</th>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${worker.id}">${worker.login}</label>
-                                                    </div>
+                                                    ${workerNumber.count}
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${worker.id}">${worker.lastName}</label>
-                                                    </div>
+                                                <td>
+                                                    ${worker.login}
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${worker.id}">${worker.firstName}</label>
-                                                    </div>
+                                                <td>
+                                                    ${worker.lastName}
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${worker.id}">${worker.middleName}</label>
-                                                    </div>
+                                                <td>
+                                                    ${worker.firstName}
                                                 </td>
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${worker.id}">${worker.userType}</label>
-                                                    </div>
+                                                <td>
+                                                    ${worker.middleName}
+                                                </td>
+                                                <td>
+                                                    ${worker.userType}
                                                 </td>   
-                                                <td style="padding: 0; margin-left: 0px">
-                                                    <div class="radio" style="padding: 0;">
-                                                        <label style="padding: 5px; margin-left: 0px" class="radio" for="customerRadio${worker.id}">${worker.enabled == true ? 'активна' : 'заблокирована'}</label>
-                                                    </div>
+                                                <td>
+                                                    ${worker.enabled == true ? 'активна' : 'заблокирована'}
                                                 </td>   
-                                        </c:forEach>
+                                            </c:forEach>
                                     </tbody>
-                                </div>
-                            </table>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-2">
-                    <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+                    <div class="btn-group-vertical" role="group" aria-label="...">
                         <button tupe="submit" class="btn btn-default" formaction="/staff/worker/show_page/add">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
-                                    <td align="center"> Добавить</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            <span class="text">Добавить</span>
                         </button>
                         <button tupe="submit" class="btn btn-default" formaction="/staff/worker/show_page/edit">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></td>
-                                    <td align="center"> Редактировать</td>
-                                </tr> 
-                            </table>
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            <span class="text">Редактировать</span>
                         </button>
                         <button tupe="button" class="btn btn-default" value="delete" formaction="/staff/worker/delete">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></td>
-                                    <td align="center"> Удалить</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                            <span class="text">Удалить</span>
                         </button>
                     </div>
                 </div>

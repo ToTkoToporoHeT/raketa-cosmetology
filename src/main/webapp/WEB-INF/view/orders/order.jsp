@@ -108,50 +108,38 @@
                 <h4>Список оказанных услуг</h4>
                 <formSpring:form id="services" cssClass="form" commandName="orders">
                     <div class="panel panel-info">
-                        <div class="table-fixedH table-fixedH_small">
-                            <table class="table table-condensed table-bordered table-hover">
+                        <div class="table-fixedH table-fixedH-small">
+                            <table class="table table-condensed table-hover" data-sorting="true">
                                 <thead>
                                     <tr class="info" role="row">
-                                        <th width="45px">№</th>
-                                        <th>Наименование</th>
-                                        <th width="5">Тариф</th>
-                                        <th width="10%">Стоимость</th>
+                                        <th data-classes="id">
+                                            №</th>
+                                        <th data-classes="name">
+                                            Наименование</th>
+                                        <th data-classes="number">
+                                            Тариф</th>
+                                        <th data-classes="number">
+                                            Стоимость</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach items="${orders.providedservicesList}" var="providedService" varStatus="servCount">
-                                        <tr>
+                                        <tr class="coloring">
                                             <td>
                                                 <input type="radio" name="indexPrServ" id="serviceRadio${servCount.index}" value="${servCount.index}">
-                                                <div class="radio">
-                                                    <label for="serviceRadio${servCount.index}">
-                                                        <text>${servCount.count}</text>
-                                                    </label>
-                                                </div>
+                                                ${servCount.count}
                                             </td>
                                             <formSpring:hidden path="providedservicesList[${servCount.index}].id"/>
                                             <formSpring:hidden path="providedservicesList[${servCount.index}].rate"/>
                                             <formSpring:hidden path="providedservicesList[${servCount.index}].service.id"/>
                                             <td>
-                                                <div class="radio">
-                                                    <label for="serviceRadio${servCount.index}">
-                                                        <text>${providedService.service.name}</text>
-                                                    </label>
-                                                </div>
+                                                ${providedService.service.name}
                                             </td>
                                             <td>
-                                                <div class="radio">
-                                                    <label for="serviceRadio${servCount.index}">
-                                                        <text><fmt:formatNumber value="${providedService.rate}"/></text>
-                                                    </label>
-                                                </div>
+                                                <fmt:formatNumber value="${providedService.rate}"/>
                                             </td>
                                             <td>
-                                                <div class="radio">
-                                                    <label for="serviceRadio${servCount.index}">
-                                                        <text><fmt:formatNumber value="${providedService.cost}" minFractionDigits="2"/></text>
-                                                    </label>
-                                                </div>
+                                                <fmt:formatNumber value="${providedService.cost}" minFractionDigits="2"/>
                                             </td>
                                         </tr>
                                     </c:forEach>                                    
@@ -164,10 +152,10 @@
                                 <c:forEach items="${orders.providedservicesList}" var="provService">
                                     <c:set var="serviceSum" value="${serviceSum + provService.cost * provService.rate}"/>
                                 </c:forEach>
-                                <td colspan="2">
+                                <td colspan="3">
                                     <h4>Итого:</h4>
                                 </td>
-                                <td width="20%">
+                                <td class="number" style="width: 26%;">
                                     <h5><fmt:formatNumber value="${serviceSum}" minFractionDigits="2"/></h5>
                                 </td>
                                 <td width="17px"></td>
@@ -192,58 +180,44 @@
 
                 <formSpring:form id="materials" cssClass="form" commandName="orders">
                     <div class="panel panel-info">
-                        <div class="table-fixedH table-fixedH_small">
-                            <table class="table table-condensed table-bordered table-hover">
+                        <div class="table-fixedH table-fixedH-small">
+                            <table class="table table-condensed table-hover" data-sorting="true">
                                 <thead>
                                     <tr class="info" role="row">
-                                        <th class="info" width="45px">№</th>
-                                        <th >Наименование</th>
-                                        <th width="10%">Ед. измерения</th>
-                                        <th width="20%">Количество</th>
-                                        <th width="15%">Стоимость</th>
+                                        <th data-classes="id">
+                                            №</th>
+                                        <th data-classes="name">
+                                            Наименование</th>
+                                        <th data-classes="unit"
+                                            data-breakpoints="xs sm">
+                                            Ед. измерения</th>
+                                        <th data-classes="number">
+                                            Количество</th>
+                                        <th data-classes="cost">
+                                            Стоимость</th>
                                     </tr>
                                 </thead>                            
                                 <tbody>
                                     <c:forEach items="${orders.usedmaterialsList}" var="usedMaterial" varStatus="matCount">
-                                        <tr>
+                                        <tr class="coloring">
                                             <td>
                                                 <input type="radio" name="indexUsMat" id="materialRadio${matCount.index}" value="${matCount.index}">
-                                                <div class="radio">
-                                                    <label for="materialRadio${matCount.index}">
-                                                        <text>${matCount.count}</text>
-                                                    </label>
-                                                </div>
+                                                ${matCount.count}
                                             </td>
                                             <formSpring:hidden path="usedmaterialsList[${matCount.index}].id"/>
                                             <formSpring:hidden path="usedmaterialsList[${matCount.index}].count"/>
                                             <formSpring:hidden path="usedmaterialsList[${matCount.index}].material.id"/>
                                             <td>
-                                                <div class="radio">
-                                                    <label for="materialRadio${matCount.index}">
-                                                        <text>${usedMaterial.material.name}</text>
-                                                    </label>
-                                                </div>
+                                                ${usedMaterial.material.name}
                                             </td>
                                             <td>
-                                                <div class="radio">
-                                                    <label for="materialRadio${matCount.index}">
-                                                        <text>${usedMaterial.material.unit}</text>
-                                                    </label>
-                                                </div>
+                                                ${usedMaterial.material.unit}
                                             </td>
                                             <td>
-                                                <div class="radio">
-                                                    <label for="materialRadio${matCount.index}">
-                                                        <text>${usedMaterial.count}</text>
-                                                    </label>
-                                                </div>
+                                                ${usedMaterial.count}
                                             </td>
                                             <td>
-                                                <div class="radio">
-                                                    <label for="materialRadio${matCount.index}">
-                                                        <text><fmt:formatNumber value="${usedMaterial.cost * usedMaterial.count}" minFractionDigits="2"/></text>
-                                                    </label>
-                                                </div>
+                                                <fmt:formatNumber value="${usedMaterial.cost * usedMaterial.count}" minFractionDigits="2"/>
                                             </td>
                                         </tr>
                                     </c:forEach>                                    

@@ -23,45 +23,42 @@
                                     </div>
                                 </div><!-- /.row -->
                             </div>                            
-                            <div class="table-fixedH">
-                                <table id="table" class="table table-condensed table-bordered table-hover ">
+                            <div class="controls table-fixedH">
+                                <table id="table" class="table table-condensed table-hover" data-sorting="true">
                                     <thead>
                                         <tr class="info" role="row">
-                                            <th class="info" width="5%" valign="middle">№</th>
-                                            <th>Наименование</th>
-                                            <th width="7">Ставка</th>
-                                            <th width="13%">Стоимость</th>
+                                            <th data-classes="id">№</th>
+                                            <th data-classes="name">Наименование</th>
+                                            <th data-classes="number-checkbox">Ставка</th>
+                                            <th data-classes="cost">Стоимость</th>
                                         </tr>
                                     </thead> 
                                     <tbody>
                                         <c:forEach items="${allServices.providedservicesList}" var="providedService" varStatus="serviceNumber">
-                                            <tr>
-                                                <th class="info">
+                                            <tr class="coloring">
+                                                <td>
                                                     <formSpring:hidden path="providedservicesList[${serviceNumber.index}].id"/>
                                                     <c:if test="${providedService.service.forDelete}">
                                                         <formSpring:hidden path="providedservicesList[${serviceNumber.index}].service.id"/>
                                                         <formSpring:hidden path="providedservicesList[${serviceNumber.index}].rate"/>
                                                     </c:if>
-                                                    <formSpring:checkbox value="${providedService.service.id}" path="providedservicesList[${serviceNumber.index}].service.id" id="serviceRadio${serviceNumber.count}" disabled="${providedService.service.forDelete}"/>
-                                                    ${serviceNumber.count}</th>
-                                                <td>
-                                                    <div class="checkbox">
-                                                        <formSpring:label for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].service.name">
-                                                            <text>${providedService.service.name}</text>
-                                                        </formSpring:label>
-                                                    </div>
+                                                    <formSpring:checkbox value="${providedService.service.id}" 
+                                                                         path="providedservicesList[${serviceNumber.index}].service.id" 
+                                                                         id="serviceRadio${serviceNumber.count}" 
+                                                                         disabled="${providedService.service.forDelete}"/>
+                                                    ${serviceNumber.count}
                                                 </td>
                                                 <td>
-                                                    <div class="checkbox">
-                                                        <formSpring:input required="" type="number" id="serviceInput${serviceNumber.count}" cssClass="form-control" for="serviceRadio${serviceNumber.count}" path="providedservicesList[${serviceNumber.index}].rate" disabled="${providedService.service.forDelete}"/>
-                                                    </div>
+                                                    ${providedService.service.name}
                                                 </td>
                                                 <td>
-                                                    <div class="checkbox">
-                                                        <label for="serviceRadio${serviceNumber.count}">
-                                                            <text><fmt:formatNumber value="${providedService.service.cost}" minFractionDigits="2"/></text>
-                                                        </label>
-                                                    </div>
+                                                    <formSpring:input required="" type="number" id="serviceInput${serviceNumber.count}"
+                                                                      cssClass="form-control" for="serviceRadio${serviceNumber.count}" 
+                                                                      path="providedservicesList[${serviceNumber.index}].rate" 
+                                                                      disabled="${providedService.service.forDelete}"/>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${providedService.service.cost}" minFractionDigits="2"/>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -72,22 +69,14 @@
                     </div>
                 </div>
                 <div class="col-sm-2">
-                    <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+                    <div class="btn-group-vertical" role="group" aria-label="...">
                         <button tupe="submit" class="btn btn-default" formaction="/orders/order/selectServices">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
-                                    <td align="center"> Выбрать</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            <span class="text">Выбрать</span>
                         </button>
                         <button tupe="button" class="btn btn-default" value="back" formaction="/orders/order/show_page/{action}">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></td>
-                                    <td align="center"> Назад</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="text">Назад</span>
                         </button>
                     </div>
                 </div>

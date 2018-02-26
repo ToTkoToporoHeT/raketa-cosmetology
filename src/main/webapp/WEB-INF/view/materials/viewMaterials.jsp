@@ -25,50 +25,41 @@
                                 </div><!-- /.row -->
                             </div>
                             <div class="controls table-fixedH">
-                                <table id="table" class="table table-condensed table-bordered table-hover">
+                                <table id="table" class="table table-condensed table-hover" data-sorting="true">
                                     <thead>
                                         <tr class="info" role="row">
-                                            <th class="info" width="5%" valign="middle">№</th>
-                                            <th width="50%">Наименование</th>
-                                            <th width="10%">Ед. измерения</th>
-                                            <th width="20%">Количество</th>
-                                            <th width="15%">Стоимость</th>
+                                            <th data-classes="id">
+                                                №</th>
+                                            <th data-classes="name">
+                                                Наименование</th>
+                                            <th data-classes="unit" 
+                                                data-breakpoints="xs sm">
+                                                Ед. измерения</th>
+                                            <th data-classes="count" 
+                                                data-breakpoints="xs sm">
+                                                Количество</th>
+                                            <th data-classes="cost" 
+                                                data-breakpoints="xs sm md">
+                                                Стоимость</th>
                                         </tr>
                                     </thead> 
                                     <tbody>
 
                                         <c:forEach items="${materials}" var="material" varStatus="materialNumber">
-                                            <tr>
-                                                <th class="info">
+                                            <tr class="coloring">
+                                                <td>
                                                     <input type="radio" name="id" id="materialRadio${material.id}" value="${material.id}">
-                                                    ${materialNumber.count}</th>
+                                                    ${materialNumber.count}</td>
                                                 <td>
-                                                    <div class="radio">
-                                                        <label for="materialRadio${material.id}">
-                                                            <text>${material.name}</text>
-                                                        </label>
-                                                    </div>
+                                                    ${material.name}
                                                 </td>
                                                 <td>
-                                                    <div class="radio">                                                        
-                                                        <label for="materialRadio${material.id}">
-                                                            <text>${material.unit}</text>
-                                                        </label>
-                                                    </div>
+                                                    ${material.unit}
                                                 </td>
                                                 <td>
-                                                    <div class="radio">
-                                                        <label for="materialRadio${material.id}">
-                                                            <text><fmt:formatNumber value="${material.count}"/></text>
-                                                        </label>
-                                                    </div>
-                                                </td>
+                                                    <fmt:formatNumber value="${material.count}"/>
                                                 <td>
-                                                    <div class="radio">
-                                                        <label for="materialRadio${material.id}">
-                                                            <text><fmt:formatNumber value="${material.cost}" minFractionDigits="4"/></text>
-                                                        </label>
-                                                    </div>
+                                                    <fmt:formatNumber value="${material.cost}" minFractionDigits="4"/>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -80,59 +71,20 @@
                     </div>
                 </div>
                 <div class="col-sm-2">
-                    <div class="btn-group btn-group-vertical" role="group" aria-label="...">
+                    <div class="btn-group-vertical" role="group" aria-label="...">
                         <button tupe="submit" class="btn btn-default" formaction="/materials/material/show_page/add">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
-                                    <td align="center"> Добавить</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <span class="text">Добавить</span>
                         </button>
                         <button tupe="submit" class="btn btn-default" formaction="/materials/material/show_page/edit">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></td>
-                                    <td align="center"> Редактировать</td>
-                                </tr> 
-                            </table>
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            <span class="text">Редактировать</span>
                         </button>
                         <button tupe="button" class="btn btn-default" value="delete" formaction="/materials/material/delete">
-                            <table width="100%">
-                                <tr>
-                                    <td align="left" width="20"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></td>
-                                    <td align="center"> Удалить</td>
-                                </tr>                        
-                            </table>
+                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                            <span class="text">Удалить</span>
                         </button>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="btn-group btn-group-vertical" data-toggle="buttons">
-                    <label class="btn btn-primary active">
-                        <input type="radio" name="options" id="option1" autocomplete="off" checked> <div class="col-lg-12">Radio 1</div>
-                    </label>
-                    <c:forEach items="${materials}" var="material" varStatus="materialNumber">
-                        <label class="btn btn-primary">
-                            <input type="radio" name="id" id="option${material.id}" autocomplete="off" value="${material.id}">
-                            <div class="col-lg-5">                             
-                                ${material.name}
-                            </div>
-                            <div class="col-lg-1">   
-                                ${materialNumber.count}
-                            </div>
-                            <div class="col-lg-1">   
-                                ${material.unit}
-                            </div>
-                            <div class="col-lg-2">   
-                                <fmt:formatNumber value="${material.count}"/>
-                            </div>
-                            <div class="col-lg-2">   
-                                <fmt:formatNumber value="${material.cost}" minFractionDigits="4"/>
-                            </div>
-                        </label>
-                    </c:forEach>
                 </div>
             </div>
         </formSpring:form> 

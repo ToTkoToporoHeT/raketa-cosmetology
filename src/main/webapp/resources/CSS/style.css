@@ -8,16 +8,98 @@ and open the template in the editor.
     Author     : dazzer
 */
 
-/*.fixed-grup {
-    position: fixed;
+/*Оформление столбцов {*/
+    .id {
+        width: 2%;
+        text-align: center;
+    }
+
+    .name {
+        text-align: left;
+    }
+
+    .unit {
+        width: 10%;
+        text-align: center;
+    }
+
+    .count {
+        width: 15%;
+        text-align: center;
+    }
+
+    .cost {
+        width: 15%;
+        text-align: center;
+    }
+    
+    .login, .first-name, .middle-name, .last-name, .type, .status {
+        text-align: center;
+    }
+    
+    .address {
+        width: 250px;
+        text-align: left;
+    }
+    
+    .telephone {
+        width: 160px;
+        text-align: left;
+    }
+    
+    .number {
+        width: 70px;
+        text-align: center; 
+    }
+    
+    .table-fixedH-small .number {
+        width: 7%;
+    }
+    
+    .number-checkbox {
+        width: 100px;
+    }
+    
+    .date {
+        width: 170px;
+        text-align: center;
+    }
+/*}*/
+
+.table thead th {
+    text-align: center;
+}
+
+.table tbody tr td {
+    vertical-align: middle;
+    padding-right: 30px;
+}
+
+.table tbody tr td input[type=checkbox] {
+    /*position: absolute;
     top: 0;
     right: 0;
-}*/
+    bottom: 0;
+    left: 0;*/
+}
+
+.table tbody tr td ul{
+    padding-left: 20px;
+    margin: 0px;
+}
+
+.table tbody tr:last-child {
+    border-bottom: 1px solid #ddd;
+}
+
+table input[type=radio], table input[type=checkbox]{
+    display: none;
+}
 
 .table-fixedH {        
     overflow-y: scroll;
-    min-height: 600px; 
-    max-height: 600px;
+    height: 600px; 
+    /*max-height: 600px;*/
     background-color: #BFFBD9;
 }
 
@@ -25,74 +107,12 @@ and open the template in the editor.
     background-color: #FFFFFF;
 }
 
-.table-fixedH tbody tr td{
-    padding: 0px;
-    margin: 0px;
-    position: relative;
-}
-
-.table-fixedH tbody tr td:first-child{
-    position: relative;
-    padding: 5px;
-}
-
-.table-fixedH tbody tr .radio, .table-fixedH tbody tr td .checkbox{
-    padding: 0px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-}
-
-.radio:after{
-    float: none;
-}
-
-.table-fixedH tr .radio label, .table-fixedH tr .checkbox label{
-    margin: 1px 1px;
-    padding: 0px 4px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-}
-
-.table-fixedH tr .radio label ul {
-    position: absolute;
-}
-
-.table-fixedH tbody tr td:first-child text{    
-    margin: auto 0;
-    margin-left: 17px;
-    font-weight: bold;
-}
-
-.table-fixedH tr .radio label text, .table-fixedH tr .checkbox label text{
-    margin: auto 0;
-}
-
-.table-fixedH tr .checkbox input {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-}
-
-.table-fixedH .form-control{
-    height: auto;
-}
-
-.table-fixedH_small thead tr {
+.table-fixedH-small thead tr:first-child {
     height: 51px;
 }
 
-.table-fixedH_small {
-    min-height: 300px;
-    max-height: 300px;
+.table-fixedH-small {
+    height: 300px;
 }
 
 .table-footer tbody tr td {
@@ -100,19 +120,35 @@ and open the template in the editor.
     margin: 0px;
 }
 
-.table-fixedH_small .radio {
-    margin: 0px;
-}
-
-.table-fixedH_small .table-bordered {
-    border: none;
-}
-
-.table-fixedH_small .table-bordered:first-child th {
-    border-left: none;
-}
-
 .modal-footer p {
     text-align: center;
     font-size: 17px;
+}
+
+.table .checked_row{
+    background-color: #A8FF6E;
+}
+
+.table .checked_row:hover {
+    background-color: #D1FFB2;
+}
+
+.coloring * {
+    cursor: pointer;
+}
+
+.table.table-condensed>tbody>tr>td>span.footable-toggle {
+    text-align: center;
+    margin-right: 0px;
+}
+
+.btn-group-vertical button .glyphicon {
+    position: absolute;
+    margin-top: -7px;
+    top: 50%;
+    left: 10px;
+}
+
+button .text {
+    margin-left: 19px;
 }
