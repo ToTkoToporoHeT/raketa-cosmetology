@@ -65,8 +65,8 @@ public class Services implements Serializable, Cloneable {
     @Min(value = 0, message = "Цена не может быть отрицательной")
     @Column(name = "costFF")
     private Double costFF;
-    @Basic(optional = false)
     
+    @Basic(optional = false)    
     @Column(name = "forDelete")
     private boolean forDelete;
 

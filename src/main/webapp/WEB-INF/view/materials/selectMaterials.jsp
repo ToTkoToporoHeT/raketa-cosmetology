@@ -38,7 +38,7 @@
                                     <thead>
                                         <tr class="info" role="row">
                                             <th data-classes="id">
-                                                №</th>
+                                                Номенкл. №</th>
                                             <th data-classes="name">
                                                 Наименование</th>
                                             <th data-classes="unit" 
@@ -64,7 +64,7 @@
                                                         <formSpring:hidden path="usedmaterialsList[${materialNumber.index}].count"/>
                                                     </c:if>
                                                     <formSpring:checkbox id="materialRadio${materialNumber.count}" onclick="setRequered(${materialNumber.count})" value="${usedMaterial.material.id}" path="usedmaterialsList[${materialNumber.index}].material.id" disabled="${usedMaterial.material.forDelete}"/>
-                                                    ${materialNumber.count}
+                                                    ${usedMaterial.material.number}
                                                 </td>
                                                 <td>
                                                     ${usedMaterial.material.name}
@@ -81,7 +81,7 @@
                                                     <fmt:formatNumber value="${usedMaterial.material.count}"/>
                                                 </td>
                                                 <td>
-                                                    <fmt:formatNumber value="${usedMaterial.material.cost}" minFractionDigits="2"/>
+                                                    <fmt:formatNumber value="${usedMaterial.material.cost}" minFractionDigits="4"/>
                                                 </td>
                                             </tr>
                                         </c:forEach>

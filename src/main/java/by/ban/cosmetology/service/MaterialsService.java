@@ -29,8 +29,14 @@ public class MaterialsService {
         return materialsDAO.getAllMaterials();
     }
     
-    public Materials findMaterial(int id){
+    public Materials findMaterialByNumber(int number){
         System.out.println("Service level findMaterial by Id is called");
+        
+        return materialsDAO.findMaterialByNumber(number);
+    }
+    
+    public Materials findMaterial(int id){
+        System.out.println("Service level findMaterial by Name is called");
         
         return materialsDAO.findMaterial(id);
     }

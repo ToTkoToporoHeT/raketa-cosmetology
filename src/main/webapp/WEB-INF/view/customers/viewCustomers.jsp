@@ -32,12 +32,12 @@
                                         <tr class="info" role="row">
                                             <th data-classes="id">
                                                 №</th>
-                                            <th data-classes="last-name">
+                                            <th data-classes="name">
                                                 Фамилия</th>
-                                            <th data-classes="first-name"
+                                            <th data-classes="name"
                                                 data-breakpoints="xs sm">
                                                 Имя</th>
-                                            <th data-classes="middle-name"
+                                            <th data-classes="name"
                                                 data-breakpoints="xs sm">
                                                 Отчесто</th>
                                             <th data-classes="address" 

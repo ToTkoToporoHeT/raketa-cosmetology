@@ -9,6 +9,7 @@ import by.ban.cosmetology.model.Materials;
 import by.ban.cosmetology.service.MaterialsService;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -16,6 +17,7 @@ import org.springframework.validation.Validator;
  *
  * @author dazz
  */
+@Component
 public class MaterialValidator implements Validator {
     
     @Autowired 
@@ -29,17 +31,17 @@ public class MaterialValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Materials material = (Materials) target;
-        if (!isUniqueName(material)){
-            errors.rejectValue("name", "name.notUnicue", "Такой материал уже есть");
+        if (!isUniqueNumber(material)){
+            errors.rejectValue("number", "number.notUnicue", "Материал c таким номенклатурным номером уже есть");
         }
     }
     
-    private boolean isUniqueName(Materials material){
-        if (material.getName().isEmpty()){
+    private boolean isUniqueNumber(Materials material){
+        if (material.getNumber() == null){
             return true;
         }
         
-        Materials materialFromBD = materialsService.findMaterial(material.getName());
+        Materials materialFromBD = materialsService.findMaterialByNumber(material.getNumber());
         
         if (materialFromBD == null)
             return true;

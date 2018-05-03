@@ -121,6 +121,15 @@ public class OrderController {
 
         Customers customer = customersService.findCustomer(customerId);
         orders.setCustomer(customer);
+        if (orders.getProvidedservicesList() != null) {
+            for (Providedservices ps : orders.getProvidedservicesList()){
+                if (customer.getAddressId().getCountry().equals("РБ")) {
+                    ps.setCost(ps.getService().getCost());
+                } else {
+                    ps.setCost(ps.getService().getCostFF());
+                }
+            }
+        }
 
         return "/orders/order";
     }
@@ -137,7 +146,11 @@ public class OrderController {
                 iter.remove();
             } else {
                 ps.setService(servicesService.findService(servId));
-                ps.setCost(ps.getService().getCost());
+                if (orders.getCustomer() == null || orders.getCustomer().getAddressId().getCountry().equals("РБ")) {
+                    ps.setCost(ps.getService().getCost());
+                } else {
+                    ps.setCost(ps.getService().getCostFF());
+                }
                 ps.setOrder(orders);
             }
         }
@@ -200,7 +213,7 @@ public class OrderController {
     }
 
     @RequestMapping("/{action}")
-    public String addOrUpdateOrder(@Valid Orders orders, BindingResult result, 
+    public String addOrUpdateOrder(@Valid Orders orders, BindingResult result,
             Model model, @ModelAttribute("action") String action, SessionStatus sessionStatus) {
 
         if (result.hasErrors()) {

@@ -7,7 +7,7 @@
 <%@taglib prefix="page" tagdir="/WEB-INF/tags" %>
 
 <page:mainTamplate>
-    <jsp:attribute name="title">Выбор материалов</jsp:attribute>
+    <jsp:attribute name="title">Выбор услуг</jsp:attribute>
 
     <jsp:body>         
         <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="orderTemp" method="post">
@@ -15,7 +15,7 @@
                 <div class="col-sm-10">
                     <div class="form-group">
                         <div class="panel panel-info">
-                            <div class="panel-heading">Список материалов</div> 
+                            <div class="panel-heading">Список услуг</div> 
                             <div class="panel-body">
                                 <div class="row">                                
                                     <div class="col-sm-12">
@@ -30,7 +30,10 @@
                                             <th data-classes="id">№</th>
                                             <th data-classes="name">Наименование</th>
                                             <th data-classes="number-checkbox">Ставка</th>
-                                            <th data-classes="cost">Стоимость</th>
+                                            <th data-classes="cost"
+                                                data-breakpoints="xs">Стоимость</th>                                           
+                                            <th data-classes="cost"
+                                                data-breakpoints="xs">Стоимость для <abbr title="Иностранных граждан">ИГ</abbr></th>
                                         </tr>
                                     </thead> 
                                     <tbody>
@@ -59,6 +62,9 @@
                                                 </td>
                                                 <td>
                                                     <fmt:formatNumber value="${providedService.service.cost}" minFractionDigits="2"/>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${providedService.service.costFF}" minFractionDigits="2"/>
                                                 </td>
                                             </tr>
                                         </c:forEach>

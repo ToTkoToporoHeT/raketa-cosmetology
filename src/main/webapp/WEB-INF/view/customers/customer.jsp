@@ -52,7 +52,11 @@
                                 <label class="col-sm-2 control-label" for="country">Страна</label>
                                 <div class="col-sm-10">
                                     <formSpring:errors path="addressId.country" cssClass="label label-danger"/>
-                                    <formSpring:input id="country" type="text" path="addressId.country" cssClass="form-control" placeholder="Введите страну в которой прописан клиент"/>
+                                    <formSpring:select id="country" path="addressId.country" class="form-control">
+                                        <formSpring:option value="РБ" label="Республика Беларусь"/>
+                                        <formSpring:option value="ИГ" label="Иностранный гражданин"/>
+                                    </formSpring:select>
+                                    <//formSpring:input id="country" type="text" path="addressId.country" cssClass="form-control" placeholder="Введите страну в которой прописан клиент"/>
                                 </div>
                             </div>
                             <div class="form-group">

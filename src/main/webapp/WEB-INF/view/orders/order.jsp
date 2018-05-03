@@ -137,7 +137,7 @@
                                             </td>
                                             <td>
                                                 <fmt:formatNumber value="${providedService.rate}"/>
-                                            </td>
+                                            </td>                                            
                                             <td>
                                                 <fmt:formatNumber value="${providedService.cost}" minFractionDigits="2"/>
                                             </td>
@@ -217,7 +217,7 @@
                                                 ${usedMaterial.count}
                                             </td>
                                             <td>
-                                                <fmt:formatNumber value="${usedMaterial.cost * usedMaterial.count}" minFractionDigits="2"/>
+                                                <fmt:formatNumber value="${usedMaterial.cost * usedMaterial.count}" minFractionDigits="4"/>
                                             </td>
                                         </tr>
                                     </c:forEach>                                    

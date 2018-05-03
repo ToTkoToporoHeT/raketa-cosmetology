@@ -21,21 +21,26 @@
         <formSpring:form cssClass="form-horizontal" modelAttribute="material" method="POST" action="/materials/material/${action}" role="main">
             <fieldset>
                 <legend>${action == add ? 'Добавление' : 'Редактирование'} материала</legend>
+                <formSpring:hidden path="id"/>
                 <div class="form-group">
-                    <formSpring:hidden path="id"/>
+                    <label class="col-sm-2 control-label" for="name">Номенклатурный №</label>
+                    <div class="col-sm-10">  
+                        <formSpring:errors path="number" cssClass="label label-danger"/>
+                        <formSpring:input id="number" autofocus="${action == 'add' ? 'true' : ''}" type="number" path="number" cssClass="form-control" placeholder="Введите номенклатурный номер"/>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="name">Наименование</label>
                     <div class="col-sm-10">  
                         <formSpring:errors path="name" cssClass="label label-danger"/>
-                        <formSpring:input id="name" autofocus="${action == 'add' ? 'true' : ''}" type="text" path="name" cssClass="form-control" placeholder="Введите наименование"/>
+                        <formSpring:input id="name" type="text" path="name" cssClass="form-control" placeholder="Введите наименование"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="unit">Единицы измерения</label>
                     <div class="col-sm-10">
                         <formSpring:select id="unit" path="unit.id" class="form-control">
-                                <formSpring:options items="${units}" itemValue="id" itemLabel="unit"/>
+                            <formSpring:options items="${units}" itemValue="id" itemLabel="unit"/>
                         </formSpring:select>
                     </div>
                 </div>

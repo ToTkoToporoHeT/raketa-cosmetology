@@ -29,7 +29,7 @@
                                     <thead>
                                         <tr class="info" role="row">
                                             <th data-classes="id">
-                                                №</th>
+                                                Номенкл. №</th>
                                             <th data-classes="name">
                                                 Наименование</th>
                                             <th data-classes="unit" 
@@ -49,7 +49,7 @@
                                             <tr class="coloring">
                                                 <td>
                                                     <input type="radio" name="id" id="materialRadio${material.id}" value="${material.id}">
-                                                    ${materialNumber.count}</td>
+                                                    ${material.number}</td>
                                                 <td>
                                                     ${material.name}
                                                 </td>

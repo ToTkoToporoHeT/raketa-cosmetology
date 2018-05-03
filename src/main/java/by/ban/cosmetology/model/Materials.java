@@ -38,6 +38,7 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name = "Materials.findAll", query = "SELECT m FROM Materials m"),
     @NamedQuery(name = "Materials.findAllActive", query = "SELECT m FROM Materials m WHERE m.forDelete = :del"),
     @NamedQuery(name = "Materials.findById", query = "SELECT m FROM Materials m WHERE m.id = :id"),
+    @NamedQuery(name = "Materials.findByNumber", query = "SELECT m FROM Materials m WHERE m.number = :number"),
     @NamedQuery(name = "Materials.findByName", query = "SELECT m FROM Materials m WHERE m.name = :name"),
     @NamedQuery(name = "Materials.findByCount", query = "SELECT m FROM Materials m WHERE m.count = :count"),
     @NamedQuery(name = "Materials.findByCost", query = "SELECT m FROM Materials m WHERE m.cost = :cost")})
@@ -51,10 +52,16 @@ public class Materials implements Serializable, Cloneable {
     private Integer id;
     
     @Basic(optional = false)
+    @NotNull(message = "Обязательное поле")
+    @Min(value = 0, message = "Не может быть отрицательным")
+    @Column(name = "number", unique = true)
+    private Integer number;
+    
+    @Basic(optional = false)
     @NotNull
     @NotEmpty(message = "Обязательное поле")
     @Size(max = 100, message = "Длинна строки должна быть не больше 100 символов")
-    @Column(name = "name", unique = true)
+    @Column(name = "name")//, unique = true)
     private String name;
     
     @Basic(optional = false)
@@ -87,14 +94,14 @@ public class Materials implements Serializable, Cloneable {
         this.id = id;
     }
 
-    public Materials(Integer id, String name, int count, double cost) {
+    public Materials(Integer id, Integer number, String name, int count, double cost) {
         this.id = id;
         this.name = name.trim();
         this.count = count;
         this.cost = cost;
     }
     
-    public Materials(Integer id, String name, Units unit, int count, double cost) {
+    public Materials(Integer id, Integer number, String name, Units unit, int count, double cost) {
         this.id = id;
         this.name = name.trim();
         this.count = count;
@@ -108,6 +115,14 @@ public class Materials implements Serializable, Cloneable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public String getName() {
@@ -188,7 +203,7 @@ public class Materials implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "by.ban.cosmetology.model.Materials[ id=" + id + ", name=" + name + 
+        return "by.ban.cosmetology.model.Materials[ id=" + id + ", number=" + number +", name=" + name + 
                 ", unit="+ unit + ", count=" + count + ", cost=" + cost + " ]";
     }
 

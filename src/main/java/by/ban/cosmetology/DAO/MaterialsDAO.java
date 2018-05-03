@@ -6,6 +6,7 @@
 package by.ban.cosmetology.DAO;
 
 import by.ban.cosmetology.model.Materials;
+import by.ban.cosmetology.model.Orders;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,6 +41,19 @@ public class MaterialsDAO {
         System.out.println("DAO level findMaterial by Id is called");
 
         return entityManager.find(Materials.class, id);
+    }
+    
+    public Materials findMaterialByNumber(int number) {
+        System.out.println("DAO level findMaterial by Number is called");
+
+        TypedQuery<Materials> tq = entityManager.createNamedQuery("Materials.findByNumber", Materials.class);
+        tq.setParameter("number", number);
+        List<Materials> materialsList = tq.getResultList();
+
+        if (materialsList.size() > 0) {
+            return materialsList.get(0);
+        }
+        return null;
     }
 
     public Materials findMaterial(String name) {

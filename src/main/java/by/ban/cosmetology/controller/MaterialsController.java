@@ -7,6 +7,7 @@ package by.ban.cosmetology.controller;
 
 import by.ban.cosmetology.editors.DecimalEditor;
 import by.ban.cosmetology.model.Materials;
+import by.ban.cosmetology.model.validators.MaterialValidator;
 import by.ban.cosmetology.service.MaterialsService;
 import by.ban.cosmetology.service.UnitsService;
 import java.text.DecimalFormat;
@@ -41,9 +42,13 @@ public class MaterialsController {
     private MaterialsService materialsService;
     @Autowired
     private UnitsService unitsService;
+    @Autowired
+    private MaterialValidator materialValidator;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
+        binder.addValidators(materialValidator);
+        
         NumberFormat nf = NumberFormat.getInstance();
         if (nf instanceof DecimalFormat) {
             DecimalFormat df = (DecimalFormat) nf;
@@ -111,11 +116,11 @@ public class MaterialsController {
 
         switch (action) {
             case "add": {
-                materialsService.addMaterial(material.getName(), material.getUnit().getId(), material.getCount(), material.getCost());
+                materialsService.addMaterial(material);//addMaterial(material.getName(), material.getUnit().getId(), material.getCount(), material.getCost());
                 break;
             }
             case "edit": {
-                materialsService.updateMaterial(material.getId(), material.getName(), material.getUnit().getId(), material.getCount(), material.getCost());
+                materialsService.updateMaterial(material);//updateMaterial(material.getId(), material.getName(), material.getUnit().getId(), material.getCount(), material.getCost());
                 break;
             }
         }

@@ -43,7 +43,8 @@ and open the template in the editor.
     }
     
     .telephone {
-        width: 160px;
+        width: 185px;
+        font-size: 12px;
         text-align: left;
     }
     
