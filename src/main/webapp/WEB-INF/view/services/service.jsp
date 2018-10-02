@@ -18,7 +18,8 @@
     <jsp:attribute name="title">${action == 'add' ? 'Добавить' : 'Редактировать'} услугу</jsp:attribute>
 
     <jsp:body>        
-        <formSpring:form cssClass="form-horizontal" modelAttribute="service" method="POST" action="/services/service/${action}" role="main">
+        <c:url var="actionURL" value="/services/service/${action}"/>
+        <formSpring:form cssClass="form-horizontal" modelAttribute="service" method="POST" action="${actionURL}" role="main">
             <fieldset>
                 <legend>${action == 'add' ? 'Добавление' : 'Редактирование'} услуги</legend>
                 <div class="form-group">
@@ -55,7 +56,7 @@
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" href= "/services/showAllServices">
+                        <a class="btn btn-default" href= "<c:url value="/services/showAllServices"/>">
                         Отмена
                     </a>
                 </div>

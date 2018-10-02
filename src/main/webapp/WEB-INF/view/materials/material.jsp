@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags/"%>
 
@@ -17,8 +16,9 @@
 <page:mainTamplate>
     <jsp:attribute name="title">${action == add ? 'Добавить' : 'Редактировать'} материал</jsp:attribute>
 
-    <jsp:body>        
-        <formSpring:form cssClass="form-horizontal" modelAttribute="material" method="POST" action="/materials/material/${action}" role="main">
+    <jsp:body>    
+        <c:url var="actionURL" value="/materials/material/${action}"/>
+        <formSpring:form cssClass="form-horizontal" modelAttribute="material" method="POST" action="${actionURL}" role="main">
             <fieldset>
                 <legend>${action == add ? 'Добавление' : 'Редактирование'} материала</legend>
                 <formSpring:hidden path="id"/>
@@ -65,7 +65,7 @@
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" href="/materials/showAllMaterials">
+                        <a class="btn btn-default" href="<c:url value="/materials/showAllMaterials"/>">
                         Отмена
                     </a>
                 </div>

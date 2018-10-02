@@ -71,15 +71,15 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="btn-group-vertical" role="group" aria-label="...">
-                        <button tupe="submit" class="btn btn-default" formaction="/staff/worker/show_page/add">
+                        <button tupe="submit" class="btn btn-default" formaction="<c:url value="/staff/worker/show_page/add"/>">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             <span class="text">Добавить</span>
                         </button>
-                        <button tupe="submit" class="btn btn-default" formaction="/staff/worker/show_page/edit">
+                        <button tupe="submit" class="btn btn-default" formaction="<c:url value="/staff/worker/show_page/edit"/>">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             <span class="text">Редактировать</span>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="delete" formaction="/staff/worker/delete">
+                        <button tupe="button" class="btn btn-default" value="delete" formaction="<c:url value="/staff/worker/delete"/>">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                             <span class="text">Удалить</span>
                         </button>

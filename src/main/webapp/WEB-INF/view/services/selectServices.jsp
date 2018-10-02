@@ -76,11 +76,11 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="btn-group-vertical" role="group" aria-label="...">
-                        <button tupe="submit" class="btn btn-default" formaction="/orders/order/selectServices">
+                        <button tupe="submit" class="btn btn-default" formaction="<c:url value="/orders/order/selectServices"/>">
                             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             <span class="text">Выбрать</span>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="back" formaction="/orders/order/show_page/{action}">
+                        <button tupe="button" class="btn btn-default" value="back" formaction="<c:url value="/orders/order/show_page/{action}"/>">
                             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                             <span class="text">Назад</span>
                         </button>

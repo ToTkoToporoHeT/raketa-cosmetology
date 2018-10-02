@@ -14,11 +14,16 @@ import by.ban.cosmetology.service.CustomersService;
 import by.ban.cosmetology.service.MaterialsService;
 import by.ban.cosmetology.service.OrdersService;
 import by.ban.cosmetology.service.ServicesService;
-import by.ban.cosmetology.service.StaffService;
+import by.ban.cosmetology.temp.Cat;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.validation.Valid;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -122,7 +128,7 @@ public class OrderController {
         Customers customer = customersService.findCustomer(customerId);
         orders.setCustomer(customer);
         if (orders.getProvidedservicesList() != null) {
-            for (Providedservices ps : orders.getProvidedservicesList()){
+            for (Providedservices ps : orders.getProvidedservicesList()) {
                 if (customer.getAddressId().getCountry().equals("РБ")) {
                     ps.setCost(ps.getService().getCost());
                 } else {
@@ -200,7 +206,7 @@ public class OrderController {
     public String deleteAllMatFOrder(Orders orders, String action, Model model) {
         System.out.println("Controller level deleteAllMatFOrder is called for " + action + " order");
 
-        orders.setUsedmaterialsList(new ArrayList<Usedmaterials>());
+        orders.getUsedmaterialsList().clear();
         return "/orders/order";
     }
 
@@ -208,7 +214,7 @@ public class OrderController {
     public String deleteAllServFOrder(Orders orders, String action, Model model) {
         System.out.println("Controller level deleteAllServFOrder is called for " + action + " order");
 
-        orders.setProvidedservicesList(new ArrayList<Providedservices>());
+        orders.getProvidedservicesList().clear();
         return "/orders/order";
     }
 
@@ -247,9 +253,9 @@ public class OrderController {
         return "redirect:/orders/showAllOrders";
     }
 
-    @RequestMapping("/{action}/cancel")
-    public String cancelOrder(String action, SessionStatus sessionStatus) {
-        System.out.println("Controller level cancel" + action + "Order is called");
+    @RequestMapping("/cancel")
+    public String cancelOrder(@ModelAttribute("action") String action, SessionStatus sessionStatus) {
+        System.out.println("Controller level cancel " + action + " Order is called");
 
         if (!sessionStatus.isComplete()) {
             sessionStatus.setComplete();
@@ -257,4 +263,24 @@ public class OrderController {
 
         return "redirect:/orders/showAllOrders";
     }
+
+    //отправляет данные для обработки сторонним скриптом (php)
+    @RequestMapping("/openInExcel")
+    public String openOrderInExcel(@Valid Orders orders, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "/orders/order";
+        }
+        
+        return "forward:" + ordersService.getOpenInExceURL(orders);
+
+        /*варинт для заполнения макета договора и его открытия/печати в Excel через Java
+        List<Cat> cats = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Cat cat = new Cat("cat" + i, "color" + i, i);
+            cats.add(cat);
+        }
+        
+        model.addAttribute("modelObject", cats);
+        return "excelContract";*/
+    }        
 }

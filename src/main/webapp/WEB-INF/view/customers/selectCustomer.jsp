@@ -93,7 +93,7 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="btn-group btn-group-vertical" role="group" aria-label="...">
-                        <button tupe="submit" class="btn btn-default" formaction="/orders/order/selectCustomer">
+                        <button tupe="submit" class="btn btn-default" formaction="<c:url value="/orders/order/selectCustomer"/>">
                             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             <span class="text">Выбрать</span>
                         </button>
@@ -101,7 +101,7 @@
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             <span class="text">Добавить</span>
                         </a>
-                        <a class="btn btn-default" value="back" href="/orders/order/show_page/${action}">
+                        <a class="btn btn-default" value="back" href="<c:url value="/orders/order/show_page/${action}"/>">
                             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                             <span class="text">Назад</span>
                         </a>

@@ -6,10 +6,16 @@
 package by.ban.cosmetology.service;
 
 import by.ban.cosmetology.DAO.OrdersDAO;
+import by.ban.cosmetology.controller.OrdersController.OrderController;
 import by.ban.cosmetology.model.Orders;
+import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Staff;
 import by.ban.cosmetology.model.Usedmaterials;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.eclipse.persistence.jpa.jpql.Assert;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,71 +98,135 @@ public class OrdersService {
         calculateMaterialsBalance(order, CalcAction.PLUS);
         ordersDAO.deleteOrder(order);
     }
+    
+    public Double getOrderSum(Orders order) {
+        Double materialsSum = 0.0;
+        Double servicesSum = 0.0;
+        
+        for (Usedmaterials usedmaterial : order.getUsedmaterialsList())
+            materialsSum += usedmaterial.getCost() * usedmaterial.getCount();
+        
+        for (Providedservices providedservice : order.getProvidedservicesList())
+            servicesSum += providedservice.getCost() * providedservice.getRate();
+        
+        return materialsSum + servicesSum;
+    }
+    
+    //формирует строку запроса в PHP скрипт для формирования/печати Excel документа
+    public String getOpenInExceURL(Orders order) {
+        String phpScriptURL = "192.168.1.16:8585/phpOrderPrinter/openOrderInExcel.php?";
 
-    //вычисляет кол-во материалов оставшихся на складе
-    private List<Usedmaterials> calculateMaterialsBalance(Orders order, CalcAction calcAction) {
-        List<Usedmaterials> usedmaterialsList = order.getUsedmaterialsList();
-
-        if (usedmaterialsList == null) {
-            return null;
+        try {
+            
+            phpScriptURL += "staffFullName="    + getURLString(order.getManager().toString())                  + "&";
+            phpScriptURL += "number="           + getURLString(order.getNumber())                              + "&";
+            phpScriptURL += "date="             + getURLString(order.getPrepare_date().toString())             + "&";
+            phpScriptURL += "clientFullName="   + getURLString(order.getCustomer().toString())                 + "&";
+            phpScriptURL += "address="          + getURLString(order.getCustomer().getAddressId().toString())  + "&";
+            phpScriptURL += getServicesURL(order.getProvidedservicesList());
+            phpScriptURL += getMaterialsURL(order.getUsedmaterialsList());
+            phpScriptURL += "sum=" + getOrderSum(order);
+            
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
         }
+           
+        return phpScriptURL;
+    }
 
-        //Переменная определяющая дейсвие сложения или вычитания будет производиться
-        Integer sign;
-        sign = (calcAction == calcAction.MINUS ? -1 : 1);
+        //вычисляет кол-во материалов оставшихся на складе
+        private List<Usedmaterials> calculateMaterialsBalance(Orders order, CalcAction calcAction) {
+            List<Usedmaterials> usedmaterialsList = order.getUsedmaterialsList();
 
-        if (calcAction == CalcAction.EDIT) {
+            if (usedmaterialsList == null) {
+                return null;
+            }
 
-            for (Usedmaterials um : usedmaterialsList) {
+            //Переменная определяющая дейсвие сложения или вычитания будет производиться
+            Integer sign;
+            sign = (calcAction == calcAction.MINUS ? -1 : 1);
 
-                Integer umId = um.getId();
-                int materialCount = um.getMaterial().getCount();
+            if (calcAction == CalcAction.EDIT) {
 
-                if (umId == null) {
-                    materialCount -= um.getCount();
+                for (Usedmaterials um : usedmaterialsList) {
 
-                } else {
-                    int oldCountUseMat = usedmaterialsService.getUsMatCount(umId);
-                    int newCountUseMat = um.getCount();
-                    int diffCountUseMat = oldCountUseMat - newCountUseMat;
+                    Integer umId = um.getId();
+                    int materialCount = um.getMaterial().getCount();
 
-                    materialCount += diffCountUseMat;
+                    if (umId == null) {
+                        materialCount -= um.getCount();
+
+                    } else {
+                        int oldCountUseMat = usedmaterialsService.getUsMatCount(umId);
+                        int newCountUseMat = um.getCount();
+                        int diffCountUseMat = oldCountUseMat - newCountUseMat;
+
+                        materialCount += diffCountUseMat;
+                    }
+
+                    Assert.isFalse(materialCount < 0, "Отрицательный остаток материала - " + um.getMaterial()
+                            + ". Количество материалов на складе не может равняться " + materialCount + ".");
+
+                    um.getMaterial().setCount(materialCount);
                 }
+            } else {
 
-                Assert.isFalse(materialCount < 0, "Отрицательный остаток материала - " + um.getMaterial()
-                        + ". Количество материалов на складе не может равняться " + materialCount + ".");
+                for (Usedmaterials um : usedmaterialsList) {
 
-                um.getMaterial().setCount(materialCount);
+                    int materialCount = um.getMaterial().getCount();
+                    int useMatCount = um.getCount();
+
+                    materialCount += useMatCount * sign;
+
+                    Assert.isFalse(materialCount < 0, "Отрицательный остаток материала - " + um.getMaterial()
+                            + ". Количество материалов на складе не может равняться " + materialCount + ".");
+
+                    um.getMaterial().setCount(materialCount);
+                }
             }
-        } else {
 
-            for (Usedmaterials um : usedmaterialsList) {
-
-                int materialCount = um.getMaterial().getCount();
-                int useMatCount = um.getCount();
-
-                materialCount += useMatCount * sign;
-
-                Assert.isFalse(materialCount < 0, "Отрицательный остаток материала - " + um.getMaterial()
-                        + ". Количество материалов на складе не может равняться " + materialCount + ".");
-
-                um.getMaterial().setCount(materialCount);
-            }
+            return usedmaterialsList;
         }
 
-        return usedmaterialsList;
-    }
-
-    //Получает логин менеджера из Spring security
-    private String getStaffLogin() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
-    }
-
-    //если номер - пустая строка, то 
-    private void setEmptyNumber(Orders order) {
-        if (order.getNumber().isEmpty()) {
-            order.setNumber(null);
+        //Получает логин менеджера из Spring security
+        private String getStaffLogin() {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            return auth.getName();
         }
-    }
+
+        //если номер - пустая строка, то 
+        private void setEmptyNumber(Orders order) {
+            if (order.getNumber().isEmpty()) {
+                order.setNumber(null);
+            }
+        }
+        
+        private String getServicesURL(List<Providedservices> pList) throws UnsupportedEncodingException {
+            String result = "";
+            for (Providedservices ps : pList) {
+                result += "service[]=" 
+                        + getURLString(ps.getService().getName())  + "_" 
+                        + ps.getRate()                             + "_" 
+                        + ps.getCost()                             + "&";
+            }
+            
+            return result;
+        }
+        
+        private String getMaterialsURL(List<Usedmaterials> uList) throws UnsupportedEncodingException {
+            String result = "";
+            for (Usedmaterials um : uList) {
+                result += "material[]=" 
+                        + getURLString(um.getMaterial().getName())            + "_" 
+                        + getURLString(um.getMaterial().getUnit().getUnit())  + "_" 
+                        + um.getCount()                                       + "_" 
+                        + um.getCost()                                        + "&";
+            }
+            
+            return result;
+        }
+    
+        private String getURLString(String str) throws UnsupportedEncodingException {
+            return URLEncoder.encode(str, "utf-8");
+        }
 }

@@ -9,8 +9,9 @@
     <jsp:attribute name="title">Импорт данных</jsp:attribute>
 
     <jsp:body>
+        <c:url var="actionURL" value="/import/uploadAndImport"/>
         <h1>Импорт материалов и услуг из Excel в базу данных</h1>
-        <springForm:form cssClass="form-horizontal" action="/import/uploadAndImport" method="POST" commandName="excelFile" enctype="multipart/form-data">
+        <springForm:form cssClass="form-horizontal" action="${actionURL}" method="POST" commandName="excelFile" enctype="multipart/form-data">
             <div class="row">
                 <fieldset class="col-sm-12 col-lg-12 form-group">
                     <legend></legend>

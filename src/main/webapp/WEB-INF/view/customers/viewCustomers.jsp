@@ -10,9 +10,12 @@
     <jsp:attribute name="currentPage">viewCustomers</jsp:attribute>
 
     <jsp:body> 
-        <c:url value="/customers/customer/show_page/add" var="addCustomer">
+        <c:url var="addCustomer" value="/customers/customer/show_page/add">
             <c:param name="requestFrom" value="viewCustomers"/>
-        </c:url>        
+        </c:url>       
+        <c:url var="editCustomer" value="/customers/customer/show_page/edit"/>
+        <c:url var="deleteCustomer" value="/customers/customer/delete"/>
+        
         <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="customer" method="post" action="/customers">
             <div class="row">
                 <div class="col-sm-10">
@@ -98,11 +101,11 @@
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             <span class="text">Добавить</span>
                         </button>
-                        <button tupe="submit" class="btn btn-default" formaction="/customers/customer/show_page/edit">
+                        <button tupe="submit" class="btn btn-default" formaction="${editCustomer}">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             <span class="text">Редактировать</span>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="delete" formaction="/customers/customer/delete">
+                        <button tupe="button" class="btn btn-default" value="delete" formaction="${deleteCustomer}">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                             <span class="text">Удалить</span>
                         </button>

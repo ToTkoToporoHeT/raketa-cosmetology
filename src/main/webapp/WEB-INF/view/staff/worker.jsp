@@ -9,8 +9,9 @@
 <page:mainTamplate>
     <jsp:attribute name="title">${action == 'add' ? 'Добавить' : 'Редактировать'} сотрудника</jsp:attribute>
 
-    <jsp:body>        
-        <formSpring:form cssClass="form-horizontal" modelAttribute="worker" method="POST" action="/staff/worker/${action}" role="main">
+    <jsp:body>      
+        <c:url var="actionURL" value="/staff/worker/${action}"/>
+        <formSpring:form cssClass="form-horizontal" modelAttribute="worker" method="POST" action="${actionURL}" role="main">
             <fieldset>
                 <legend>${action == 'add' ? 'Добавление' : 'Редактирование'} сотрудника</legend>
                 <formSpring:hidden path="id"/>
@@ -67,7 +68,7 @@
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" href="/staff/showAllStaff">
+                        <a class="btn btn-default" href="<c:url value="/staff/showAllStaff"/>">
                         Отмена
                     </a>
                 </div>

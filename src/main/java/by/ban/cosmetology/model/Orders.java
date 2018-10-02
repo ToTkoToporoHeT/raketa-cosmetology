@@ -77,6 +77,11 @@ public class Orders implements Serializable, Cloneable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private List<Usedmaterials> usedmaterialsList;
 
+    {
+        providedservicesList = new ArrayList<>();
+        usedmaterialsList = new ArrayList<>();
+    }
+    
     public Orders() {
     }
 

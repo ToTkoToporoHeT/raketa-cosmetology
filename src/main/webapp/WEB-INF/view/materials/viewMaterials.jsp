@@ -2,7 +2,6 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags" %>
 
@@ -72,15 +71,15 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="btn-group-vertical" role="group" aria-label="...">
-                        <button tupe="submit" class="btn btn-default" formaction="/materials/material/show_page/add">
+                        <button tupe="submit" class="btn btn-default" formaction="<c:url value="/materials/material/show_page/add"/>">
                             <span class="glyphicon glyphicon-plus"></span>
                             <span class="text">Добавить</span>
                         </button>
-                        <button tupe="submit" class="btn btn-default" formaction="/materials/material/show_page/edit">
+                        <button tupe="submit" class="btn btn-default" formaction="<c:url value="/materials/material/show_page/edit"/>">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             <span class="text">Редактировать</span>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="delete" formaction="/materials/material/delete">
+                        <button tupe="button" class="btn btn-default" value="delete" formaction="<c:url value="/materials/material/delete"/>">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                             <span class="text">Удалить</span>
                         </button>

@@ -3,7 +3,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags/"%>
 
@@ -61,8 +60,25 @@
                 return result;
             }
         </script>
+        <!--Ссылки используемые для обработки событий на странице-->
+        <c:url var="actionURL"          value="/orders/order/${action}"/>
+        <c:url var="cancelURL"          value="/orders/order/cancel"/>
+        <c:url var="printOrder"         value="/printer/order"/>
 
-        <formSpring:form id="mainForm" cssClass="form-horizontal" commandName="orders" method="POST" action="/orders/order/${action}" role="main">
+
+        <c:url var="chooseCustomer" value="/orders/order/show_page/selectCustomer"/>
+
+        <c:url var="selectService"      value="/providedServices/show_page/selectServices"/>
+        <c:url var="removeService"      value="/orders/order/service_delete"/>
+        <c:url var="clearTableServices" value="/orders/order/all_services_delete"/>
+
+        <c:url var="selectMaterial"      value="/usedMaterials/show_page/selectMaterials"/>
+        <c:url var="removeMaterial"      value="/orders/order/material_delete"/>
+        <c:url var="clearTableMaterials" value="/orders/order/all_materials_delete"/>
+
+
+
+        <formSpring:form id="mainForm" cssClass="form-horizontal" commandName="orders" method="POST" action="${actionURL}" role="main">
             <fieldset>
                 <legend>${action == 'add' ? 'Создание' : 'Просмотр'} договора</legend>
                 <div class="row">
@@ -97,7 +113,7 @@
                         <formSpring:input type="text" path="customer" cssClass="form-control" placeholder="Выберите клиента" disabled="true"/>
                     </div>
                     <div class="col-sm-2">
-                        <button type="submit" class="btn btn-default" formaction="/orders/order/show_page/selectCustomer">Выбрать</button>
+                        <button type="submit" class="btn btn-default" formaction="${chooseCustomer}">Выбрать</button>
                     </div>
                 </div>
             </div>
@@ -122,28 +138,32 @@
                                             Стоимость</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <c:forEach items="${orders.providedservicesList}" var="providedService" varStatus="servCount">
-                                        <tr class="coloring">
-                                            <td>
-                                                <input type="radio" name="indexPrServ" id="serviceRadio${servCount.index}" value="${servCount.index}">
-                                                ${servCount.count}
-                                            </td>
-                                            <formSpring:hidden path="providedservicesList[${servCount.index}].id"/>
-                                            <formSpring:hidden path="providedservicesList[${servCount.index}].rate"/>
-                                            <formSpring:hidden path="providedservicesList[${servCount.index}].service.id"/>
-                                            <td>
-                                                ${providedService.service.name}
-                                            </td>
-                                            <td>
-                                                <fmt:formatNumber value="${providedService.rate}"/>
-                                            </td>                                            
-                                            <td>
-                                                <fmt:formatNumber value="${providedService.cost}" minFractionDigits="2"/>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>                                    
-                                </tbody>
+
+                                <c:set var="provadedServicesForURL" value=""/>
+                                <c:forEach items="${orders.providedservicesList}" var="providedService" varStatus="servCount">
+                                    <tr class="coloring">
+                                        <td>
+                                            <input type="radio" name="indexPrServ" id="serviceRadio${servCount.index}" value="${servCount.index}">
+                                            ${servCount.count}
+                                        </td>
+                                        <formSpring:hidden path="providedservicesList[${servCount.index}].id"/>
+                                        <formSpring:hidden path="providedservicesList[${servCount.index}].rate"/>
+                                        <formSpring:hidden path="providedservicesList[${servCount.index}].service.id"/>
+                                        <td>
+                                            ${providedService.service.name}
+                                        </td>
+                                        <td>
+                                            <fmt:formatNumber value="${providedService.rate}"/>
+                                        </td>                                            
+                                        <td>
+                                            <fmt:formatNumber value="${providedService.cost}" minFractionDigits="2"/>
+                                        </td>
+                                    </tr>
+                                    <c:set var="provadedServicesForURL" 
+                                           value="${provadedServicesForURL}service[]=${providedService.service.name}_${providedService.rate}_${providedService.cost}&"
+                                           />
+                                </c:forEach>                                    
+
                             </table>
                         </div>
                         <table class="table table-condensed table-footer">
@@ -163,13 +183,13 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <formSpring:button class="btn btn-primary" formaction = "/providedServices/show_page/selectServices">
+                        <formSpring:button class="btn btn-primary" formaction = "${selectService}">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
                         </formSpring:button>
-                        <button form="services" class="btn btn-info" onclick="return radioChecked('indexPrServ')" formaction="/orders/order/service_delete">
+                        <button form="services" class="btn btn-info" onclick="return radioChecked('indexPrServ')" formaction="${removeService}">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Удалить
                         </button>
-                        <formSpring:button class="btn btn-default" formaction="/orders/order/all_services_delete">
+                        <formSpring:button class="btn btn-default" formaction="${clearTableServices}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Очистить
                         </formSpring:button>    
                     </div>
@@ -198,6 +218,7 @@
                                     </tr>
                                 </thead>                            
                                 <tbody>
+                                    <c:set var="usedmaterialsStrForURL" value=""/>
                                     <c:forEach items="${orders.usedmaterialsList}" var="usedMaterial" varStatus="matCount">
                                         <tr class="coloring">
                                             <td>
@@ -220,6 +241,9 @@
                                                 <fmt:formatNumber value="${usedMaterial.cost * usedMaterial.count}" minFractionDigits="4"/>
                                             </td>
                                         </tr>
+                                        <c:set var="usedmaterialsStrForURL" 
+                                               value="${usedmaterialsStrForURL}material[]=${usedMaterial.material.name}_${usedMaterial.material.unit}_${usedMaterial.count}_${usedMaterial.cost}&"
+                                               />
                                     </c:forEach>                                    
                                 </tbody>                                        
                             </table>
@@ -237,13 +261,13 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <formSpring:button class="btn btn-primary" formaction = "/usedMaterials/show_page/selectMaterials"><!--//"/orders/order/show_page/select/selectMaterials">-->
+                        <formSpring:button class="btn btn-primary" formaction = "${selectMaterial}"><!--//"/orders/order/show_page/select/selectMaterials">-->
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
                         </formSpring:button>
-                        <button form="materials" class="btn btn-info" onclick="return radioChecked('indexUsMat')" type="submit" formaction="/orders/order/material_delete">
+                        <button form="materials" class="btn btn-info" onclick="return radioChecked('indexUsMat')" type="submit" formaction="${removeMaterial}">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Удалить
                         </button>
-                        <formSpring:button class="btn btn-default" formaction="/orders/order/all_materials_delete">
+                        <formSpring:button class="btn btn-default" formaction="${clearTableMaterials}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Очистить
                         </formSpring:button>    
                     </div>
@@ -258,17 +282,24 @@
                 <button form="mainForm" class="btn btn-primary" type="submit"><!--onclick="return validateAllForm(this.form)"-->
                     Сохранить
                 </button>
+
                 <div class="btn-group">
-                    <a href="#" class="btn btn-info">Напечатать</a>
+                    <c:url
+                        var="openInExcel"        
+                        value="http://192.168.1.16:8585/phpOrderPrinter/openOrderInExcel.php?staffFullName=${orders.manager}&number=${orders.number}&date=${orders.prepare_date}&clientFullName=${orders.customer}&address=${orders.customer.addressId}&${provadedServicesForURL}${usedmaterialsStrForURL}sum=${materialsSum + serviceSum}"
+                        />
+                    <%--formSpring:form id="print" action="${openInExcel}" method="GET" commandName="orders"--%>
+                    <button type="submit" form="mainForm" formaction="${openInExcel}" class="btn btn-info">Открыть в MS Excel</button>
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Открыть в MS Word</a>
+                        <li><a href="${printOrder}">Напечатать</a>
                     </ul>
-                </div>                
-                <a class="btn btn-default" onclick="return confirm('Вы дейстительно хотите отменить ${action == 'add' ? 'создание' : 'редактирование'} документа?')" href="/orders/order/${action}/cancel">
+                    <!--/formSpring:form-->
+                </div>              
+                <a class="btn btn-default" onclick="return confirm('Вы дейстительно хотите отменить ${action == 'add' ? 'создание' : 'редактирование'} документа?')" href="${cancelURL}">
                     Отмена
                 </a>
             </div>

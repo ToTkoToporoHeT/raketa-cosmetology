@@ -10,8 +10,8 @@
     <jsp:attribute name="title">${action == 'add' ? 'Добавить' : 'Редактировать'} клиента</jsp:attribute>
 
     <jsp:body>
-        
-        <formSpring:form cssClass="form-horizontal" modelAttribute="customer" method="POST" action="/customers/customer/${action}?requestFrom=${requestFrom}" role="main">
+        <c:url var="actionUrl" value="/customers/customer/${action}?requestFrom=${requestFrom}"/>
+        <formSpring:form cssClass="form-horizontal" modelAttribute="customer" method="POST" action="${actionUrl}" role="main">
             <fieldset>
                 <legend>${action == 'add' ? 'Добавление' : 'Редактирование'} клиента</legend>
                 <formSpring:hidden path="id"/>

@@ -2,7 +2,6 @@
 <%@tag description="Main interface for web-app" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <%@attribute name="title" fragment="true" %>
@@ -92,6 +91,7 @@
         <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')" var="isAdmin"/>
         <security:authorize access="hasRole('ROLE_ROOT')" var="isRoot"/>
 
+        <c:url var="home" value="/index.html"/>
         <c:url var="showMaterials" value="/materials/showAllMaterials"/>
         <c:url var="showServices" value="/services/showAllServices"/>
         <c:url var="viewCustomers" value="/customers/showAllCustomers"/>
@@ -117,14 +117,13 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/index.html">Косметология</a>
+                        <a class="navbar-brand" href="${home}">Косметология</a>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li class="${currentPage == 'index' ? 'active' : ''}"><a href="/index.html">Главная</a></li>
+                            <li class="${currentPage == 'index' ? 'active' : ''}"><a href="${home}">Главная</a></li>
                             <li class="${currentPage == 'addOrder' ? 'active' : ''}"><a href="${addOrder}">Оформление договора</a></li>
-                            <li><a href="#">Запись на прием</a></li>
-                            <li><a href="${test}">Test</a></li>
+                            <li><a href="#">Запись на прием</a></li>                            
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Учет <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -144,6 +143,7 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Администрирование <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li class="${currentPage == 'importData' ? 'active' : ''}"><a href="${importData}">Импорт данных</a></li>
+                                        <li><a href="${test}">Test</a></li>
                                     </ul>
                                 </li>
                             </c:if>
