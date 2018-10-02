@@ -6,7 +6,6 @@
 package by.ban.cosmetology.excel;
 
 import by.ban.cosmetology.model.Orders;
-import by.ban.cosmetology.temp.Cat;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,7 +36,7 @@ public class ExcelContract extends AbstractExcelView {
             HSSFWorkbook workbook, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        //New Excel sheet
+        /*//New Excel sheet
         HSSFSheet excelSheet = workbook.createSheet("Simple excel example");
         //Excel file name change
         response.setHeader("Content-Disposition", "attachment; filename=excelDocument.xls");
@@ -66,10 +65,10 @@ public class ExcelContract extends AbstractExcelView {
             row.createCell(2).setCellValue(cat.getColor());
         }
 
-        //response.sendRedirect("");
+        //response.sendRedirect("");*/
     }
 
-    public void setExcelHeader(HSSFSheet excelSheet, CellStyle styleHeader) {
+    /*public void setExcelHeader(HSSFSheet excelSheet, CellStyle styleHeader) {
         //set Excel Header names
         HSSFRow header = excelSheet.createRow(0);
         header.createCell(0).setCellValue("Name");
@@ -95,5 +94,5 @@ public class ExcelContract extends AbstractExcelView {
                 originalFileName, contentType, content);
         
         return result;
-    }
+    }*/
 }
