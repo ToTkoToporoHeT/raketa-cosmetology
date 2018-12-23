@@ -16,31 +16,17 @@
                 <legend>${action == 'add' ? 'Добавление' : 'Редактирование'} клиента</legend>
                 <formSpring:hidden path="id"/>
                 <div class="form-group">
+                    <label class="col-sm-2 control-label" for="fullName">ФИО</label>
+                    <div class="col-sm-10">  
+                        <formSpring:errors path="fullName" cssClass="label label-danger"/>
+                        <formSpring:input id="fullName" type="text" path="fullName" cssClass="form-control" placeholder="Введите ФИО клиента"/>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-2 control-label" for="login">E-mail</label>
                     <div class="col-sm-10"> 
                         <formSpring:errors path="login" cssClass="label label-danger"/>
                         <formSpring:input id="login" type="text" autofocus="${action == 'add' ? 'true' : ''}"  path="login" cssClass="form-control" placeholder="Введите адрес электронной почты клиента"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="lastName">Фамилия</label>
-                    <div class="col-sm-10">  
-                        <formSpring:errors path="lastName" cssClass="label label-danger"/>
-                        <formSpring:input id="lastName" type="text" path="lastName" cssClass="form-control" placeholder="Введите фамилию клиента"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="firstName">Имя</label>
-                    <div class="col-sm-10">  
-                        <formSpring:errors path="firstName" cssClass="label label-danger"/>
-                        <formSpring:input id="firstName" type="text" path="firstName" cssClass="form-control" placeholder="Введите имя клиента"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="middleName">Отчесто</label>
-                    <div class="col-sm-10">   
-                        <formSpring:errors path="middleName" cssClass="label label-danger"/>
-                        <formSpring:input id="middleName" type="text" path="middleName" cssClass="form-control" placeholder="Введите отчество клиента"/>
                     </div>
                 </div>
                 <div class="row">
@@ -102,9 +88,9 @@
                                         <formSpring:hidden path="telephonenumbersList[${i}].customer"/>
                                     </div>
                                     <script>
-                                        document.getElementById('tel${i}').onkeypress = function (e) {
-                                            return !(/[А-Яа-яA-Za-z ]/.test(String.fromCharCode(e.charCode)));
-                                        };
+                                            document.getElementById('tel${i}').onkeypress = function (e) {
+                                                return !(/[А-Яа-яA-Za-z ]/.test(String.fromCharCode(e.charCode)));
+                                            };
                                     </script>
                                 </c:forEach>                                
                             </div>

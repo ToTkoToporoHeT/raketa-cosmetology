@@ -40,9 +40,7 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name = "Customers.findAll", query = "SELECT c FROM Customers c"),
     @NamedQuery(name = "Customers.findAllActive", query = "SELECT с FROM Customers с WHERE с.enabled = :enabled"),
     @NamedQuery(name = "Customers.findByLogin", query = "SELECT c FROM Customers c WHERE c.login = :login"),
-    @NamedQuery(name = "Customers.findByFirstName", query = "SELECT c FROM Customers c WHERE c.firstName = :firstName"),
-    @NamedQuery(name = "Customers.findByMiddleName", query = "SELECT c FROM Customers c WHERE c.middleName = :middleName"),
-    @NamedQuery(name = "Customers.findByLastName", query = "SELECT c FROM Customers c WHERE c.lastName = :lastName"),
+    @NamedQuery(name = "Customers.findByFullName", query = "SELECT c FROM Customers c WHERE c.fullName = :fullName"),
     @NamedQuery(name = "Customers.findByAddressId", query = "SELECT c FROM Customers c WHERE c.addressId = :addressId")})
 public class Customers implements Serializable, Cloneable {
 
@@ -54,35 +52,21 @@ public class Customers implements Serializable, Cloneable {
     private Integer id;
     
     @Basic(optional = false)
-    @Email(message = "Введите пожалуйста корректный e-mail")
-    @Size(max = 40, message = "Размер должен быть не меньше 40 символов")
-    @Column(name = "login", unique = true)
-    private String login;
-    
-    @Basic(optional = false)
     @NotNull
     @NotEmpty(message = "Обязательное поле")
-    @Size(max = 25, message = "Размер должен быть не больше 25 символов")
-    @Column(name = "lastName")
-    private String lastName;
-    
-    @Basic(optional = false)
-    @NotNull
-    @NotEmpty(message = "Обязательное поле")
-    @Size(max = 25, message = "Размер должен быть не больше 25 символов")
-    @Column(name = "firstName")
-    private String firstName;
-    
-    @Basic(optional = false)
-    @NotNull
-    @NotEmpty(message = "Обязательное поле")
-    @Size(max = 25, message = "Размер должен быть не больше 25 символов")
-    @Column(name = "middleName")
-    private String middleName;
+    @Size(max = 30, message = "Размер должен быть не больше 30 символов")
+    @Column(name = "fullName")
+    private String fullName;
         
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
     @Valid
     private List<Telephonenumbers> telephonenumbersList;
+    
+    @Basic(optional = false)
+    @Email(message = "Введите пожалуйста корректный e-mail")
+    @Size(max = 40, message = "Размер должен быть не меньше 40 символов")
+    @Column(name = "login")
+    private String login;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private List<Orders> ordersList;
@@ -103,11 +87,9 @@ public class Customers implements Serializable, Cloneable {
         this.login = login;
     }
 
-    public Customers(String login, String firstName, String middleName, String lastName) {
+    public Customers(String login, String name) {
         this.login = login;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
+        this.fullName = name;
     }
 
     public Customers(boolean enabled) {
@@ -130,28 +112,12 @@ public class Customers implements Serializable, Cloneable {
         this.login = login;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     @XmlTransient
@@ -210,6 +176,8 @@ public class Customers implements Serializable, Cloneable {
 
     @Override
     public String toString() {
+        /*
+        //представление ФИО в формате <Фамилия> <Первая буква имени>.<Первая буква отчества>.
         char nameFirstChar = ' ';
         char midNameFirstChar = ' ';
         if (firstName != null && !firstName.isEmpty()){
@@ -218,7 +186,8 @@ public class Customers implements Serializable, Cloneable {
         if (middleName != null && !middleName.isEmpty()){
             midNameFirstChar = middleName.charAt(0);
         }
-        return lastName + " " + nameFirstChar + "." + midNameFirstChar + ".";
+        return fullName + " " + nameFirstChar + "." + midNameFirstChar + ".";*/
+        return fullName;
     }
 
     @Override

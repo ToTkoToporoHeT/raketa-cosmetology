@@ -35,14 +35,8 @@
                                         <tr class="info" role="row">
                                             <th data-classes="id">
                                                 №</th>
-                                            <th data-classes="name">
-                                                Фамилия</th>
-                                            <th data-classes="name"
-                                                data-breakpoints="xs sm">
-                                                Имя</th>
-                                            <th data-classes="name"
-                                                data-breakpoints="xs sm">
-                                                Отчесто</th>
+                                            <th data-classes="full-name">
+                                                ФИО</th>
                                             <th data-classes="address" 
                                                 data-breakpoints="xs sm">
                                                 Адрес</th>
@@ -62,13 +56,8 @@
                                                     ${customerNumber.count}
                                                 </td>
                                                 <td>
-                                                    ${customer.lastName}
+                                                    ${customer.fullName}
                                                 </td>
-                                                <td>
-                                                    ${customer.firstName}
-                                                </td>
-                                                <td>
-                                                    ${customer.middleName}
                                                 </td>
                                                 <td>
                                                     ${customer.addressId}

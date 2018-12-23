@@ -46,6 +46,8 @@ public class CustomersDAO {
         return entityManager.find(Customers.class, id);
     }
 
+    /*
+    //находит клиента по e-mail(логину)
     public Customers findCustomer(String login) {
         System.out.println("DAO level findCustomer by Login is called");
 
@@ -56,7 +58,7 @@ public class CustomersDAO {
             return customersList.get(0);
         }
         return null;
-    }
+    }*/
 
     public boolean updateCustomer(Customers customer) {
         System.out.println("DAO level updateCustomer is called");

@@ -39,11 +39,6 @@ public class TelephonenumbersService {
         return telephonenumbersDAO.findTelephoneByNumber(number);
     }
     
-    public Telephonenumbers findTelephonenumberByCustomerLogin(String customerLogin){
-        System.out.println("Service level findTelephonenumberByCustomerLogin is called");
-        return telephonenumbersDAO.findTelephonenumberByCustomerLogin(customerLogin);
-    }
-    
     public boolean updateTelephonenumber(int id, String telephoneNumber, String customerLogin){
         System.out.println("Service level updateTelephonenumber is called");
         return telephonenumbersDAO.updateTelephonenumber(id, telephoneNumber, customerLogin);

@@ -36,11 +36,6 @@ public class CustomersService {
         return custromersDAO.findCustomer(id);
     }
 
-    public Customers findCustomer(String login) {
-        System.out.println("Service level findCustomer by Login is called");
-        return custromersDAO.findCustomer(login);
-    }
-
     public boolean updateCustomer(Customers customer) {
         System.out.println("Service level updateCustomer is called");
 

@@ -19,7 +19,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -51,14 +50,11 @@ public class Address implements Serializable, Cloneable {
     @Basic(optional = false)
     @NotNull
     @NotEmpty(message = "Обязательное поле")
-    @Size(max = 30, message = "Размер должен быть не больше 25 символов")
     @Column(name = "Country")
     private String country;
     
     @Basic(optional = false)
-    @NotNull
-    @NotEmpty(message = "Обязательное поле")
-    @Size(max = 30, message = "Размер должен быть не больше 25 символов")
+    @Size(max = 30, message = "Размер должен быть не больше 30 символов")
     @Column(name = "City")
     private String city;
     
@@ -185,10 +181,21 @@ public class Address implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        String s = country + ", " + city + ", " + street + ", " + house;
-        if (!flat.equals("") && flat != null)
-            s += ", " + flat;
+        String s = country;
+        
+        s = confirmPAddress(s, city);
+        s = confirmPAddress(s, street);
+        s = confirmPAddress(s, house);
+        s = confirmPAddress(s, flat);
+        
         return  s;
+    }
+    
+    private String confirmPAddress(String str, Object pAddress){
+        if (pAddress != null && !pAddress.equals(""))
+            str += ", " + pAddress;
+        
+        return str;
     }
 
     @Override

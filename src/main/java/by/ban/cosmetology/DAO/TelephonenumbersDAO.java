@@ -44,13 +44,6 @@ public class TelephonenumbersDAO {
         return entityManager.find(Telephonenumbers.class, telNumber);
     }
     
-    public Telephonenumbers findTelephonenumberByCustomerLogin(String customerLogin){
-        System.out.println("DAO level findTelephonenumberByCustomerLogin is called");
-        
-        String customer = customerLogin;        
-        return entityManager.find(Telephonenumbers.class, customer);
-    }
-    
     public boolean updateTelephonenumber(Integer id, String telephoneNumber, String customerLogin) {
         System.out.println("DAO level updateTelephonenumber is called");
  

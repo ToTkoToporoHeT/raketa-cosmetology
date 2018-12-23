@@ -14,11 +14,10 @@
         <!--Подключение JQUERY-->
         <script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
         <!--Подключение bootstrap CSS стилей-->
-        <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
-        <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap-theme.min.css"/>">
+        <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap-theme.min.css"/>" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
         <!--Подключение bootstrap JS скриптов-->
-        <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script> 
-        
+        <script src="<c:url value="/resources/js/bootstrap.min.js"/>" ></script> 
         
         <!--Подключение footable CSS стилей-->
         <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>">
@@ -93,7 +92,7 @@
         <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')" var="isAdmin"/>
         <security:authorize access="hasRole('ROLE_ROOT')" var="isRoot"/>
 
-        <c:url var="home" value="/index.html"/>
+        <c:url var="home" value="/"/>
         <c:url var="showMaterials" value="/materials/showAllMaterials"/>
         <c:url var="showServices" value="/services/showAllServices"/>
         <c:url var="viewCustomers" value="/customers/showAllCustomers"/>
@@ -119,11 +118,11 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${home}">Косметология</a>
+                        <a class="navbar-brand" href="#">Косметология</a>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li class="${currentPage == 'index' ? 'active' : ''}"><a href="${home}">Главная</a></li>
+                            <%--<li class="${currentPage == 'index' ? 'active' : ''}"><a href="${home}">Главная</a></li>--%>
                             <li class="${currentPage == 'addOrder' ? 'active' : ''}"><a href="${addOrder}">Оформление договора</a></li>
                             <li><a href="#">Запись на прием</a></li>                            
                             <li class="dropdown">

@@ -7,7 +7,6 @@ package by.ban.cosmetology.controller;
 
 import by.ban.cosmetology.model.Customers;
 import by.ban.cosmetology.model.Telephonenumbers;
-import by.ban.cosmetology.model.validators.CustomerValidator;
 import by.ban.cosmetology.service.CustomersService;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,13 +34,6 @@ public class CustomersController {
 
     @Autowired
     private CustomersService customersService;
-    @Autowired
-    private CustomerValidator customerValidator;
-
-    @InitBinder
-    public void dataBinding(WebDataBinder binder) {
-        binder.addValidators(customerValidator);
-    }
 
     @RequestMapping("/showAllCustomers")
     public ModelAndView getAllCustomers() {
