@@ -193,7 +193,7 @@ public class Orders implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "Order {" + "Id = " + id + ", Номер = " + number + ", Дата = " + prepare_date + ", Клиент = " + customer + ", Работник=" + manager + ",\nОказанные услуги = " + providedservicesList + ",\nИспользованные материалы=" + usedmaterialsList + '}';
+        return "Order {" + "Id = " + id + ", Номер = " + number + ", Дата = " + prepare_date + ", Клиент = " + customer + ", Работник=" + manager + ",\nОказанные услуги = " + providedservicesList + ",\n�?спользованные материалы=" + usedmaterialsList + '}';
     }
 
     @Override

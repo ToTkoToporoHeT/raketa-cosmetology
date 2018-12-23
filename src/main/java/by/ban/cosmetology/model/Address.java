@@ -185,21 +185,10 @@ public class Address implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        String s = country;
-        
-        s = confirmPAddress(s, city);
-        s = confirmPAddress(s, street);
-        s = confirmPAddress(s, house);
-        s = confirmPAddress(s, flat);
-        
+        String s = country + ", " + city + ", " + street + ", " + house;
+        if (!flat.equals("") && flat != null)
+            s += ", " + flat;
         return  s;
-    }
-    
-    private String confirmPAddress(String str, Object pAddress){
-        if (pAddress != null && !pAddress.equals(""))
-            str += ", " + pAddress;
-        
-        return str;
     }
 
     @Override
