@@ -42,7 +42,7 @@
                                         <formSpring:option value="РБ" label="Республика Беларусь"/>
                                         <formSpring:option value="ИГ" label="Иностранный гражданин"/>
                                     </formSpring:select>
-                                    <//formSpring:input id="country" type="text" path="addressId.country" cssClass="form-control" placeholder="Введите страну в которой прописан клиент"/>
+                                    <%--<formSpring:input id="country" type="text" path="addressId.country" cssClass="form-control" placeholder="Введите страну в которой прописан клиент"/>--%>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -78,21 +78,22 @@
                     <div class="col-sm-3 col-sm-offset-1">
                         <fieldset>
                             <legend>Телефоные номера</legend>
-                            <div class="form-group">
+                            <div id="telephone_numbers" class="form-group">
+                                <a href="#" onclick="addField()">Добавить номер телефона</a>
                                 <c:set var="telListLength" value="${fn:length(customer.telephonenumbersList)}"/>
-                                <c:forEach begin="0" end="${telListLength == 0 ? 0 : telListLength - 1}" var="i">
-                                    <div class="form-group">
-                                        <formSpring:hidden path="telephonenumbersList[${i}].id"/>
-                                        <formSpring:errors path="telephonenumbersList[${i}].telephoneNumber" cssClass="label label-danger"/>
-                                        <formSpring:input type="text" id="tel${i}" path="telephonenumbersList[${i}].telephoneNumber"  cssClass="form-control"/>  
-                                        <formSpring:hidden path="telephonenumbersList[${i}].customer"/>
+                                <c:forEach begin="1" end="${telListLength == 0 ? 0 : telListLength}" var="i">
+                                    <div id="tel_number${i - 1}" class="form-group tel-number">
+                                        <formSpring:hidden path="telephonenumbersList[${i - 1}].id"/>
+                                        <formSpring:errors path="telephonenumbersList[${i - 1}].telephoneNumber" cssClass="label label-danger"/>
+                                        <formSpring:input type="text" id="tel${i - 1}" path="telephonenumbersList[${i - 1}].telephoneNumber"  cssClass="form-control"/>  
+                                        <formSpring:hidden path="telephonenumbersList[${i - 1}].customer"/>
                                     </div>
                                     <script>
-                                            document.getElementById('tel${i}').onkeypress = function (e) {
-                                                return !(/[А-Яа-яA-Za-z ]/.test(String.fromCharCode(e.charCode)));
-                                            };
+                                        document.getElementById('tel${i}').onkeypress = function (e) {
+                                            return !(/[А-Яа-яA-Za-z ]/.test(String.fromCharCode(e.charCode)));
+                                        };
                                     </script>
-                                </c:forEach>                                
+                                </c:forEach> 
                             </div>
                         </fieldset>
                     </div>

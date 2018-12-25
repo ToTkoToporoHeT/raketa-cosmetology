@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
     @NamedQuery(name = "Orders.findById", query = "SELECT o FROM Orders o WHERE o.id = :id"),
     @NamedQuery(name = "Orders.findByStaff", query = "SELECT o FROM Orders o WHERE o.manager = :manager"),
-    @NamedQuery(name = "Orders.findByNumber", query = "SELECT o FROM Orders o WHERE o.number = :number"),
+    @NamedQuery(name = "Orders.findByCheckNumber", query = "SELECT o FROM Orders o WHERE o.check_number = :check_number"),
     @NamedQuery(name = "Orders.findByDate", query = "SELECT o FROM Orders o WHERE o.prepare_date = :date")})
 public class Orders implements Serializable, Cloneable {
 
@@ -53,8 +53,8 @@ public class Orders implements Serializable, Cloneable {
     
     @Basic(optional = false)
     @Size(max = 7, message = "Номер не может быть длиннее 7 символов")
-    @Column(name = "number", unique = true)
-    private String number;
+    @Column(name = "check_number", unique = true)
+    private String check_number;
     
     @Basic(optional = false)
     @NotNull(message = "Обязательное поле")
@@ -121,12 +121,12 @@ public class Orders implements Serializable, Cloneable {
         this.id = id;
     }
 
-    public String getNumber() {
-        return number;
+    public String getCheck_number() {
+        return check_number;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setCheck_number(String check_number) {
+        this.check_number = check_number;
     }
 
     public Date getPrepare_date() {
@@ -193,7 +193,7 @@ public class Orders implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "Order {" + "Id = " + id + ", Номер = " + number + ", Дата = " + prepare_date + ", Клиент = " + customer + ", Работник=" + manager + ",\nОказанные услуги = " + providedservicesList + ",\nИспользованные материалы=" + usedmaterialsList + '}';
+        return "Order {" + "Id = " + id + ", Номер = " + check_number + ", Дата = " + prepare_date + ", Клиент = " + customer + ", Работник=" + manager + ",\nОказанные услуги = " + providedservicesList + ",\nИспользованные материалы=" + usedmaterialsList + '}';
     }
 
     @Override

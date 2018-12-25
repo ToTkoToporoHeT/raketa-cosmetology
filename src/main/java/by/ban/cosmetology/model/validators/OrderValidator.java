@@ -43,11 +43,11 @@ public class OrderValidator implements Validator {
     }
 
     private boolean isUniqueNymber(Orders order) {
-        if (order.getNumber().isEmpty())
+        if (order.getCheck_number().isEmpty())
             return true;
         
         //Ищет договор в базе данных по номеру и присваевает его переменной, если договора с таким номером нет в базе, присваевает NULL
-        Orders orderFromDB = ordersService.findOrder(order.getNumber());
+        Orders orderFromDB = ordersService.findOrder(order.getCheck_number());
 
         //Если договор из базы равен NULL значит договора с таким номером еще нет и номер уникален
         if (orderFromDB == null) {

@@ -10,7 +10,7 @@
 <html>
     <head>
         <title><jsp:invoke fragment="title"/></title>
-        
+
         <!--Подключение JQUERY-->
         <script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
         <!--Подключение bootstrap CSS стилей-->
@@ -18,16 +18,18 @@
         <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap-theme.min.css"/>" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
         <!--Подключение bootstrap JS скриптов-->
         <script src="<c:url value="/resources/js/bootstrap.min.js"/>" ></script> 
-        
+
         <!--Подключение footable CSS стилей-->
         <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>">
         <link rel="stylesheet" href="<c:url value="/resources/css/footable.bootstrap.css"/>">
         <link rel="stylesheet" href="<c:url value="/resources/css/footable.bootstrap.min.css"/>">
         <!--Подключение footable JS скриптов-->
-        <script src="<c:url value="/resources/js/tabel_scripts.js"/>"></script>
         <script src="<c:url value="/resources/js/footable.min.js"/>"></script>
         <script src="<c:url value="/resources/js/footable.js"/>"></script>   
         <script src="<c:url value="/resources/js/moment.js"/>"></script>
+        <!--Подключение кастомных скриптов-->        
+        <script src="<c:url value="/resources/js/tabel_scripts.js"/>"></script>
+        <script src="<c:url value="/resources/js/input_scripts.js"/>" type="text/javascript"></script>
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -122,9 +124,11 @@
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <%--<li class="${currentPage == 'index' ? 'active' : ''}"><a href="${home}">Главная</a></li>--%>
-                            <li class="${currentPage == 'addOrder' ? 'active' : ''}"><a href="${addOrder}">Оформление договора</a></li>
-                            <li><a href="#">Запись на прием</a></li>                            
+                            <%--
+                            <li class="${currentPage == 'index' ? 'active' : ''}"><a href="${home}">Главная</a></li>                            
+                            <li><a href="#">Запись на прием</a></li>
+                            --%>
+                            <li class="${currentPage == 'addOrder' ? 'active' : ''}"><a href="${addOrder}">Оформление договора</a></li>                            
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Учет <span class="caret"></span></a>
                                 <ul class="dropdown-menu">

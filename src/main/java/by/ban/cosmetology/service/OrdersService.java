@@ -119,7 +119,7 @@ public class OrdersService {
         try {
             
             phpScriptURL += "staffFullName="    + getURLString(order.getManager().toString())                  + "&";
-            phpScriptURL += "number="           + getURLString(order.getNumber())                              + "&";
+            phpScriptURL += "number="           + getURLString(order.getCheck_number())                              + "&";
             phpScriptURL += "date="             + getURLString(order.getPrepare_date().toString())             + "&";
             phpScriptURL += "clientFullName="   + getURLString(order.getCustomer().toString())                 + "&";
             phpScriptURL += "address="          + getURLString(order.getCustomer().getAddressId().toString())  + "&";
@@ -196,8 +196,8 @@ public class OrdersService {
 
         //если номер - пустая строка, то 
         private void setEmptyNumber(Orders order) {
-            if (order.getNumber().isEmpty()) {
-                order.setNumber(null);
+            if (order.getCheck_number().isEmpty()) {
+                order.setCheck_number(null);
             }
         }
         

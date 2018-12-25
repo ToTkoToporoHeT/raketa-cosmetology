@@ -65,11 +65,11 @@ public class OrdersDAO {
         return order;
     }
 
-    public Orders findOrder(String number) {
+    public Orders findOrder(String check_number) {
         System.out.println("DAO level findOrder by Number is called");
 
-        TypedQuery<Orders> tq = entityManager.createNamedQuery("Orders.findByNumber", Orders.class);
-        tq.setParameter("number", number);
+        TypedQuery<Orders> tq = entityManager.createNamedQuery("Orders.findByCheckNumber", Orders.class);
+        tq.setParameter("check_number", check_number);
         List<Orders> ordersList = tq.getResultList();
 
         if (ordersList.size() > 0) {

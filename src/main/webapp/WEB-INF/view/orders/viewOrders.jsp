@@ -57,7 +57,7 @@
                                                     ${orderNumber.count}
                                                 </td>
                                                 <td>
-                                                    ${order.number}
+                                                    ${order.check_number}
                                                 </td>
                                                 <td>
                                                     <fmt:formatDate type = "date" dateStyle = "long"
