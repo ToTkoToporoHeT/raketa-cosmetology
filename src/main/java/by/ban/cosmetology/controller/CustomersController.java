@@ -55,10 +55,6 @@ public class CustomersController {
 
         Customers tempCustomer = new Customers(true);
         List<Telephonenumbers> telephonenumbers = new ArrayList<>();
-        System.err.println("Величина листа" + telephonenumbers.size());
-        /*for (int i = 0; i < 3; i++) {
-            telephonenumbers.add(new Telephonenumbers());
-        }*/
         tempCustomer.setTelephonenumbersList(telephonenumbers);
 
         model.addAttribute("customer", tempCustomer);
@@ -79,11 +75,6 @@ public class CustomersController {
         }
 
         customer = customersService.findCustomer(idCustomerFC);
-        /*int telCount = customer.getTelephonenumbersList().size();
-        for (int i = 0; i < telCount; i++) {
-            customer.getTelephonenumbersList().add(new Telephonenumbers());
-        }*/
-
         model.addAttribute("customer", customer);
 
         return "/customers/customer";
