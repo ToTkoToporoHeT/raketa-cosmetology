@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+	   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/jdbc
+           http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+">
+ 
+ 
+    <!-- Static Resources Configuration (get access to static sources such as CSS and JavaScript files) -->
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+    <!-- themes can be put in different folder such as
+       <mvc:resources mapping="/resources/**" location="/resources/themeBlue" />
+       <mvc:resources mapping="/resources/**" location="/resources/themeGreen" />
+    -->
+ 
+    <!--find property file. See bean id='dataSource' for example ${jdbc.hsqldb.driverClass}-->
+    <context:property-placeholder location="classpath:util.properties" />
+ 
+    <!-- XML Bean Definitions -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.MySql.driverClass}" />
+        <property name="url" value="${jdbc.MySql.url}" />
+        <property name="username" value="${jdbc.MySql.username}" />
+        <property name="password" value="${jdbc.MySql.password}" />
+    </bean>
+ 
+    <!-- initialize Embedded DataSource. Встроенная база данных
+    <jdbc:initialize-database data-source="dataSource">
+        <jdbc:script location="classpath:dbschema.sql"/>
+        <jdbc:script location="classpath:test-data.sql"/>
+    </jdbc:initialize-database>-->
+ 
+    <!--Do not forget activate @Transactional JPA annotation with <annotation-driven/>-->
+    <!-- JPA Persistence Context and EntityManager configuration -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" >
+        <!--packagesToScan - search Entity and mapping them -->
+        <property name="packagesToScan" value="by.ban.cosmetology.model" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" >
+                <property name="generateDdl" value="true" />
+                <property name="showSql" value="true" />
+            </bean>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">false</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+ 
+    <!-- Automatic Transaction Participation-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+</beans>
