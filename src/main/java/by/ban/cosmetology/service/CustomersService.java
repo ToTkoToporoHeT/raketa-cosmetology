@@ -39,7 +39,7 @@ public class CustomersService {
     public boolean updateCustomer(Customers customer) {
         System.out.println("Service level updateCustomer is called");
 
-        setEmptyLogin(customer);
+        //setEmptyLogin(customer);
         customer = prepareCustomer(customer);
 
         //Выясняет был ли изменен адрес и изменяет его, если это так
@@ -60,7 +60,7 @@ public class CustomersService {
     public boolean addCustomer(Customers customer) {
         System.out.println("Service level addCustomer is called");
 
-        setEmptyLogin(customer);
+        //setEmptyLogin(customer);
         customer = prepareCustomer(customer);
         custromersDAO.addCustomer(customer);
         return true;
@@ -75,12 +75,15 @@ public class CustomersService {
     //из telephonenumbersList и удаляет пустые телефонные номера
     private Customers prepareCustomer(Customers customer) {
         List<Telephonenumbers> telephonenumbersList = customer.getTelephonenumbersList();
-        for (Iterator<Telephonenumbers> it = telephonenumbersList.iterator(); it.hasNext();) {
-            Telephonenumbers tel = it.next();
-            if (tel.getTelephoneNumber().isEmpty()) {
-                it.remove();
-            } else {
-                tel.setCustomer(customer);
+        if (telephonenumbersList != null) {
+            for (Iterator<Telephonenumbers> it = telephonenumbersList.iterator(); it.hasNext();) {
+                Telephonenumbers tel = it.next();
+                String telNumber = tel.getTelephoneNumber();
+                if (telNumber == null || telNumber.isEmpty()) {
+                    it.remove();
+                } else {
+                    tel.setCustomer(customer);
+                }
             }
         }
         customer.setTelephonenumbersList(telephonenumbersList);
@@ -88,10 +91,11 @@ public class CustomersService {
         return customer;
     }
 
-    //Если логин(e-mail) пуст, то сделать его null
+    /*
+    //Если логин(e-mail) пуст, то сделать его null (Использовалось когда логин был обязательным не повторяющимся полем)
     private void setEmptyLogin(Customers customer) {
         if (customer.getLogin().isEmpty()) {
             customer.setLogin(null);
         }
-    }
+    }*/
 }

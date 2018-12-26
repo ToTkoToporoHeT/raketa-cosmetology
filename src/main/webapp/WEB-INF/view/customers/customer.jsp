@@ -85,7 +85,12 @@
                                     <div id="tel_number${i - 1}" class="form-group tel-number">
                                         <formSpring:hidden path="telephonenumbersList[${i - 1}].id"/>
                                         <formSpring:errors path="telephonenumbersList[${i - 1}].telephoneNumber" cssClass="label label-danger"/>
-                                        <formSpring:input type="text" id="tel${i - 1}" path="telephonenumbersList[${i - 1}].telephoneNumber"  cssClass="form-control"/>  
+                                        <div class="input-group">
+                                            <formSpring:input type="text" id="tel${i - 1}" path="telephonenumbersList[${i - 1}].telephoneNumber"  cssClass="form-control"/>  
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" onclick="deleteField(${i - 1})" type="button">Del</button>
+                                            </span>
+                                        </div>
                                         <formSpring:hidden path="telephonenumbersList[${i - 1}].customer"/>
                                     </div>
                                     <script>

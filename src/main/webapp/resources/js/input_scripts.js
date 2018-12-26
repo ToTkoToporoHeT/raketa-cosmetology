@@ -5,11 +5,12 @@
  */
 
 function addField() {
-    var idStr = parseInt($('#telephone_numbers').find('div.tel-number:last').attr('id'));
+    var idStr = $('#telephone_numbers').find('div.tel-number:last').attr('id');
     var telnum;
-    if (idStr)
-        telnum = idStr.slice(10) + 1;
+    if (idStr) {
+        telnum = parseInt(idStr.slice(10)) + 1;
         if (telnum == NaN) telnum = 0;
+    }
     else {
         telnum = 0;
     }

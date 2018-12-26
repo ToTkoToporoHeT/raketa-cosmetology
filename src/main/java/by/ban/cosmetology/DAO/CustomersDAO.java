@@ -59,7 +59,6 @@ public class CustomersDAO {
         }
         return null;
     }*/
-
     public boolean updateCustomer(Customers customer) {
         System.out.println("DAO level updateCustomer is called");
 
@@ -68,9 +67,11 @@ public class CustomersDAO {
         List<Telephonenumbers> telephonenumbersList = findCustomer(customer.getId()).getTelephonenumbersList();
         for (Telephonenumbers tel : telephonenumbersList) {
             boolean telExist = false;
-            for (Telephonenumbers contrTel : customer.getTelephonenumbersList()) {
-                if (Objects.equals(contrTel.getId(), tel.getId())) {
-                    telExist = true;
+            if (customer.getTelephonenumbersList() != null) {
+                for (Telephonenumbers contrTel : customer.getTelephonenumbersList()) {
+                    if (Objects.equals(contrTel.getId(), tel.getId())) {
+                        telExist = true;
+                    }
                 }
             }
             if (!telExist) {
@@ -106,7 +107,7 @@ public class CustomersDAO {
                 entityManager.remove(customer.getAddressId());
             }
         }
-        
+
         return customer.isEnabled();
     }
 }
