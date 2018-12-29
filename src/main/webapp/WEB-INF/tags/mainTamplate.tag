@@ -106,7 +106,7 @@
         <c:url var="importData" value="/import/createPage"/>
 
         <c:url var="materialsTest" value="/materials/showMaterialsTest"/>
-        <c:url var="test" value="/customers/test"/>
+        <c:url var="test" value="/test/show"/>
 
         <div class="container">
 

@@ -22,11 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ControllerTemp {
     
     @RequestMapping("/show")
-    public String show(Model model){
+    public String show(Model model) throws Exception{
         ModelTemp modelTemp = new ModelTemp();
         modelTemp.setMasStr(new String[]{"Крем"});
         model.addAttribute("command", modelTemp);
-        return "/test/showTemp";
+        throw new Exception("Error: Произошла ошибка");
+        //return "/test/showTemp";
     }
     
     @RequestMapping("/result")
