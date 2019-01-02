@@ -9,6 +9,9 @@
     <jsp:attribute name="title">Произошла ошибка</jsp:attribute>
     
     <jsp:body>
-        <p>${error}</p>
+        <h3>${error}</h3>
+        <c:forEach items="${stackTrace}" var="stackTraceElement">
+            <p>${stackTraceElement}</p>
+        </c:forEach>
     </jsp:body>
 </page:mainTamplate>

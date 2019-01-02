@@ -153,7 +153,7 @@
                                 </li>
                             </c:if>
                         </ul>
-                        <c:if test="${not fn:contains(currentPage, 'error')}">
+                        <%--<c:if test="${not fn:contains(currentPage, 'error')}">--%>
                             <ul class="nav navbar-nav navbar-right">
 
                                 <c:if test= "${not isUser}">
@@ -176,7 +176,7 @@
                                 </c:if>
 
                             </ul>
-                        </c:if>
+                        <%--</c:if>--%>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->
             </nav>          

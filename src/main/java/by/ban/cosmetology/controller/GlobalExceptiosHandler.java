@@ -25,6 +25,7 @@ public class GlobalExceptiosHandler {
         LOGGER.error(ex.getMessage());
         ModelAndView mav = new ModelAndView("/errors/globalError");
         mav.addObject("error", ex);
+        mav.addObject("stackTrace", ex.getStackTrace());
         
         return mav;
     }
