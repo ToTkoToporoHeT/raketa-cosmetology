@@ -7,7 +7,6 @@ package by.ban.cosmetology.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +25,8 @@ public class GlobalExceptiosHandler {
         ModelAndView mav = new ModelAndView("/errors/globalError");
         mav.addObject("error", ex);
         mav.addObject("stackTrace", ex.getStackTrace());
+        
+        ex.printStackTrace();
         
         return mav;
     }

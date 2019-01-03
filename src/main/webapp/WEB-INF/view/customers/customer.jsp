@@ -88,7 +88,9 @@
                                         <div class="input-group">
                                             <formSpring:input type="text" id="tel${i - 1}" path="telephonenumbersList[${i - 1}].telephoneNumber"  cssClass="form-control"/>  
                                             <span class="input-group-btn">
-                                                <button class="btn btn-default" onclick="deleteField(${i - 1})" type="button">Del</button>
+                                                <button class="btn btn-default" onclick="deleteField(${i - 1})" type="button">
+                                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                </button>
                                             </span>
                                         </div>
                                         <formSpring:hidden path="telephonenumbersList[${i - 1}].customer"/>
@@ -108,7 +110,7 @@
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" href="javascript:history.back()">
+                    <a class="btn btn-default" href="">
                         Отмена
                     </a>
                 </div>

@@ -16,8 +16,9 @@
         <c:url var="cancelURL"          value="/orders/order/cancel"/>
         <c:url var="printOrder"         value="/printer/order"/>
 
-
-        <c:url var="chooseCustomer" value="/orders/order/show_page/selectCustomer"/>
+        <c:url var="changeCheckNumber"  value="/orders/order/changeCheckNumber"/>
+        <c:url var="changeDate"         value="/orders/order/changeDate"/>
+        <c:url var="chooseCustomer"     value="/orders/order/show_page/selectCustomer"/>
 
         <c:url var="selectService"      value="/providedServices/show_page/selectServices"/>
         <c:url var="removeService"      value="/orders/order/service_delete"/>
@@ -28,6 +29,28 @@
         <c:url var="clearTableMaterials" value="/orders/order/all_materials_delete"/>
         <fieldset>
             <legend>${action == 'add' ? 'Создание' : 'Просмотр'} договора</legend>
+            <formSpring:form id="mainForm" cssClass="form-horizontal" commandName="orders" method="POST" action="${actionURL}" role="main">
+                <div class="row">
+                    <div class="form-group">
+                        <formSpring:hidden path="id"/>
+                        <formSpring:hidden path="manager.id"/>
+                        <div id="numberdiv" class='col-sm-6 col-md-5 col-lg-4'>
+                            <label class="col-sm-4 control-label" for="check_number">Номер чека</label>
+                            <div id="numbertext" class="col-sm-8">
+                                <formSpring:errors path="check_number" cssClass="label label-danger"/>
+                                <formSpring:input id="check_number" path="check_number" cssClass="form-control" aria-describedby="inputError2Status" onblur="postCheckNumber('${changeCheckNumber}')"/>  
+                            </div>
+                        </div>
+                        <div class='col-sm-5 col-md-4 col-lg-3'>
+                            <label class="col-sm-2 control-label" for="datePick">Дата</label>
+                            <div id="datatext" class="col-sm-10">
+                                <formSpring:errors path="prepare_date" cssClass="label label-danger"/>
+                                <formSpring:input id="datePick" type="date" path="prepare_date" cssClass="form-control" onblur="postDate('${changeDate}')"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </formSpring:form>
             <formSpring:form cssClass="form-horizontal" commandName="orders" method="POST">
                 <div class="row">
                     <div class="form-group">
@@ -198,28 +221,6 @@
                     </formSpring:form>
                 </div>
             </div>
-            <formSpring:form id="mainForm" cssClass="form-horizontal" commandName="orders" method="POST" action="${actionURL}" role="main">
-                <div class="row">
-                    <div class="form-group">
-                        <formSpring:hidden path="id"/>
-                        <formSpring:hidden path="manager.id"/>
-                        <div id="numberdiv" class='col-sm-5 col-md-4 col-lg-4'>
-                            <label class="col-sm-2 control-label" for="numberInput">Номер чека</label>
-                            <div id="numbertext" class="col-sm-10">
-                                <formSpring:errors path="check_number" cssClass="label label-danger"/>
-                                <formSpring:input id="numberInput" path="check_number" cssClass="form-control" aria-describedby="inputError2Status"/>  
-                            </div>
-                        </div>
-                        <div class='col-sm-4 col-md-3 col-lg-3'>
-                            <label class="col-sm-2 control-label" for="datePick">Дата</label>
-                            <div id="datatext" class="col-sm-10">
-                                <formSpring:errors path="prepare_date" cssClass="label label-danger"/>
-                                <formSpring:input id="datePick" type="date" path="prepare_date" cssClass="form-control"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </formSpring:form>
             <div class="modal-footer">
                 <div class="row">
                     <p class="col-lg-3 col-md-4 col-sm-5 col-xs-12 alert alert-info pull-left">

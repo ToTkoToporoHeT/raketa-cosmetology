@@ -26,7 +26,7 @@ public class ControllerTemp {
         ModelTemp modelTemp = new ModelTemp();
         modelTemp.setMasStr(new String[]{"Крем"});
         model.addAttribute("command", modelTemp);
-        throw new Exception("Error: Произошла ошибка");
+        throw new Exception("TestError: выброс тестовой ошибки");
         //return "/test/showTemp";
     }
     

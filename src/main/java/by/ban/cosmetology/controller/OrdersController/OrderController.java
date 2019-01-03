@@ -21,6 +21,8 @@ import javax.validation.Valid;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -59,8 +62,8 @@ public class OrderController {
         binder.addValidators(orderValidator);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, "prepare_date", new CustomDateEditor(
+        dateFormat.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(
                 dateFormat, true));
     }
 
@@ -113,6 +116,22 @@ public class OrderController {
         return "/customers/selectCustomer";
     }
 
+    @RequestMapping("/changeDate")
+    public ResponseEntity<String> changeDate(@RequestParam Date prepare_date, Orders orders) {
+        System.out.println("Controller level changeDate is called");
+        
+        orders.setPrepare_date(prepare_date);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @RequestMapping("/changeCheckNumber")
+    public ResponseEntity<String> changeCheckNumber(@RequestParam String check_number, Orders orders) {
+        System.out.println("Controller level changeCheckNumber is called");
+        
+        orders.setCheck_number(check_number);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
     @RequestMapping("/selectCustomer")
     public String selectCustomer(Orders orders, String action, @RequestParam Integer customerId, Model model) {
         System.out.println("Controller level selectCustomer is called for " + action + " order");

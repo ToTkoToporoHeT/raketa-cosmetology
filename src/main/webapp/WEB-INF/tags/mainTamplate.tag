@@ -9,6 +9,7 @@
 
 <html>
     <head>
+        <link rel="shortcut icon" href="<c:url value="/resources/images/logo.ico"/>" type="image/x-icon">
         <title><jsp:invoke fragment="title"/></title>
 
         <!--Подключение JQUERY-->

@@ -30,6 +30,17 @@ function addField() {
 function deleteField(id) {
     $('div#tel_number' + id).remove();
 }
-/*<input id="telephonenumbersList0.id" name="telephonenumbersList[0].id" type="hidden" value="">
- <input id="tel0" name="telephonenumbersList[0].telephoneNumber" class="form-control" type="text" value="">
- <input id="telephonenumbersList0.customer" name="telephonenumbersList[0].customer" type="hidden" value="">*/
+
+function postDate(actionURL) {
+    $.post(actionURL,
+    {
+        prepare_date: $('#datePick').val()
+    });
+}
+
+function postCheckNumber(actionURL) {
+    $.post(actionURL,
+    {
+        check_number: $('#check_number').val()
+    });
+}
