@@ -9,6 +9,7 @@ import by.ban.cosmetology.model.Customers;
 import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Usedmaterials;
+import by.ban.cosmetology.model.VisitDate;
 import by.ban.cosmetology.model.validators.OrderValidator;
 import by.ban.cosmetology.service.CustomersService;
 import by.ban.cosmetology.service.MaterialsService;
@@ -17,6 +18,7 @@ import by.ban.cosmetology.service.ServicesService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import javax.validation.Valid;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +71,8 @@ public class OrderController {
 
     @RequestMapping(value = "/create_page/{actionStr}")
     @Transactional
-    public String createOrderPage(Orders order, @PathVariable String actionStr, Model model) {
+    public String createOrderPage(Orders order, @PathVariable String actionStr, 
+                                                Model model) {
         System.out.println("Controller level createOrderPage is called for "
                 + actionStr + " order");
 
@@ -90,8 +93,11 @@ public class OrderController {
             if (!Hibernate.isInitialized(orders.getProvidedservicesList())) {
                 Hibernate.initialize(orders.getProvidedservicesList());
             }
-            if (Hibernate.isInitialized(order.getUsedmaterialsList())) {
+            if (!Hibernate.isInitialized(orders.getUsedmaterialsList())) {
                 Hibernate.initialize(orders.getUsedmaterialsList());
+            }
+            if (!Hibernate.isInitialized(orders.getVisitDatesList())) {
+                Hibernate.initialize(orders.getVisitDatesList());
             }
 
             model.addAttribute("orders", orders);
@@ -125,15 +131,43 @@ public class OrderController {
     }
     
     @RequestMapping("/changeCheckNumber")
-    public ResponseEntity<String> changeCheckNumber(@RequestParam String check_number, Orders orders) {
+    public ResponseEntity<String> changeCheckNumber(
+            @RequestParam String check_number, Orders orders) {
         System.out.println("Controller level changeCheckNumber is called");
         
         orders.setCheck_number(check_number);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    @RequestMapping("/visit_date/{vDateAction}")
+    public ResponseEntity<String> changeVisitDates(@PathVariable String vDateAction,
+            @RequestParam Integer arrIndex, @RequestParam Date visit_date,
+            Orders orders) {
+        System.out.println("Controller level changeVisitDates is called");
+        
+        List<VisitDate> visitDates = orders.getVisitDatesList();
+        switch (vDateAction) {
+            case "add": {
+                visitDates.add(new VisitDate(visit_date));
+                break;
+            }
+            case "edit": {
+                visitDates.get(arrIndex).setVisit_date(visit_date);
+                break;
+            }
+            case "delete": {
+                visitDates.remove((int)arrIndex);
+                break;
+            }
+        }
+        
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
     @RequestMapping("/selectCustomer")
-    public String selectCustomer(Orders orders, String action, @RequestParam Integer customerId, Model model) {
+    public String selectCustomer(
+            Orders orders, String action, @RequestParam Integer customerId, 
+            Model model) {
         System.out.println("Controller level selectCustomer is called for " + action + " order");
 
         Customers customer = customersService.findCustomer(customerId);
