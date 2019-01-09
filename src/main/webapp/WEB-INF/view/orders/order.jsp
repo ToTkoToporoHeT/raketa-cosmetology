@@ -11,6 +11,9 @@
     <jsp:attribute name="title">${action == 'add' ? 'Создать' : 'Посмотреть'} договор</jsp:attribute>
 
     <jsp:body> 
+        <c:if test="${orders == null}">
+            <c:redirect url="login.html?isRedirected=true"/>
+        </c:if>
         <!--Ссылки используемые для обработки событий на странице-->
         <c:url var="actionURL"          value="/orders/order/${action}"/>
         <c:url var="cancelURL"          value="/orders/order/cancel"/>
@@ -19,6 +22,7 @@
         <c:url var="changeCheckNumber"  value="/orders/order/changeCheckNumber"/>
         <c:url var="changeDate"         value="/orders/order/changeDate"/>
         <c:url var="chooseCustomer"     value="/orders/order/show_page/selectCustomer"/>
+        <c:url var="changeVisitDate"    value="/orders/order/visit_date"/>
 
         <c:url var="selectService"      value="/providedServices/show_page/selectServices"/>
         <c:url var="removeService"      value="/orders/order/service_delete"/>
@@ -38,7 +42,10 @@
                             <label class="col-sm-4 control-label" for="check_number">Номер чека</label>
                             <div id="numbertext" class="col-sm-8">
                                 <formSpring:errors path="check_number" cssClass="label label-danger"/>
-                                <formSpring:input id="check_number" path="check_number" cssClass="form-control" aria-describedby="inputError2Status" onblur="postCheckNumber('${changeCheckNumber}')"/>  
+                                <formSpring:input id="check_number" path="check_number" cssClass="form-control" 
+                                                  aria-describedby="inputError2Status" 
+                                                  placeholder="Введите номер чека"
+                                                  onblur="postCheckNumber('${changeCheckNumber}')"/>  
                             </div>
                         </div>
                         <div class='col-sm-5 col-md-4 col-lg-3'>
@@ -47,7 +54,7 @@
                                 <formSpring:errors path="prepare_date" cssClass="label label-danger"/>
                                 <formSpring:input id="datePick" type="date" path="prepare_date" cssClass="form-control" onblur="postDate('${changeDate}')"/>
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
             </formSpring:form>
@@ -65,7 +72,40 @@
                     </div>
                 </div>
             </formSpring:form> 
-
+            <div class="row">
+                <legend>Даты посещения 
+                    <a href="#" onclick="addVisitDate('${changeVisitDate}')">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+                </legend>
+                <fieldset>                    
+                    <formSpring:form cssClass="form-horizontal" commandName="orders" method="POST">
+                        <div id="visitDates" class="form-group">
+                            <c:set var="vDateListLength" value="${fn:length(orders.visitDatesList)}"/>
+                            <c:forEach begin="1" end="${vDateListLength == 0 ? 0 : vDateListLength}" var="i">
+                                <div id="div_vDate${i - 1}" class="form-group visit-dates col-sm-4 col-md-3">
+                                    <formSpring:hidden path="visitDatesList[${i - 1}].id"/>
+                                    <formSpring:errors path="visitDatesList[${i - 1}].visit_date" cssClass="label label-danger"/>
+                                    <div class="input-group">
+                                        <formSpring:input type="date" id="vDate${i - 1}" 
+                                                          path="visitDatesList[${i - 1}].visit_date"  
+                                                          cssClass="form-control" 
+                                                          onblur="editVisitDate('${changeVisitDate}', ${i - 1})"/>  
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" 
+                                                    onclick="deleteVisitDate('${changeVisitDate}', ${i - 1})" 
+                                                    type="button">
+                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <formSpring:hidden path="visitDatesList[${i - 1}].order"/>
+                                </div>
+                            </c:forEach> 
+                        </div>                    
+                    </formSpring:form> 
+                </fieldset>
+            </div> 
             <div class="row">                    
                 <div class="col-sm-5">
                     <h4>Список оказанных услуг</h4>

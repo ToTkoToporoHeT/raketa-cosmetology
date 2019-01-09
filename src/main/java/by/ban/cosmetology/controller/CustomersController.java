@@ -10,6 +10,7 @@ import by.ban.cosmetology.model.Telephonenumbers;
 import by.ban.cosmetology.service.CustomersService;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -47,11 +48,11 @@ public class CustomersController {
     }
 
     @RequestMapping(value = "/customer/show_page/add")
-    public String showAddPage(@RequestParam String requestFrom, Model model) {
+    public String showAddPage(HttpServletRequest request, Model model) {
         System.out.println("Controller level showAddPage is called");
 
         model.addAttribute("action", "add");
-        model.addAttribute("requestFrom", requestFrom);
+        model.addAttribute("requestFromURL", request.getHeader("referer"));
 
         Customers tempCustomer = new Customers(true);
         List<Telephonenumbers> telephonenumbers = new ArrayList<>();
@@ -81,8 +82,10 @@ public class CustomersController {
     }
 
     @RequestMapping(value = "/customer/{action}")
-    public String addOrUpdateCustomer(@ModelAttribute("customer") @Valid Customers customer, BindingResult result,
-            @PathVariable String action, @RequestParam String requestFrom, Model model) {
+    public String addOrUpdateCustomer(
+            @ModelAttribute("customer") @Valid Customers customer, 
+            BindingResult result, @PathVariable String action, 
+            @RequestParam String requestFromURL, Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("action", action);
@@ -91,13 +94,14 @@ public class CustomersController {
         }
 
         System.out.println("Controller level " + action + "Customer is called");
-
+        
         switch (action) {
             case "add": {
                 customersService.addCustomer(customer);
-                if (requestFrom.equals("selectCustomer")) {
-                    return "redirect:/orders/order/show_page/selectCustomer";
+                if (!requestFromURL.isEmpty()) {
+                    return "redirect:" + requestFromURL;
                 }
+                
                 break;
             }
             case "edit": {

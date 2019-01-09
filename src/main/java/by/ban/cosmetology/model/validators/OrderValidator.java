@@ -34,7 +34,7 @@ public class OrderValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         
-        if (target instanceof String) return;
+        if (!(target instanceof Orders)) return;
         
         Orders order = (Orders) target;
         if (!isUniqueNymber(order)) {

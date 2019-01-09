@@ -73,7 +73,7 @@ public class TelephonenumbersDAO {
         return telephonenumbersList;
     }
  
-    public boolean deleteMaterial(int idTelephonenumber) {
+    public boolean deleteTelephonenumber(int idTelephonenumber) {
         System.out.println("DAO level deleteTelephonenumber is called");
  
         String qlString = "delete from Telephonenumbers where id=?";

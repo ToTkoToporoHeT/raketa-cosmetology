@@ -11,8 +11,11 @@ import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Staff;
 import by.ban.cosmetology.model.Usedmaterials;
+import by.ban.cosmetology.model.VisitDate;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,8 +71,8 @@ public class OrdersService {
 
     public boolean addOrder(Orders order) {
         System.out.println("Service level addOrder is called");
-
-        setEmptyNumber(order);
+        
+        prepareOrder(order);
         order.setManager(staffService.findStaffByLogin(getStaffLogin()));
         calculateMaterialsBalance(order, CalcAction.MINUS);
 
@@ -79,7 +82,7 @@ public class OrdersService {
     public boolean updateOrder(Orders order) {
         System.out.println("Service level updateOrder is called");
 
-        setEmptyNumber(order);
+        prepareOrder(order);
         calculateMaterialsBalance(order, CalcAction.EDIT);
 
         return ordersDAO.updateOrder(order);
@@ -194,11 +197,26 @@ public class OrdersService {
             return auth.getName();
         }
 
-        //если номер - пустая строка, то 
-        private void setEmptyNumber(Orders order) {
+        //подгатовка договора для записи в базу
+        private void prepareOrder(Orders order) {
+            //если номер - пустая строка, то 
             if (order.getCheck_number().isEmpty()) {
                 order.setCheck_number(null);
             }
+            
+            List<VisitDate> visitDates = order.getVisitDatesList();
+            if (visitDates != null) {
+                for (Iterator<VisitDate> it = visitDates.iterator(); it.hasNext();) {
+                    VisitDate visitDate = it.next();
+                    Date date = visitDate.getVisit_date();
+                    if (date == null) {
+                        it.remove();
+                    } else {
+                        visitDate.setOrder(order);
+                    }
+                }
+            }
+            order.setVisitDatesList(visitDates);
         }
         
         private String getServicesURL(List<Providedservices> pList) throws UnsupportedEncodingException {

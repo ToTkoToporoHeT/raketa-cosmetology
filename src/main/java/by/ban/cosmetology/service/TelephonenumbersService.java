@@ -66,7 +66,7 @@ public class TelephonenumbersService {
     
     public boolean deleteTelephonenumber(int idTelephonenumber) {
         System.out.println("Service level deleteTelephonenumber is called");
-        return telephonenumbersDAO.deleteMaterial(idTelephonenumber);
+        return telephonenumbersDAO.deleteTelephonenumber(idTelephonenumber);
     }
     
     public List<Boolean> deleteListOfTelephones(List<Integer> telephonesId){

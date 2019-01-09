@@ -9,9 +9,7 @@
     <jsp:attribute name="title">Выбор клиента</jsp:attribute>
 
     <jsp:body> 
-        <c:url value="/customers/customer/show_page/add" var="addCustomer">            
-            <c:param name="requestFrom" value="selectCustomer"/>
-        </c:url>
+        <c:url value="/customers/customer/show_page/add" var="addCustomer"/>
         <formSpring:form cssClass="form-horizontal" role="main" method="post">
             <div class="row">
                 <div class="col-sm-10">

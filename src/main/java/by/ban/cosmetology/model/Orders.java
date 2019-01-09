@@ -24,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -61,6 +62,10 @@ public class Orders implements Serializable, Cloneable {
     @Column(name = "prepare_date")
     @Temporal(TemporalType.DATE)
     private Date prepare_date;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    @Valid
+    private List<VisitDate> visitDatesList = new ArrayList<>();
         
     @JoinColumn(name = "customerId", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -137,6 +142,15 @@ public class Orders implements Serializable, Cloneable {
         this.prepare_date = prepare_date;
     }
 
+    @XmlTransient
+    public List<VisitDate> getVisitDatesList() {
+        return visitDatesList;
+    }
+
+    public void setVisitDatesList(List<VisitDate> visitDatesList) {
+        this.visitDatesList = visitDatesList;
+    }
+    
     @XmlTransient
     public List<Providedservices> getProvidedservicesList() {
         return providedservicesList;

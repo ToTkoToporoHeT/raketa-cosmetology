@@ -12,6 +12,7 @@ import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Services;
 import by.ban.cosmetology.model.Staff;
 import by.ban.cosmetology.model.Usedmaterials;
+import by.ban.cosmetology.model.VisitDate;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -37,7 +38,7 @@ public class OrdersDAO {
         List<Orders> orders = tq.getResultList();
 
         for (Orders order : orders) {
-            initializePSendUM(order);
+            initializeData(order);
         }
 
         return orders;
@@ -51,7 +52,7 @@ public class OrdersDAO {
         List<Orders> orders = tq.getResultList();
 
         for (Orders order : orders) {
-            initializePSendUM(order);
+            initializeData(order);
         }
 
         return orders;
@@ -81,7 +82,7 @@ public class OrdersDAO {
     public boolean updateOrder(Orders order) {
         System.out.println("DAO level updateOrder is called");
 
-        clearRedudantUMandPS(order);
+        clearRedudantData(order);
         entityManager.merge(order);
         return true;
     }
@@ -108,10 +109,11 @@ public class OrdersDAO {
         return true;
     }
 
-    //Удаляет из базы данных использованные материалы и оказанные услуги
-    //которые были удалены во время редактирования договора
-    private void clearRedudantUMandPS(Orders order) {
+    //Удаляет из базы данных использованные материалы, оказанные услуги и
+    //даты посещений, которые были удалены во время редактирования договора
+    private void clearRedudantData(Orders order) {
         Orders orderOld = findOrder(order.getId());
+        //удаляет использованые миатериалы
         if (orderOld.getUsedmaterialsList() != null) {
             for (Usedmaterials usMat : orderOld.getUsedmaterialsList()) {
                 if (!order.getUsedmaterialsList().contains(usMat)) {
@@ -122,6 +124,7 @@ public class OrdersDAO {
                 }
             }
         }
+        //удаляет оказанные услуги
         if (orderOld.getProvidedservicesList() != null) {
             for (Providedservices prServ : orderOld.getProvidedservicesList()) {
                 if (!order.getProvidedservicesList().contains(prServ)) {
@@ -129,6 +132,15 @@ public class OrdersDAO {
                 }
             }
         }
+        
+        //Удаляет даты посещений
+        if (orderOld.getVisitDatesList() != null) {
+            for (VisitDate visitDate : orderOld.getVisitDatesList()) {
+                if (!order.getVisitDatesList().contains(visitDate)) {
+                    entityManager.remove(visitDate);
+                }
+            }
+        }        
     }
 
     //Удаляет помеченные на удаление и нигде больше не используемые ресурсы, кроме как в удаляемом договоре
@@ -192,12 +204,15 @@ public class OrdersDAO {
         return false;
     }
 
-    private void initializePSendUM(Orders order) {
+    private void initializeData(Orders order) {
         if (!Hibernate.isInitialized(order.getProvidedservicesList())) {
             Hibernate.initialize(order.getProvidedservicesList());
         }
         if (!Hibernate.isInitialized(order.getUsedmaterialsList())) {
             Hibernate.initialize(order.getUsedmaterialsList());
+        }
+        if (!Hibernate.isInitialized(order.getVisitDatesList())) {
+            Hibernate.initialize(order.getVisitDatesList());
         }
     }
 }

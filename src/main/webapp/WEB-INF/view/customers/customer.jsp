@@ -10,7 +10,7 @@
     <jsp:attribute name="title">${action == 'add' ? 'Добавить' : 'Редактировать'} клиента</jsp:attribute>
 
     <jsp:body>
-        <c:url var="actionUrl" value="/customers/customer/${action}?requestFrom=${requestFrom}"/>
+        <c:url var="actionUrl" value="/customers/customer/${action}?requestFromURL=${requestFromURL}"/>
         <formSpring:form cssClass="form-horizontal" modelAttribute="customer" method="POST" action="${actionUrl}" role="main">
             <fieldset>
                 <legend>${action == 'add' ? 'Добавление' : 'Редактирование'} клиента</legend>
@@ -79,7 +79,7 @@
                         <fieldset>
                             <legend>Телефоные номера</legend>
                             <div id="telephone_numbers" class="form-group">
-                                <a href="#" onclick="addField()">Добавить номер телефона</a>
+                                <a href="#" onclick="addTelnumber()">Добавить номер телефона</a>
                                 <c:set var="telListLength" value="${fn:length(customer.telephonenumbersList)}"/>
                                 <c:forEach begin="1" end="${telListLength == 0 ? 0 : telListLength}" var="i">
                                     <div id="tel_number${i - 1}" class="form-group tel-number">
@@ -110,7 +110,7 @@
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                    <a class="btn btn-default" href="">
+                    <a class="btn btn-default" href="${requestFromURL}">
                         Отмена
                     </a>
                 </div>
