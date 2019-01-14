@@ -143,7 +143,7 @@ public class OrderController {
     public ResponseEntity<String> changeVisitDates(@PathVariable String vDateAction,
             @RequestParam Integer arrIndex, @RequestParam Date visit_date,
             Orders orders) {
-        System.out.println("Controller level changeVisitDates is called");
+        System.out.println("Controller level changeVisitDates is called for " + vDateAction);
         
         List<VisitDate> visitDates = orders.getVisitDatesList();
         switch (vDateAction) {

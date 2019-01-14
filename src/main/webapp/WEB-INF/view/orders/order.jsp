@@ -83,11 +83,11 @@
                         <div id="visitDates" class="form-group">
                             <c:set var="vDateListLength" value="${fn:length(orders.visitDatesList)}"/>
                             <c:forEach begin="1" end="${vDateListLength == 0 ? 0 : vDateListLength}" var="i">
-                                <div id="div_vDate${i - 1}" class="form-group visit-dates col-sm-4 col-md-3">
+                                <div class="form-group visit-dates col-sm-4 col-md-3">
                                     <formSpring:hidden path="visitDatesList[${i - 1}].id"/>
                                     <formSpring:errors path="visitDatesList[${i - 1}].visit_date" cssClass="label label-danger"/>
                                     <div class="input-group">
-                                        <formSpring:input type="date" id="vDate${i - 1}" 
+                                        <formSpring:input type="date" 
                                                           path="visitDatesList[${i - 1}].visit_date"  
                                                           cssClass="form-control" 
                                                           onblur="editVisitDate('${changeVisitDate}', ${i - 1})"/>  

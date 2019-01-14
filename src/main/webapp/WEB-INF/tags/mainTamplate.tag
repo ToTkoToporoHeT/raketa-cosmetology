@@ -107,7 +107,7 @@
         <c:url var="importData" value="/import/createPage"/>
 
         <c:url var="materialsTest" value="/materials/showMaterialsTest"/>
-        <c:url var="test" value="/test/show"/>
+        <c:url var="test" value="/ajax_test/show"/>
 
         <div class="container">
 
@@ -149,7 +149,7 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Администрирование <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li class="${currentPage == 'importData' ? 'active' : ''}"><a href="${importData}">Импорт данных</a></li>
-                                        <li><a href="${test}">Test</a></li>
+                                        <li class="${currentPage == 'ajaxTest' ? 'active' : ''}"><a href="${test}">Test</a></li>
                                     </ul>
                                 </li>
                             </c:if>
