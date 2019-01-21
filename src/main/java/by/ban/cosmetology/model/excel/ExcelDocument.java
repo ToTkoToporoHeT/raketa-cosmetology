@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package by.ban.cosmetology.excel;
+package by.ban.cosmetology.model.excel;
 
 import by.ban.cosmetology.model.Materials;
 import by.ban.cosmetology.model.Services;
 import by.ban.cosmetology.model.Units;
-import by.ban.cosmetology.model.excel.ExcelFile;
-import by.ban.cosmetology.model.excel.MaterialDataMap;
-import by.ban.cosmetology.model.excel.ServiceDataMap;
+import by.ban.cosmetology.model.excel.dataImport.ExcelFile;
+import by.ban.cosmetology.model.excel.dataImport.MaterialDataMap;
+import by.ban.cosmetology.model.excel.dataImport.ServiceDataMap;
 import by.ban.cosmetology.service.MaterialsService;
 import by.ban.cosmetology.service.ServicesService;
 import by.ban.cosmetology.service.UnitsService;

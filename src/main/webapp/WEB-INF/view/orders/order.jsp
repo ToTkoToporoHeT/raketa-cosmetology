@@ -272,9 +272,10 @@
 
                     <div class="btn-group">
                         <c:url
-                            var="openInExcel"        
-                            value="http://192.168.1.16:8585/phpOrderPrinter/openOrderInExcel.php?staffFullName=${orders.manager}&number=${orders.check_number}&date=${orders.prepare_date}&clientFullName=${orders.customer}&address=${orders.customer.addressId}&${provadedServicesForURL}${usedmaterialsStrForURL}sum=${materialsSum + serviceSum}"
-                            />
+                            var="openInExcel"
+                            value="/orders/order/openInExcel"
+                        />
+                            <%--value="http://192.168.1.16:8585/phpOrderPrinter/openOrderInExcel.php?staffFullName=${orders.manager}&number=${orders.check_number}&date=${orders.prepare_date}&clientFullName=${orders.customer}&address=${orders.customer.addressId}&${provadedServicesForURL}${usedmaterialsStrForURL}sum=${materialsSum + serviceSum}"--%> 
                         <%--formSpring:form id="print" action="${openInExcel}" method="GET" commandName="orders"--%>
                         <button type="submit" form="mainForm" formaction="${openInExcel}" class="btn btn-info">Открыть в MS Excel</button>
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -10,12 +10,14 @@ import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Usedmaterials;
 import by.ban.cosmetology.model.VisitDate;
+import by.ban.cosmetology.model.excel.Cat;
 import by.ban.cosmetology.model.validators.OrderValidator;
 import by.ban.cosmetology.service.CustomersService;
 import by.ban.cosmetology.service.MaterialsService;
 import by.ban.cosmetology.service.OrdersService;
 import by.ban.cosmetology.service.ServicesService;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +37,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -316,16 +317,9 @@ public class OrderController {
             return "/orders/order";
         }
         
-        return "forward:" + ordersService.getOpenInExceURL(orders);
-
-        /*варинт для заполнения макета договора и его открытия/печати в Excel через Java
-        List<Cat> cats = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Cat cat = new Cat("cat" + i, "color" + i, i);
-            cats.add(cat);
-        }
+        //return "forward:" + ordersService.getOpenInExceURL(orders);
         
-        model.addAttribute("modelObject", cats);
-        return "excelContract";*/
+        model.addAttribute("order", orders);
+        return "excelInvoice";
     }        
 }

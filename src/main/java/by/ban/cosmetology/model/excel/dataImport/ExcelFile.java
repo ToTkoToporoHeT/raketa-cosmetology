@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package by.ban.cosmetology.model.excel;
+package by.ban.cosmetology.model.excel.dataImport;
 
 import javax.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;

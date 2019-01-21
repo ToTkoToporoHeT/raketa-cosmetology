@@ -5,9 +5,9 @@
  */
 package by.ban.cosmetology.controller.forImportData;
 
-import by.ban.cosmetology.model.excel.ExcelFile;
-import by.ban.cosmetology.model.excel.MaterialDataMap;
-import by.ban.cosmetology.model.excel.ServiceDataMap;
+import by.ban.cosmetology.model.excel.dataImport.ExcelFile;
+import by.ban.cosmetology.model.excel.dataImport.MaterialDataMap;
+import by.ban.cosmetology.model.excel.dataImport.ServiceDataMap;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
