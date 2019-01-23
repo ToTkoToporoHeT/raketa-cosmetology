@@ -97,9 +97,9 @@ $.post(postURL + '/' + action,
 
 function appendVisitDate(actionURL, index, today) {
     $('div#visitDates').append(
-        '<div class="form-group visit-dates col-sm-4 col-md-3">\n\
+        '<div class="visit-dates col-sm-4 col-md-3">\n\
             <input name="visitDatesList[' + index + '].id" type="hidden" value="">\n\
-            <div class="input-group">\n\
+            <div class="input-group" style="margin-bottom: 5px;">\n\
                 <input type="date" name="visitDatesList[' + index + '].visit_date" \n\
                         class="form-control" onblur="editVisitDate(\'' + actionURL + '\', ' + index + ')" value="' + today + '">\n\
                 <span class="input-group-btn">\n\

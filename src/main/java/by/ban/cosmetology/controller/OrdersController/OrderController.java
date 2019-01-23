@@ -72,8 +72,9 @@ public class OrderController {
 
     @RequestMapping(value = "/create_page/{actionStr}")
     @Transactional
-    public String createOrderPage(Orders order, @PathVariable String actionStr, 
-                                                Model model) {
+    public String createOrderPage(Orders order,
+                                  @PathVariable String actionStr,
+                                  Model model) {
         System.out.println("Controller level createOrderPage is called for "
                 + actionStr + " order");
 
@@ -124,28 +125,30 @@ public class OrderController {
     }
 
     @RequestMapping("/changeDate")
-    public ResponseEntity<String> changeDate(@RequestParam Date prepare_date, Orders orders) {
+    public ResponseEntity<String> changeDate(@RequestParam Date prepare_date,
+                                             Orders orders) {
         System.out.println("Controller level changeDate is called");
-        
+
         orders.setPrepare_date(prepare_date);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @RequestMapping("/changeCheckNumber")
     public ResponseEntity<String> changeCheckNumber(
             @RequestParam String check_number, Orders orders) {
         System.out.println("Controller level changeCheckNumber is called");
-        
+
         orders.setCheck_number(check_number);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @RequestMapping("/visit_date/{vDateAction}")
     public ResponseEntity<String> changeVisitDates(@PathVariable String vDateAction,
-            @RequestParam Integer arrIndex, @RequestParam Date visit_date,
-            Orders orders) {
+                                                   @RequestParam Integer arrIndex,
+                                                   @RequestParam Date visit_date,
+                                                   Orders orders) {
         System.out.println("Controller level changeVisitDates is called for " + vDateAction);
-        
+
         List<VisitDate> visitDates = orders.getVisitDatesList();
         switch (vDateAction) {
             case "add": {
@@ -157,18 +160,19 @@ public class OrderController {
                 break;
             }
             case "delete": {
-                visitDates.remove((int)arrIndex);
+                visitDates.remove((int) arrIndex);
                 break;
             }
         }
-        
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @RequestMapping("/selectCustomer")
-    public String selectCustomer(
-            Orders orders, String action, @RequestParam Integer customerId, 
-            Model model) {
+    public String selectCustomer(Orders orders,
+                                 String action,
+                                 @RequestParam Integer customerId,
+                                 Model model) {
         System.out.println("Controller level selectCustomer is called for " + action + " order");
 
         Customers customer = customersService.findCustomer(customerId);
@@ -187,7 +191,8 @@ public class OrderController {
     }
 
     @RequestMapping("/selectServices")
-    public String selectServicesFOrder(Orders orders, String action, Model model) {
+    public String selectServicesFOrder(Orders orders,
+                                       String action, Model model) {
         System.out.println("Controller level selectServicesFOrder is called for " + action + " order");
 
         Iterator<Providedservices> iter = orders.getProvidedservicesList().iterator();
@@ -210,7 +215,8 @@ public class OrderController {
     }
 
     @RequestMapping("/selectMaterials")
-    public String selectMaterialsFOrder(Orders orders, String action, Model model) {
+    public String selectMaterialsFOrder(Orders orders,
+                                        String action, Model model) {
         System.out.println("Controller level selectMaterialsFOrder is called for " + action + " order");
 
         Iterator<Usedmaterials> iter = orders.getUsedmaterialsList().iterator();
@@ -229,7 +235,10 @@ public class OrderController {
     }
 
     @RequestMapping("/material_delete")
-    public String deleteMaterialFOrder(Orders orders, String action, @RequestParam Integer indexUsMat, Model model) {
+    public String deleteMaterialFOrder(Orders orders,
+                                       String action,
+                                       @RequestParam Integer indexUsMat,
+                                       Model model) {
         System.out.println("Controller level deleteMaterialFOrder is called for " + action + " order");
 
         if (indexUsMat != null) {
@@ -239,7 +248,10 @@ public class OrderController {
     }
 
     @RequestMapping("/service_delete")
-    public String deleteServiceFOrder(Orders orders, String action, @RequestParam Integer indexPrServ, Model model) {
+    public String deleteServiceFOrder(Orders orders,
+                                      String action,
+                                      @RequestParam Integer indexPrServ,
+                                      Model model) {
         System.out.println("Controller level deleteServiceFOrder is called for " + action + " order");
 
         if (indexPrServ != null) {
@@ -265,8 +277,11 @@ public class OrderController {
     }
 
     @RequestMapping("/{action}")
-    public String addOrUpdateOrder(@Valid Orders orders, BindingResult result,
-            Model model, @ModelAttribute("action") String action, SessionStatus sessionStatus) {
+    public String addOrUpdateOrder(@Valid Orders orders,
+                                   BindingResult result,
+                                   Model model,
+                                   @ModelAttribute("action") String action,
+                                   SessionStatus sessionStatus) {
 
         if (result.hasErrors()) {
             return "/orders/order";
@@ -300,7 +315,8 @@ public class OrderController {
     }
 
     @RequestMapping("/cancel")
-    public String cancelOrder(@ModelAttribute("action") String action, SessionStatus sessionStatus) {
+    public String cancelOrder(@ModelAttribute("action") String action,
+                              SessionStatus sessionStatus) {
         System.out.println("Controller level cancel " + action + " Order is called");
 
         if (!sessionStatus.isComplete()) {
@@ -312,14 +328,19 @@ public class OrderController {
 
     //отправляет данные для обработки сторонним скриптом (php)
     @RequestMapping("/openInExcel")
-    public String openOrderInExcel(@Valid Orders orders, BindingResult result, Model model) {
+    public String openOrderInExcel(@Valid Orders orders,
+                                   BindingResult result,
+                                   @RequestParam(required = false) String contract,
+                                   Model model) {
         if (result.hasErrors()) {
             return "/orders/order";
         }
-        
-        //return "forward:" + ordersService.getOpenInExceURL(orders);
-        
-        model.addAttribute("order", orders);
-        return "excelInvoice";
-    }        
+
+        if (contract == null) {
+            model.addAttribute("order", orders);
+            return "excelInvoice";
+        } else {
+            return "forward:" + ordersService.getOpenInExceURL(orders);
+        }
+    }
 }

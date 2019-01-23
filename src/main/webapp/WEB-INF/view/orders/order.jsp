@@ -72,21 +72,20 @@
                     </div>
                 </div>
             </formSpring:form> 
-            <div class="row">
-                <legend>Даты посещения 
-                    <a href="#" onclick="addVisitDate('${changeVisitDate}')">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    </a>
-                </legend>
-                <fieldset>                    
+                <fieldset>
+                    <legend>Даты посещения 
+                        <a href="#" onclick="addVisitDate('${changeVisitDate}')">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </a>
+                    </legend>                    
                     <formSpring:form cssClass="form-horizontal" commandName="orders" method="POST">
-                        <div id="visitDates" class="form-group">
+                        <div id="visitDates">
                             <c:set var="vDateListLength" value="${fn:length(orders.visitDatesList)}"/>
                             <c:forEach begin="1" end="${vDateListLength == 0 ? 0 : vDateListLength}" var="i">
-                                <div class="form-group visit-dates col-sm-4 col-md-3">
+                                <div class="visit-dates col-sm-4 col-md-3">
                                     <formSpring:hidden path="visitDatesList[${i - 1}].id"/>
                                     <formSpring:errors path="visitDatesList[${i - 1}].visit_date" cssClass="label label-danger"/>
-                                    <div class="input-group">
+                                    <div class="input-group" style="margin-bottom: 5px;">
                                         <formSpring:input type="date" 
                                                           path="visitDatesList[${i - 1}].visit_date"  
                                                           cssClass="form-control" 
@@ -105,7 +104,6 @@
                         </div>                    
                     </formSpring:form> 
                 </fieldset>
-            </div> 
             <div class="row">                    
                 <div class="col-sm-5">
                     <h4>Список оказанных услуг</h4>
@@ -261,36 +259,39 @@
                     </formSpring:form>
                 </div>
             </div>
-            <div class="modal-footer">
-                <div class="row">
-                    <p class="col-lg-3 col-md-4 col-sm-5 col-xs-12 alert alert-info pull-left">
-                        Сумма к оплате: <fmt:formatNumber value="${materialsSum + serviceSum}" minFractionDigits="2" maxFractionDigits="2"/>
-                    </p>
-                    <button form="mainForm" class="btn btn-primary" type="submit"><!--onclick="return validateAllForm(this.form)"-->
-                        Сохранить
-                    </button>
-
-                    <div class="btn-group">
-                        <c:url
-                            var="openInExcel"
-                            value="/orders/order/openInExcel"
-                        />
-                            <%--value="http://192.168.1.16:8585/phpOrderPrinter/openOrderInExcel.php?staffFullName=${orders.manager}&number=${orders.check_number}&date=${orders.prepare_date}&clientFullName=${orders.customer}&address=${orders.customer.addressId}&${provadedServicesForURL}${usedmaterialsStrForURL}sum=${materialsSum + serviceSum}"--%> 
-                        <%--formSpring:form id="print" action="${openInExcel}" method="GET" commandName="orders"--%>
-                        <button type="submit" form="mainForm" formaction="${openInExcel}" class="btn btn-info">Открыть в MS Excel</button>
-                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="${printOrder}">Напечатать</a>
-                        </ul>
-                        <!--/formSpring:form-->
-                    </div>              
-                    <a class="btn btn-default" onclick="return confirm('Вы дейстительно хотите отменить ${action == 'add' ? 'создание' : 'редактирование'} документа?')" href="${cancelURL}">
-                        Отмена
-                    </a>
+            <div class="row modal-footer">
+                <p class="col-lg-3 col-md-4 col-sm-5 col-xs-12 alert alert-info pull-left">
+                    Сумма к оплате: <fmt:formatNumber value="${materialsSum + serviceSum}" minFractionDigits="2" maxFractionDigits="2"/>
+                </p>
+                <div class="checkbox" style="margin-top: 0px">
+                    <label>
+                        <input name="contract" type="checkbox" form="mainForm"/>
+                        Оформить как договор
+                    </label>
                 </div>
+                <button form="mainForm" class="btn btn-primary" type="submit"><!--onclick="return validateAllForm(this.form)"-->
+                    Сохранить
+                </button>
+                <div class="btn-group">
+                    <c:url
+                        var="openInExcel"
+                        value="/orders/order/openInExcel"
+                        />
+                    <%--value="http://192.168.1.16:8585/phpOrderPrinter/openOrderInExcel.php?staffFullName=${orders.manager}&number=${orders.check_number}&date=${orders.prepare_date}&clientFullName=${orders.customer}&address=${orders.customer.addressId}&${provadedServicesForURL}${usedmaterialsStrForURL}sum=${materialsSum + serviceSum}"--%> 
+                    <%--formSpring:form id="print" action="${openInExcel}" method="GET" commandName="orders"--%>
+                    <button type="submit" form="mainForm" formaction="${openInExcel}" class="btn btn-info">Открыть в MS Excel</button>
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="${printOrder}">Напечатать</a>
+                    </ul>
+                    <!--/formSpring:form-->
+                </div>              
+                <a class="btn btn-default" onclick="return confirm('Вы дейстительно хотите отменить ${action == 'add' ? 'создание' : 'редактирование'} документа?')" href="${cancelURL}">
+                    Отмена
+                </a>
             </div>
         </fieldset>
     </jsp:body>

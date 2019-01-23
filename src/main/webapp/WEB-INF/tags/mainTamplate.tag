@@ -103,6 +103,9 @@
         <c:url var="viewOrders" value="/orders/showAllOrders"/>
         <c:url var="addOrder" value="/orders/order/create_page/add"/>
 
+        <!--Отчеты-->
+        <c:url var="PSUM_report" value="/reports/PSandUM"/>
+
         <!--Администрирование ROOT-->
         <c:url var="importData" value="/import/createPage"/>
 
@@ -144,6 +147,12 @@
                                     <li class="${currentPage == 'viewServices' ? 'active' : ''}"><a href="${showServices}">Услуги</a></li>
                                 </ul>
                             </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Сформировать отчет <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="${PSUM_report}">Услуги и материалы</a></li>
+                                </ul>
+                            </li>
                             <c:if test="${isRoot}">
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Администрирование <span class="caret"></span></a>
@@ -155,28 +164,28 @@
                             </c:if>
                         </ul>
                         <%--<c:if test="${not fn:contains(currentPage, 'error')}">--%>
-                            <ul class="nav navbar-nav navbar-right">
+                        <ul class="nav navbar-nav navbar-right">
 
-                                <c:if test= "${not isUser}">
-                                    <li style= "padding-top: 15px; padding-bottom: 15px;">
-                                        <font size="1">Вы не вошли в приложение</font>
-                                    </li>
-                                    <li>
-                                        <a href= "<c:url value= "/login.html"/>">Войти</a>
-                                    </li>
-                                </c:if>
+                            <c:if test= "${not isUser}">
+                                <li style= "padding-top: 15px; padding-bottom: 15px;">
+                                    <font size="1">Вы не вошли в приложение</font>
+                                </li>
+                                <li>
+                                    <a href= "<c:url value= "/login.html"/>">Войти</a>
+                                </li>
+                            </c:if>
 
-                                <c:if test= "${isUser}">
-                                    <li style= "padding-top: 15px; padding-bottom: 15px;">
-                                        <font size="1">Вы вошли как:</font>
-                                        <security:authentication property= "principal.username"/>
-                                    </li>
-                                    <li>
-                                        <a href= "<c:url value= "/j_spring_security_logout"/>">Выход</a>
-                                    </li>
-                                </c:if>
+                            <c:if test= "${isUser}">
+                                <li style= "padding-top: 15px; padding-bottom: 15px;">
+                                    <font size="1">Вы вошли как:</font>
+                                    <security:authentication property= "principal.username"/>
+                                </li>
+                                <li>
+                                    <a href= "<c:url value= "/j_spring_security_logout"/>">Выход</a>
+                                </li>
+                            </c:if>
 
-                            </ul>
+                        </ul>
                         <%--</c:if>--%>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->

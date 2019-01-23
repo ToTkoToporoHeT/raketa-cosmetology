@@ -8,34 +8,29 @@ package by.ban.cosmetology.model.excel;
 import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Usedmaterials;
+import by.ban.cosmetology.service.Utility.Transliterator;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 /**
  *
  * @author dazz
  */
-public class ExcelInvoice extends AbstractXlsxView {
-    private Workbook wb;
+public class ExcelInvoice extends ExcelDocument {
 
     @Override
     protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest request, HttpServletResponse response) throws Exception {
         
         Orders order = (Orders) map.get("order");
-        //New Excel sheet
-        Sheet excelSheet = workbook.getSheetAt(0);
-        //Excel file name change
-        response.setHeader("Content-Disposition", "attachment; filename=" + order.getCustomer().toString() + ".xlsx");
         
         //ФИО клиента
         setCellValue(new CellReference("Sheet1!K7"), order.getCustomer().toString());
@@ -59,30 +54,25 @@ public class ExcelInvoice extends AbstractXlsxView {
                 "косметик " + order.getManager().toString());
         setCellValue(new CellReference("Sheet1!AL27"), order.getManager().toString());
         //Дата
-        setCellValue(new CellReference("Sheet1!A18"), new Date());
-        setCellValue(new CellReference("Sheet1!A35"), new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        Date date = new Date();
+        setCellValue(new CellReference("Sheet1!A18"), date);
+        setCellValue(new CellReference("Sheet1!A35"), date);
+        
+        //Смена имени файла
+        response.setHeader("Content-Disposition", "attachment; filename=" 
+                + Transliterator.translit(order.getCustomer().toString()) 
+                + " " + sdf.format(date) + ".xlsx");
     }
 
     @Override
     protected Workbook createWorkbook(Map<String, Object> model, HttpServletRequest request) {
         try {
-            wb = new XSSFWorkbook("C:\\excelTamplates\\Чек на оплату.xlsx");
+            wbx = new XSSFWorkbook("C:\\excelTamplates\\Чек на оплату.xlsx");
         } catch (IOException ex) {
             Logger.getLogger(ExcelInvoice.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return wb;
-    }
-    
-    protected void setCellValue(CellReference cellRef, String value) {
-        wb.getSheet(cellRef.getSheetName()).getRow(cellRef.getRow()).getCell(cellRef.getCol()).setCellValue(value);
-    }
-    
-    protected void setCellValue(CellReference cellRef, Double value) {
-        wb.getSheet(cellRef.getSheetName()).getRow(cellRef.getRow()).getCell(cellRef.getCol()).setCellValue(value);
-    }
-    
-    protected void setCellValue(CellReference cellRef, Date value) {
-        wb.getSheet(cellRef.getSheetName()).getRow(cellRef.getRow()).getCell(cellRef.getCol()).setCellValue(value);
+        return wbx;
     }
 }

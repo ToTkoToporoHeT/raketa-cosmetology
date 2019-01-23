@@ -6,7 +6,8 @@
 						   
 						   
     <!-- When a controller returns excelDocument render the model with the spring.mvc.excelpdf.ExcelDocument class -->						   
-    <bean id="excelDocument"  class="by.ban.cosmetology.model.excel.ExcelDocument" />
-    <bean id="excelInvoice"  class="by.ban.cosmetology.model.excel.ExcelInvoice" />
+    <!--bean id="excelDocument"    class="by.ban.cosmetology.model.excel.ExcelDocument" /-->
+    <bean id="excelInvoice"     class="by.ban.cosmetology.model.excel.ExcelInvoice" />
+    <bean id="excelReport"      class="by.ban.cosmetology.model.excel.ExcelReport" />
  	
 </beans>
