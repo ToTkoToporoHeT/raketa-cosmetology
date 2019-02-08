@@ -5,12 +5,13 @@
  */
 package by.ban.cosmetology.controller;
 
+import by.ban.cosmetology.DAO.OrdersDAO;
 import by.ban.cosmetology.model.Orders;
-import java.util.LinkedList;
+import java.util.Date;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,13 +24,16 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/reports")
 public class ReportController {
     
+    @Autowired
+    private OrdersDAO ordersDAO;
+    
     @RequestMapping("/PSandUM")
     public ModelAndView openReportPSandUM() {
-        ModelAndView model = new ModelAndView("excelReport");
+        ModelAndView mav = new ModelAndView("excelReport");
         
-        List<Orders> ordersForReport = new LinkedList<>();
-        model.addObject(ordersForReport);
+        List<Orders> ordersForReport = ordersDAO.getMontOrders(new Date());
+        mav.addObject("ordersForReport", ordersForReport);
         
-        return model;
+        return mav;
     }
 }

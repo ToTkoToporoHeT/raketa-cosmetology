@@ -44,13 +44,13 @@ public class Usedmaterials implements Serializable, Cloneable {
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "count")
-    private Integer count;
+    @Column(name = "count", precision = 3, scale = 2)
+    private Double count;
     
     @Basic(optional = false)
     @NotNull
     @Min(value = 0)
-    @Column(name = "cost")
+    @Column(name = "cost", precision = 3, scale = 2)
     private Double cost;
     
     @JoinColumn(name = "orderId", referencedColumnName = "id")
@@ -72,12 +72,12 @@ public class Usedmaterials implements Serializable, Cloneable {
         this.material = materialId;
     }
 
-    public Usedmaterials(Integer id, int count) {
+    public Usedmaterials(Integer id, double count) {
         this.id = id;
         this.count = count;
     }
 
-    public Usedmaterials(int count, Orders orderId, Materials materialId) {
+    public Usedmaterials(double count, Orders orderId, Materials materialId) {
         this.count = count;
         this.orderId = orderId;
         this.material = materialId;
@@ -91,11 +91,11 @@ public class Usedmaterials implements Serializable, Cloneable {
         this.id = id;
     }
 
-    public Integer getCount() {
+    public Double getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(Double count) {
         this.count = count;
     }
 

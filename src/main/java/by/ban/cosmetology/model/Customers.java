@@ -196,4 +196,8 @@ public class Customers implements Serializable, Cloneable {
         if (addressId != null) clone.addressId = (Address) addressId.clone();
         return clone; //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public boolean isRBcitizen() {
+        return addressId.getCountry().equals("РБ");
+    }
 }

@@ -13,15 +13,15 @@ import javax.validation.constraints.NotNull;
  * в которых располагаются данные для таблицы БД
  * @author dazz
  */
-public class DataMapForImport {
+public class DataRowColInfo {
 
     @NotNull
     @Min(0)
-    private int name_ColumnNumber;
+    private int name;
 
     @NotNull
     @Min(0)
-    private int cost_ColumnNumber;
+    private int price;
 
     @NotNull
     @Min(0)
@@ -31,30 +31,30 @@ public class DataMapForImport {
     @Min(0)
     private int rowEndData;
 
-    public DataMapForImport() {
+    public DataRowColInfo() {
     }
 
-    public DataMapForImport(int rowStartData, int rowEndData, int name_ColumnNumber, int cost_ColumnNumber) {
-        this.name_ColumnNumber = name_ColumnNumber;
-        this.cost_ColumnNumber = cost_ColumnNumber;
+    public DataRowColInfo(int rowStartData, int rowEndData, int name, int price) {
+        this.name = name;
+        this.price = price;
         this.rowStartData = rowStartData;
         this.rowEndData = rowEndData;
     }   
 
-    public int getName_ColumnNumber() {
-        return name_ColumnNumber;
+    public int getName() {
+        return name;
     }
 
-    public void setName_ColumnNumber(int name_ColumnNumber) {
-        this.name_ColumnNumber = name_ColumnNumber;
+    public void setName(int name) {
+        this.name = name;
     }
 
-    public int getCost_ColumnNumber() {
-        return cost_ColumnNumber;
+    public int getPrice() {
+        return price;
     }
 
-    public void setCost_ColumnNumber(int cost_ColumnNumber) {
-        this.cost_ColumnNumber = cost_ColumnNumber;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public int getRowStartData() {

@@ -9,62 +9,62 @@ and open the template in the editor.
 */
 
 /*Оформление столбцов {*/
-    .id {
-        width: 2%;
-        text-align: center;
-    }
+.id {
+    width: 2%;
+    text-align: center;
+}
 
-    .name {
-        text-align: left;
-    }
+.name {
+    text-align: left;
+}
 
-    .unit {
-        width: 10%;
-        text-align: center;
-    }
+.unit {
+    width: 10%;
+    text-align: center;
+}
 
-    .count {
-        width: 15%;
-        text-align: center;
-    }
+.count {
+    width: 15%;
+    text-align: center;
+}
 
-    .cost {
-        width: 15%;
-        text-align: center;
-    }
-    
-    .login, .full-name, .type, .status {
-        text-align: center;
-    }
-    
-    .address {
-        width: 250px;
-        text-align: left;
-    }
-    
-    .telephone {
-        width: 185px;
-        font-size: 12px;
-        text-align: left;
-    }
-    
-    .number {
-        width: 70px;
-        text-align: center; 
-    }
-    
-    .table-fixedH-small .number {
-        width: 7%;
-    }
-    
-    .number-checkbox {
-        width: 100px;
-    }
-    
-    .date {
-        width: 170px;
-        text-align: center;
-    }
+.cost {
+    width: 15%;
+    text-align: center;
+}
+
+.login, .full-name, .type, .status {
+    text-align: center;
+}
+
+.address {
+    width: 250px;
+    text-align: left;
+}
+
+.telephone {
+    width: 185px;
+    font-size: 12px;
+    text-align: left;
+}
+
+.number {
+    width: 70px;
+    text-align: center; 
+}
+
+.table-fixedH-small .number {
+    width: 7%;
+}
+
+.number-checkbox {
+    width: 100px;
+}
+
+.date {
+    width: 170px;
+    text-align: center;
+}
 /*}*/
 
 .table thead th {
@@ -73,7 +73,7 @@ and open the template in the editor.
 
 .table tbody tr td {
     vertical-align: middle;
-    padding-right: 30px;
+    /*padding-right: 30px;*/
 }
 
 .table tbody tr td input[type=checkbox] {

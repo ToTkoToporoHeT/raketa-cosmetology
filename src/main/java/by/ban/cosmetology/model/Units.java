@@ -42,11 +42,13 @@ public class Units implements Serializable, Cloneable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 5)
     @Column(name = "unit", unique = true)
     private String unit;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "unit")
     private List<Materials> materialsList;
 
@@ -55,6 +57,10 @@ public class Units implements Serializable, Cloneable {
 
     public Units(Integer id) {
         this.id = id;
+    }
+    
+    public Units(String unit) {
+        this.unit = unit;
     }
 
     public Units(Integer id, String unit) {

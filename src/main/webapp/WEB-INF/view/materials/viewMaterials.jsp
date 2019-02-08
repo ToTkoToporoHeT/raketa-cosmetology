@@ -79,7 +79,9 @@
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             <span class="text">Редактировать</span>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="delete" formaction="<c:url value="/materials/material/delete"/>">
+                        <button tupe="button" class="btn btn-default" value="delete" 
+                                onclick="return confirm('Вы дейстительно хотите удалить материал?')"
+                                formaction="<c:url value="/materials/material/delete"/>">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                             <span class="text">Удалить</span>
                         </button>

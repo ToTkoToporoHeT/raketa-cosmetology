@@ -16,9 +16,9 @@ public class ExcelFile {
     @Valid
     private MultipartFile mpFile;
     @Valid
-    private ServiceDataMap serviceDataMap;
+    private ServicesRowColInfo servicesRowColInfo;
     @Valid
-    private MaterialDataMap materilDataMap;
+    private MaterialRowColInfo materilRowColInfo;
 
     public ExcelFile() {
     }
@@ -27,15 +27,15 @@ public class ExcelFile {
         this.mpFile = mpFile;
     }
 
-    public ExcelFile(ServiceDataMap serviceDataMap, MaterialDataMap materilDataMap) {
-        this.serviceDataMap = serviceDataMap;
-        this.materilDataMap = materilDataMap;
+    public ExcelFile(ServicesRowColInfo servicesRowColInfo, MaterialRowColInfo materialRowColInfo) {
+        this.servicesRowColInfo = servicesRowColInfo;
+        this.materilRowColInfo = materialRowColInfo;
     }
 
-    public ExcelFile(MultipartFile mpFile, ServiceDataMap serviceDataMap, MaterialDataMap materilDataMap) {
+    public ExcelFile(MultipartFile mpFile, ServicesRowColInfo servicesRowColInfo, MaterialRowColInfo materialRowColInfo) {
         this.mpFile = mpFile;
-        this.serviceDataMap = serviceDataMap;
-        this.materilDataMap = materilDataMap;
+        this.servicesRowColInfo = servicesRowColInfo;
+        this.materilRowColInfo = materialRowColInfo;
     }
 
     public MultipartFile getMpFile() {
@@ -46,19 +46,19 @@ public class ExcelFile {
         this.mpFile = mpFile;
     }
 
-    public ServiceDataMap getServiceDataMap() {
-        return serviceDataMap;
+    public ServicesRowColInfo getServicesRowColInfo() {
+        return servicesRowColInfo;
     }
 
-    public void setServiceDataMap(ServiceDataMap serviceDataMap) {
-        this.serviceDataMap = serviceDataMap;
+    public void setServicesRowColInfo(ServicesRowColInfo servicesRowColInfo) {
+        this.servicesRowColInfo = servicesRowColInfo;
     }
 
-    public MaterialDataMap getMaterilDataMap() {
-        return materilDataMap;
+    public MaterialRowColInfo getMaterialRowColInfo() {
+        return materilRowColInfo;
     }
 
-    public void setMaterilDataMap(MaterialDataMap materilDataMap) {
-        this.materilDataMap = materilDataMap;
+    public void setMaterialRowColInfo(MaterialRowColInfo materilDataMap) {
+        this.materilRowColInfo = materilDataMap;
     }
 }

@@ -37,11 +37,12 @@ public class MaterialValidator implements Validator {
     }
     
     private boolean isUniqueNumber(Materials material){
-        if (material.getNumber() == null){
+        Integer materialNum = material.getNumber();
+        if (materialNum == null || materialNum == 0){
             return true;
         }
         
-        Materials materialFromBD = materialsService.findMaterialByNumber(material.getNumber());
+        Materials materialFromBD = materialsService.findMaterialByNumber(materialNum);
         
         if (materialFromBD == null)
             return true;

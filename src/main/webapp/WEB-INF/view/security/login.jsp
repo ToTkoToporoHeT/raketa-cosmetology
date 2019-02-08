@@ -46,11 +46,11 @@
                     <label for= "inputPassword" class= "form-label">Пароль</label>
                     <input type= "password" id= "inputPassword" class= "form-control" name= "j_password" placeholder="Введите пароль" required/>
                 </div>
-                <div class= "checkbox">
+                <%--div class= "checkbox">
                     <label>
                         <input type= "checkbox" id= "rememberme"  name= "_spring_security_remember_me"/>Запомнить меня
                     </label>
-                </div>
+                </div--%>
                 <input type= "submit" value= "Войти" class= "btn btn-lg btn-primary btn-block" >
                 <br/>
                 <a href= "javascript:history.back()">Назад</a>

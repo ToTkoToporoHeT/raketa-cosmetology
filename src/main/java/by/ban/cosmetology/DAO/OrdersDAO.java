@@ -13,6 +13,9 @@ import by.ban.cosmetology.model.Services;
 import by.ban.cosmetology.model.Staff;
 import by.ban.cosmetology.model.Usedmaterials;
 import by.ban.cosmetology.model.VisitDate;
+import by.ban.cosmetology.service.Utility.DateUtil;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -55,6 +58,25 @@ public class OrdersDAO {
             initializeData(order);
         }
 
+        return orders;
+    }
+    
+    public List<Orders> getMontOrders(Date date) {
+        System.out.println("DAO level getMonthOrders is called");
+        
+        Date startDateOfMonth = DateUtil.getStartOfMonth(date);
+        Date endDateOfMonth = DateUtil.getEndOfMonth(date);
+        
+        TypedQuery<Orders> tq = entityManager
+                .createNamedQuery("Orders.getByDateInterval", Orders.class);
+        tq.setParameter("startDate", startDateOfMonth);
+        tq.setParameter("endDate", endDateOfMonth);
+        List<Orders> orders = tq.getResultList();
+        
+        for (Orders order : orders) {
+            initializeData(order);
+        }
+        
         return orders;
     }
 
@@ -117,8 +139,8 @@ public class OrdersDAO {
         if (orderOld.getUsedmaterialsList() != null) {
             for (Usedmaterials usMat : orderOld.getUsedmaterialsList()) {
                 if (!order.getUsedmaterialsList().contains(usMat)) {
-                    int usMatCount = usMat.getCount();
-                    int matCountOld = usMat.getMaterial().getCount();
+                    double usMatCount = usMat.getCount();
+                    double matCountOld = usMat.getMaterial().getCount();
                     usMat.getMaterial().setCount(matCountOld + usMatCount);//откатывает количество материалов на складе
                     entityManager.remove(usMat);
                 }

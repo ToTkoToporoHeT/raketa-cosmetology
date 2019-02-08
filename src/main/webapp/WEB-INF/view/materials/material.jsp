@@ -48,15 +48,24 @@
                     <label class="col-sm-2 control-label" for="count">Количество</label>
                     <div class="col-sm-10">  
                         <formSpring:errors path="count" cssClass="label label-danger"/>
-                        <formSpring:input type="number" id="count" path="count" cssClass="form-control" placeholder="Введите количество материала на складе"/>
+                        <formSpring:input type="text"
+                                          oninput="cropFraction(this, 2)" 
+                                          onkeydown="formatCost(this)"
+                                          id="count" path="count" 
+                                          cssClass="form-control" 
+                                          placeholder="Введите количество материала на складе"
+                                          min="0" formnovalidate="true"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="cost">Стоимость одной единицы</label>
                     <div class="col-sm-10">
                         <formSpring:errors path="cost" cssClass="label label-danger"/>
-                        <formSpring:input type="text" oninput="cropFraction(this, 4)" onkeydown="formatCost(this)"
-                                          id="cost" path="cost" cssClass="form-control" 
+                        <formSpring:input type="text" 
+                                          oninput="cropFraction(this, 4)" 
+                                          onkeydown="formatCost(this)"
+                                          id="cost" path="cost" 
+                                          cssClass="form-control" 
                                           placeholder="Введите стоимость единицы материала" 
                                           min="0" formnovalidate="true"/>
                     </div>

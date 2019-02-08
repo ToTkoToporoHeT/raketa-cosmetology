@@ -65,7 +65,7 @@ public class MaterialsService {
         return materialsDAO.addMaterial(name, unit, count, cost);
     }
     
-    public boolean addMaterial(Materials material){
+    public boolean addMaterial(Materials material) throws Exception{
         System.out.println("Service level addMaterial is called");
         
         return materialsDAO.addMaterial(material);
@@ -77,7 +77,7 @@ public class MaterialsService {
         return materialsDAO.deleteMaterial(idMaterial);
     }
 
-    public void importMaterials(Map<String, Materials> materials) {
+    public void importMaterials(Map<String, Materials> materials) throws Exception{
         System.out.println("Service level importMaterials is called");
         
         for (Map.Entry<String, Materials> entry : materials.entrySet()){            

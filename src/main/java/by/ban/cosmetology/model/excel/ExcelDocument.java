@@ -6,6 +6,7 @@
 package by.ban.cosmetology.model.excel;
 
 import java.util.Date;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;

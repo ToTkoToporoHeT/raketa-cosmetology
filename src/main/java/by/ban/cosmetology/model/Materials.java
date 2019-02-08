@@ -51,8 +51,8 @@ public class Materials implements Serializable, Cloneable {
     @Column(name = "id")
     private Integer id;
     
+    //номенклатурный номер
     @Basic(optional = false)
-    @NotNull(message = "Обязательное поле")
     @Min(value = 0, message = "Не может быть отрицательным")
     @Column(name = "number", unique = true)
     private Integer number;
@@ -67,8 +67,8 @@ public class Materials implements Serializable, Cloneable {
     @Basic(optional = false)
     @NotNull(message = "Обязательное поле")
     @Min(value = 0, message = "Не может быть отрицательным")
-    @Column(name = "count")
-    private Integer count;
+    @Column(name = "count", precision = 3, scale = 2)
+    private Double count;
     
     @Basic(optional = false)
     @NotNull(message = "Обязательное поле")
@@ -94,14 +94,14 @@ public class Materials implements Serializable, Cloneable {
         this.id = id;
     }
 
-    public Materials(Integer id, Integer number, String name, int count, double cost) {
+    public Materials(Integer id, Integer number, String name, double count, double cost) {
         this.id = id;
         this.name = name.trim();
         this.count = count;
         this.cost = cost;
     }
     
-    public Materials(Integer id, Integer number, String name, Units unit, int count, double cost) {
+    public Materials(Integer id, Integer number, String name, Units unit, double count, double cost) {
         this.id = id;
         this.name = name.trim();
         this.count = count;
@@ -133,11 +133,11 @@ public class Materials implements Serializable, Cloneable {
         this.name = name.trim();
     }
 
-    public Integer getCount() {
+    public Double getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(Double count) {
         this.count = count;
     }
 

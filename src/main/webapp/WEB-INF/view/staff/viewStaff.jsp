@@ -79,7 +79,9 @@
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             <span class="text">Редактировать</span>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="delete" formaction="<c:url value="/staff/worker/delete"/>">
+                        <button tupe="button" class="btn btn-default" 
+                                onclick="return confirm('Вы дейстительно хотите удалить сотрудника?')"
+                                value="delete" formaction="<c:url value="/staff/worker/delete"/>">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                             <span class="text">Удалить</span>
                         </button>

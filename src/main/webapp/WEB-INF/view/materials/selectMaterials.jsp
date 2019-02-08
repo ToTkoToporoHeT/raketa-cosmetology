@@ -20,7 +20,8 @@
                 }
             }
         </script>
-        <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="orderTemp" method="post">
+        <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="orderTemp" method="post"
+                         onsubmit="return checkCheckedMaterials()">
             <div class="row">
                 <div class="col-sm-10">
                     <div class="form-group">
@@ -44,7 +45,7 @@
                                             <th data-classes="unit" 
                                                 data-breakpoints="xs">
                                                 Ед. измерения</th>
-                                            <th data-classes="number-checkbox">
+                                            <th data-classes="count">
                                                 Израсхо-<br>довано</th>
                                             <th data-classes="count" 
                                                 data-breakpoints="xs sm">
@@ -73,11 +74,18 @@
                                                     ${usedMaterial.material.unit}
                                                 </td>
                                                 <td>
-                                                    <div class="checkbox">
-                                                        <formSpring:input required="" type="number" id="materialInput${materialNumber.count}" cssClass="form-control" for="materialRadio${materialNumber.count}" path="usedmaterialsList[${materialNumber.index}].count" disabled="${usedMaterial.material.forDelete}"/>
-                                                    </div>
+                                                    <formSpring:input required="" 
+                                                                      type="number" step="0.01" 
+                                                                      oninput="cropFraction(this, 2)" 
+                                                                      onkeydown="formatCost(this)"
+                                                                      id="usMaterialCount${materialNumber.count}" 
+                                                                      min="0"
+                                                                      max="${usedMaterial.material.count}"
+                                                                      cssClass="form-control" for="materialRadio${materialNumber.count}" 
+                                                                      path="usedmaterialsList[${materialNumber.index}].count" 
+                                                                      disabled="${usedMaterial.material.forDelete}"/>
                                                 </td>
-                                                <td>
+                                                <td id="stockBalance${materialNumber.count}">
                                                     <fmt:formatNumber value="${usedMaterial.material.count}"/>
                                                 </td>
                                                 <td>
@@ -93,13 +101,19 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="btn-group-vertical" role="group" aria-label="...">
-                        <button tupe="submit" class="btn btn-default" formaction="<c:url value="/orders/order/selectMaterials"/>">
+                        <button type="submit" class="btn btn-default" 
+                                formaction="<c:url value="/orders/order/selectMaterials"/>">
                             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             <span class="text">Выбрать</span>
                         </button>
                         <a class="btn btn-default" href= "<c:url value="/orders/order/show_page/{action}"/>">
                             <span class="glyphicon glyphicon-chevron-left"></span>
                             <span class="text">Назад</span>
+                        </a>
+                        <a class="btn btn-default" href="#"
+                                onclick="return checkCheckedMaterials()"
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            <span class="text">тест</span>
                         </a>
                     </div>
                 </div>

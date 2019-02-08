@@ -28,7 +28,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ExcelInvoice extends ExcelDocument {
 
     @Override
-    protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void buildExcelDocument(Map<String, Object> map, 
+                                      Workbook workbook, 
+                                      HttpServletRequest request, 
+                                      HttpServletResponse response)
+            throws Exception {
         
         Orders order = (Orders) map.get("order");
         
@@ -44,7 +48,7 @@ public class ExcelInvoice extends ExcelDocument {
         //стоимость материалов
         Double umSum = 0.0;
         for (Usedmaterials um : order.getUsedmaterialsList()) {
-            umSum += um.getCost();
+            umSum += um.getCost() * um.getCount();
         }
         setCellValue(new CellReference("Sheet1!AW15"), umSum);
         //сумма к оплате

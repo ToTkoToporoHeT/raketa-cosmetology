@@ -5,19 +5,19 @@
  */
 package by.ban.cosmetology.controller.OrdersController;
 
+import by.ban.cosmetology.editors.DecimalEditor;
 import by.ban.cosmetology.model.Customers;
 import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Usedmaterials;
 import by.ban.cosmetology.model.VisitDate;
-import by.ban.cosmetology.model.excel.Cat;
 import by.ban.cosmetology.model.validators.OrderValidator;
 import by.ban.cosmetology.service.CustomersService;
 import by.ban.cosmetology.service.MaterialsService;
 import by.ban.cosmetology.service.OrdersService;
 import by.ban.cosmetology.service.ServicesService;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +68,8 @@ public class OrderController {
         dateFormat.setLenient(true);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(
                 dateFormat, true));
+        
+        binder.registerCustomEditor(Double.class, "count", new DecimalEditor(Double.class, NumberFormat.getInstance(), true));
     }
 
     @RequestMapping(value = "/create_page/{actionStr}")

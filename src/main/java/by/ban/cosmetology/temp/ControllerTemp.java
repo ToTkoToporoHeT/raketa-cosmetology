@@ -5,7 +5,11 @@
  */
 package by.ban.cosmetology.temp;
 
+import by.ban.cosmetology.service.Utility.DateUtil;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +30,19 @@ public class ControllerTemp {
         ModelTemp modelTemp = new ModelTemp();
         modelTemp.setMasStr(new String[]{"Крем"});
         model.addAttribute("command", modelTemp);
-        throw new Exception("TestError: выброс тестовой ошибки");
-        //return "/test/showTemp";
+        
+        Date date = new Date();
+        LocalDate startDateOfMonth = DateUtil
+                .getLocalDate(date)
+                .withDayOfMonth(1);
+        LocalDate endDateOfMonth = DateUtil
+                .getLocalDate(date)
+                .withDayOfMonth(startDateOfMonth.lengthOfMonth());
+        System.out.println(date);
+        System.out.println("Start: " + startDateOfMonth);
+        System.out.println("End: " + endDateOfMonth);
+        
+        return "/test/showTemp";
     }
     
     @RequestMapping("/result")

@@ -110,7 +110,8 @@
         <c:url var="importData" value="/import/createPage"/>
 
         <c:url var="materialsTest" value="/materials/showMaterialsTest"/>
-        <c:url var="test" value="/ajax_test/show"/>
+        <c:url var="test" value="/test/show"/>
+        <c:url var="throwError" value="/error/throw"/>
 
         <div class="container">
 
@@ -147,18 +148,20 @@
                                     <li class="${currentPage == 'viewServices' ? 'active' : ''}"><a href="${showServices}">Услуги</a></li>
                                 </ul>
                             </li>
+                            <c:if test="${isRoot}">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Сформировать отчет <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="${PSUM_report}">Услуги и материалы</a></li>
                                 </ul>
                             </li>
-                            <c:if test="${isRoot}">
+                            
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Администрирование <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li class="${currentPage == 'importData' ? 'active' : ''}"><a href="${importData}">Импорт данных</a></li>
                                         <li class="${currentPage == 'ajaxTest' ? 'active' : ''}"><a href="${test}">Test</a></li>
+                                        <li><a href="${throwError}">Выбросить ошибку</a></li>
                                     </ul>
                                 </li>
                             </c:if>

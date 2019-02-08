@@ -42,7 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Orders.findById", query = "SELECT o FROM Orders o WHERE o.id = :id"),
     @NamedQuery(name = "Orders.findByStaff", query = "SELECT o FROM Orders o WHERE o.manager = :manager"),
     @NamedQuery(name = "Orders.findByCheckNumber", query = "SELECT o FROM Orders o WHERE o.check_number = :check_number"),
-    @NamedQuery(name = "Orders.findByDate", query = "SELECT o FROM Orders o WHERE o.prepare_date = :date")})
+    @NamedQuery(name = "Orders.findByDate", query = "SELECT o FROM Orders o WHERE o.prepare_date = :date"),
+    @NamedQuery(name = "Orders.getByDateInterval", query = "SELECT o FROM Orders o WHERE o.prepare_date >= :startDate AND o.prepare_date <= :endDate")})
 public class Orders implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;

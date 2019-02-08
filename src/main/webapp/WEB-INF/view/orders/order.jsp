@@ -11,8 +11,8 @@
     <jsp:attribute name="title">${action == 'add' ? 'Создать' : 'Посмотреть'} договор</jsp:attribute>
 
     <jsp:body> 
-        <c:if test="${orders == null}">
-            <c:redirect url="login.html?isRedirected=true"/>
+        <c:if test="${action == null || orders == null}">
+            <c:redirect url="/orders/showAllOrders"/>
         </c:if>
         <!--Ссылки используемые для обработки событий на странице-->
         <c:url var="actionURL"          value="/orders/order/${action}"/>
@@ -31,6 +31,7 @@
         <c:url var="selectMaterial"      value="/usedMaterials/show_page/selectMaterials"/>
         <c:url var="removeMaterial"      value="/orders/order/material_delete"/>
         <c:url var="clearTableMaterials" value="/orders/order/all_materials_delete"/>
+        
         <fieldset>
             <legend>${action == 'add' ? 'Создание' : 'Просмотр'} договора</legend>
             <formSpring:form id="mainForm" cssClass="form-horizontal" commandName="orders" method="POST" action="${actionURL}" role="main">

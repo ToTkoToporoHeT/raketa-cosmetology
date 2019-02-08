@@ -22,28 +22,43 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class UnitsDAO {
-    
+
     @PersistenceContext
     private EntityManager entityManager;
-    
-    public List<Units> getAllUnits(){
+
+    public List<Units> getAllUnits() {
         System.out.println("DAO level getAllUnits is called");
         TypedQuery<Units> tq = entityManager.createNamedQuery("Units.findAll", Units.class);
-        
+
         return tq.getResultList();
     }
-    
-    public Units findUnit(int id){
+
+    public Units findUnit(int id) {
         System.out.println("DAO level findUnit is called");
         return entityManager.find(Units.class, id);
     }
-    
-    public Units findUnit(String name) throws NoResultException{
+
+    public Units findUnit(String name) {
         System.out.println("DAO level findUnit is called");
-        
+
         TypedQuery<Units> tq = entityManager.createNamedQuery("Units.findByUnit", Units.class);
         tq.setParameter("unit", name);
+
+        Units unit = null;
+        try {
+            unit = tq.getSingleResult();
+        } catch (NoResultException noResultException) {
+            System.out.println("Единица измерения \"" + name + "\" не найдена в БД");
+        }
         
-        return tq.getSingleResult();
+        return unit;
+    }
+
+    public Units addUnit(String name) {
+        System.out.println("DAO level addUnit is called");
+        Units unit = new Units(name);
+        entityManager.persist(unit);
+        
+        return unit;
     }
 }

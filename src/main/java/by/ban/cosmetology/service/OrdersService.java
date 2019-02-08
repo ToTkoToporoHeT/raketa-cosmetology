@@ -50,7 +50,8 @@ public class OrdersService {
 
         Staff manager = staffService.findStaffByLogin(getStaffLogin());
 
-        if (manager.getLogin().equals("root")) {
+        String userType = manager.getUserType().getType();
+        if (userType.equals("Root") || userType.equals("Admin")) {
             return ordersDAO.getAllOrders();
         }
 
@@ -154,15 +155,15 @@ public class OrdersService {
                 for (Usedmaterials um : usedmaterialsList) {
 
                     Integer umId = um.getId();
-                    int materialCount = um.getMaterial().getCount();
+                    double materialCount = um.getMaterial().getCount();
 
                     if (umId == null) {
                         materialCount -= um.getCount();
 
                     } else {
-                        int oldCountUseMat = usedmaterialsService.getUsMatCount(umId);
-                        int newCountUseMat = um.getCount();
-                        int diffCountUseMat = oldCountUseMat - newCountUseMat;
+                        double oldCountUseMat = usedmaterialsService.getUsMatCount(umId);
+                        double newCountUseMat = um.getCount();
+                        double diffCountUseMat = oldCountUseMat - newCountUseMat;
 
                         materialCount += diffCountUseMat;
                     }
@@ -176,8 +177,8 @@ public class OrdersService {
 
                 for (Usedmaterials um : usedmaterialsList) {
 
-                    int materialCount = um.getMaterial().getCount();
-                    int useMatCount = um.getCount();
+                    double materialCount = um.getMaterial().getCount();
+                    double useMatCount = um.getCount();
 
                     materialCount += useMatCount * sign;
 

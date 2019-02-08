@@ -22,6 +22,31 @@ public class UnitsService {
     @Autowired
     private UnitsDAO unitsDAO;
     
+    public Units getUnit(String name) {
+        System.out.println("Service level getUnit is called");
+        
+        List<Units> units = getAllUnits();
+        Units unit = null;
+        
+        for (Units curUnit : units) {
+            if (deleteDotsFromStr(curUnit.getUnit()).equals(deleteDotsFromStr(name))) {
+                unit = curUnit;
+                break;
+            }
+        }
+        
+        if (unit == null)
+            unit = addUnit(name);
+            
+        return unit;
+    }
+    
+    public Units addUnit(String name) {
+        System.out.println("Service level addUnit is called");        
+        
+        return unitsDAO.addUnit(name.trim());
+    }
+    
     public List<Units> getAllUnits(){
         System.out.println("Service level getAllUnits is called");
         
@@ -37,12 +62,15 @@ public class UnitsService {
     public Units findUnit(String name){
         System.out.println("Service level findUnit is called");
         
-        Units unit = null;
-        try {
-            unit = unitsDAO.findUnit(name);
-        } catch (NoResultException noResultException) {
-            noResultException.printStackTrace();
+        return unitsDAO.findUnit(name);     
+    }
+    
+    private String deleteDotsFromStr(String s) {
+        while (s.contains(".")) {
+            int dotIndex = s.indexOf(".");
+            s = s.substring(0, dotIndex) + s.substring(dotIndex + 1);
         }
-        return unit;        
+
+        return s;
     }
 }

@@ -105,7 +105,7 @@ public class MaterialsDAO {
         return result > 0;
     }
     
-    public boolean addMaterial(Materials material) {
+    public boolean addMaterial(Materials material) throws Exception{
         System.out.println("DAO level addMaterial is called");
         
         entityManager.persist(material);

@@ -25,7 +25,7 @@ public class UsedmaterialsService {
         return usedmaterialsDAO.findUsMaterById(id);
     }   
     
-    public Integer getUsMatCount(Integer id){
+    public Double getUsMatCount(Integer id){
         System.out.println("Service level getUsMatCount is called");
         Usedmaterials usedmaterials = usedmaterialsDAO.findUsMaterById(id);
         return usedmaterials.getCount();

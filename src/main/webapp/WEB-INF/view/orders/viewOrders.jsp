@@ -13,6 +13,8 @@
 
     <jsp:body>    
         <security:authorize access="hasRole('ROLE_ROOT')" var="isRoot"/>
+        <security:authorize access="hasRole('ROLE_ADMIN')" var="isAdmin"/>
+        
         <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="order" method="get" action="/orders">
             <div class="row">
                 <div class="col-sm-10">
@@ -39,7 +41,7 @@
                                                 Дата</th>
                                             <th data-classes="name">
                                                 ФИО клиента</th>
-                                                <c:if test="${isRoot}">
+                                                <c:if test="${isRoot or isAdmin}">
                                                 <th data-classes="name"
                                                     data-breakpoints="xs sm">
                                                     ФИО сотрудника</th>
@@ -68,7 +70,7 @@
                                                     ${order.customer}
                                                 </td>
 
-                                                <c:if test="${isRoot}">
+                                                <c:if test="${isRoot or isAdmin}">
                                                     <td>
                                                         ${order.manager}
                                                     </td>  
@@ -95,15 +97,17 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="btn-group btn-group-vertical" role="group" aria-label="...">
-                        <button tupe="submit" class="btn btn-default" formaction="<c:url value="/orders/order/create_page/add"/>">
+                        <button type="submit" class="btn btn-default" formaction="<c:url value="/orders/order/create_page/add"/>">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             <span class="text">Добавить</span>
                         </button>
-                        <button tupe="submit" class="btn btn-default" formaction="<c:url value="/orders/order/create_page/edit"/>">
+                        <button type="submit" class="btn btn-default" formaction="<c:url value="/orders/order/create_page/edit"/>">
                             <span class="glyphicon glyphicon-edit" aria-hidden="edit"></span>
                             <span class="text">Редактировать</span>
                         </button>
-                        <button tupe="button" class="btn btn-default" value="delete" formaction="<c:url value="/orders/order/delete"/>">
+                        <button class="btn btn-default" 
+                                onclick="return confirm('Вы дейстительно хотите удалить договор?')"
+                                value="delete" formaction="<c:url value="/orders/order/delete"/>">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                             <span class="text">Удалить</span>
                         </button>

@@ -35,7 +35,7 @@
         <anonymous username="guest" granted-authority="ROLE_ANONYMOUS"/>
  
         <!--Save logged user in cookie with name key='name' -->
-        <remember-me key= "myKey" token-validity-seconds= "5"/>
+        <!--remember-me key= "myKey" token-validity-seconds= "5"/-->
  
         <csrf disabled= "true"/>
         <!--session-management session-fixation-protection="migrateSession"/-->

@@ -5,6 +5,7 @@
  */
 package by.ban.cosmetology.controller;
 
+import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,12 +22,12 @@ public class GlobalExceptiosHandler {
     
     @ExceptionHandler(Exception.class) 
     public ModelAndView handleException(Exception ex) {
-        LOGGER.error(ex.getMessage());
+        LOGGER.error((new Date()).toString(), ex);
         ModelAndView mav = new ModelAndView("/errors/globalError");
         mav.addObject("error", ex);
         mav.addObject("stackTrace", ex.getStackTrace());
         
-        ex.printStackTrace();
+        //ex.printStackTrace();
         
         return mav;
     }

@@ -60,6 +60,7 @@ public class MaterialsController {
             nf = df;
         }
         binder.registerCustomEditor(Double.class, new DecimalEditor(Double.class, nf, true));
+        binder.registerCustomEditor(Double.class, "count", new DecimalEditor(Double.class, NumberFormat.getInstance(), true));
     }
 
     @RequestMapping(value = "/showAllMaterials", method = RequestMethod.GET)
@@ -89,6 +90,8 @@ public class MaterialsController {
         } else if (action.equals("edit")) {
             Integer idMaterialFC = material.getId();
 
+            //если для редактирования небыл выбран не 1 элемент, 
+            //то переадресовать к отображению всех матералов
             if (idMaterialFC == null) {
                 return "redirect:/materials/showAllMaterials";
             }
