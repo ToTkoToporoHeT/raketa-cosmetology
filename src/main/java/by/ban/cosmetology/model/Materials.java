@@ -60,8 +60,8 @@ public class Materials implements Serializable, Cloneable {
     @Basic(optional = false)
     @NotNull
     @NotEmpty(message = "Обязательное поле")
-    @Size(max = 100, message = "Длинна строки должна быть не больше 100 символов")
-    @Column(name = "name")//, unique = true)
+    @Size(max = 255, message = "Длинна строки должна быть не больше 255 символов")
+    @Column(name = "name")
     private String name;
     
     @Basic(optional = false)
@@ -86,6 +86,10 @@ public class Materials implements Serializable, Cloneable {
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "material")
     private List<Usedmaterials> usedmaterialsList;
+    
+    @JoinColumn(name = "managerId", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Staff manager;
     
     public Materials() {
     }
@@ -164,6 +168,14 @@ public class Materials implements Serializable, Cloneable {
 
     public void setUsedmaterialsList(List<Usedmaterials> usedmaterialsList) {
         this.usedmaterialsList = usedmaterialsList;
+    }
+
+    public Staff getManager() {
+        return manager;
+    }
+
+    public void setManager(Staff manager) {
+        this.manager = manager;
     }
 
     public boolean isForDelete() {

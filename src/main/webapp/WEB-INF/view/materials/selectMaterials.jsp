@@ -4,6 +4,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags" %>
 
 <page:mainTamplate>
@@ -20,6 +21,10 @@
                 }
             }
         </script>
+        
+        <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')" var="isAdmin"/>
+        <security:authorize access="hasRole('ROLE_ROOT')" var="isRoot"/>
+        
         <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="orderTemp" method="post"
                          onsubmit="return checkCheckedMaterials()">
             <div class="row">
@@ -53,6 +58,10 @@
                                             <th data-classes="cost" 
                                                 data-breakpoints="xs">
                                                 Стоимость единицы</th>
+                                                <c:if test="${isRoot or isAdmin}">
+                                                <th data-breakpoints="xs sm md">
+                                                    Сотрудник</th>
+                                                </c:if>
                                         </tr>
                                     </thead> 
                                     <tbody>
@@ -91,6 +100,11 @@
                                                 <td>
                                                     <fmt:formatNumber value="${usedMaterial.material.cost}" minFractionDigits="4"/>
                                                 </td>
+                                                <c:if test="${isRoot or isAdmin}">
+                                                    <td>
+                                                        ${usedMaterial.material.manager}
+                                                    </td>
+                                                </c:if>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
@@ -109,11 +123,6 @@
                         <a class="btn btn-default" href= "<c:url value="/orders/order/show_page/{action}"/>">
                             <span class="glyphicon glyphicon-chevron-left"></span>
                             <span class="text">Назад</span>
-                        </a>
-                        <a class="btn btn-default" href="#"
-                                onclick="return checkCheckedMaterials()"
-                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                            <span class="text">тест</span>
                         </a>
                     </div>
                 </div>

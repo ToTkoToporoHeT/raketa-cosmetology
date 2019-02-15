@@ -94,6 +94,7 @@
         <security:authorize access= "hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_ROOT')" var= "isUser"/>
         <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')" var="isAdmin"/>
         <security:authorize access="hasRole('ROLE_ROOT')" var="isRoot"/>
+        
 
         <c:url var="home" value="/"/>
         <c:url var="showMaterials" value="/materials/showAllMaterials"/>

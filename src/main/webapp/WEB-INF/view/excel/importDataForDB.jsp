@@ -10,6 +10,17 @@
 
     <jsp:body>
         <c:url var="actionURL" value="/import/uploadAndImport"/>
+        <c:url var="clearServices" value="/services/deleteAll"/>
+        <c:url var="clearMaterials" value="/materials/deleteAll"/>
+
+        <script language="javascript" type="text/javascript">
+            function deleteAll(URL) {
+                $.get(URL, function () {
+                    alert("Удалено")
+                });
+            }
+        </script>
+
         <h1>Импорт материалов и услуг из Excel в базу данных</h1>
         <c:if test="${errors != null}">
             <div class="row">
@@ -24,31 +35,46 @@
                 </fieldset>
             </div>
         </c:if>
-        <springForm:form cssClass="form-horizontal" action="${actionURL}" method="POST" commandName="excelFile" enctype="multipart/form-data">
+        <springForm:form id="form" cssClass="form-horizontal" action="${actionURL}" method="POST" commandName="excelFile" enctype="multipart/form-data">
             <div class="row">
                 <fieldset class="col-sm-12 col-lg-12 form-group">
                     <legend></legend>
-                    <label for="file">Импортируемый файл</label>
-                    <springForm:input id="file" cssClass="file" type="file" path="mpFile" 
-                                      accept="application/x-msexcel,
-                                      application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
-                                      application/vnd.ms-excel.sheet.macroEnabled.12"/>
-                    <p class="help-block">Выберите файл для импорта</p>
-                    <div class="radio">
-                        <label>
-                            <input name="fileType" type="radio" value="services"/>
-                            Импортировать сервисы
-                        </label>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <label for="file">Импортируемый файл</label>
+                            <springForm:input id="file" cssClass="file" type="file" path="mpFile" 
+                                              accept="application/x-msexcel,
+                                              application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                                              application/vnd.ms-excel.sheet.macroEnabled.12"/>
+                            <p class="help-block">Выберите файл для импорта</p>
+                            <div class="radio">
+                                <label>
+                                    <input name="fileType" type="radio" value="services"/>
+                                    Импортировать сервисы
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input name="fileType" type="radio" value="materials" checked="true"/>
+                                    Импортировать материалы
+                                </label>
+                            </div> 
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="#" onclick="deleteAll('${clearServices}')" class="btn btn-default">Очистить услуги</a>
+                            <a href="#" onclick="deleteAll('${clearMaterials}')" class="btn btn-default">Очистить материалы</a>
+                        </div>
                     </div>
-                    <div class="radio">
-                        <label>
-                            <input name="fileType" type="radio" value="materials" checked="true"/>
-                            Импортировать материалы
-                        </label>
-                    </div>
-                    <div class="row">
+                    <div class="row col-sm-12">
                         <fieldset class="col-sm-6 col-lg-6">
                             <legend class="lead">Расоложение информации об услугах</legend>
+                            <div class="form-group">
+                                <div class="col-lg-12">                                    
+                                    <label for="sheetName" class="control-label">Имя страницы</label>
+                                    <springForm:errors cssClass="label label-danger" path="servicesRowColInfo.sheetName"/>
+                                    <springForm:input id="sheetName" path="servicesRowColInfo.sheetName" cssClass="form-control"/>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="col-lg-12">                                    
                                     <label for="rowStart" class="control-label">Строка начала</label>
@@ -65,6 +91,13 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <label for="numberInPL" class="control-label">Столбец с номером подпункта</label>
+                                    <springForm:errors cssClass="label label-danger" path="servicesRowColInfo.numberInPL"/>
+                                    <springForm:input id="numberInPL" path="servicesRowColInfo.numberInPL" cssClass="form-control"/>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="col-lg-12">
                                     <label for="name" class="control-label">Столбец с наименованиями</label>
@@ -93,6 +126,21 @@
                             <fieldset class="col-sm-6 col-lg-6">
                                 <legend class="lead">Расоложение информации о материалах</legend>
                                 <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label class="control-label" for="manager">Сотрудник, чьи материалы</label>
+                                        <springForm:select id="manager" path="materialRowColInfo.manager.id" class="form-control">
+                                            <springForm:options items="${staff}" itemValue="id"/>
+                                        </springForm:select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12">                                    
+                                        <label for="mSheetName" class="control-label">Имя страницы</label>
+                                        <springForm:errors cssClass="label label-danger" path="materialRowColInfo.sheetName"/>
+                                        <springForm:input id="mSheetName" path="materialRowColInfo.sheetName" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="col-lg-12">                                    
                                         <label for="mRowStart" class="control-label">Строка начала</label>
                                         <springForm:errors cssClass="label label-danger" path="materialRowColInfo.rowStartData"/>
@@ -118,7 +166,7 @@
 
                                 <div class="form-group">
                                     <div class="col-lg-12">
-                                        <label for="mName" class="control-label">Столбец номенклатурного номера</label>
+                                        <label for="mItemNumber" class="control-label">Столбец номенклатурного номера</label>
                                         <springForm:errors cssClass="label label-danger" path="materialRowColInfo.itemNumber"/>
                                         <springForm:input id="mItemNumber" path="materialRowColInfo.itemNumber" cssClass="form-control"/>
                                     </div>
@@ -158,10 +206,10 @@
                             </fieldset>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <springForm:button class="btn btn-primary" type="submit">
+                    <div class="pull-right" style="margin-right: 30px;">
+                        <button id="import" class="btn btn-primary">
                             Импортировать
-                        </springForm:button>
+                        </button>
                     </div>
                 </fieldset>
             </div>

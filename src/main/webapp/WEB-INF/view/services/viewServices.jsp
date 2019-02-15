@@ -39,7 +39,7 @@
                                             <tr class="coloring">
                                                 <td>
                                                     <input type="radio" name="id" id="serviceRadio${service.id}" value="${service.id}">
-                                                    ${serviceNumber.count}
+                                                    ${service.number}
                                                 </td>
                                                 <td>
                                                     ${service.name}

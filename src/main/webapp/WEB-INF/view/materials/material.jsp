@@ -2,6 +2,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags/"%>
 
 <style>
@@ -17,6 +18,9 @@
     <jsp:attribute name="title">${action == add ? 'Добавить' : 'Редактировать'} материал</jsp:attribute>
 
     <jsp:body>    
+        <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')" var="isAdmin"/>
+        <security:authorize access="hasRole('ROLE_ROOT')" var="isRoot"/>
+
         <c:url var="actionURL" value="/materials/material/${action}"/>
         <formSpring:form cssClass="form-horizontal" modelAttribute="material" method="POST" action="${actionURL}" role="main">
             <fieldset>
@@ -70,11 +74,26 @@
                                           min="0" formnovalidate="true"/>
                     </div>
                 </div>
+                <c:choose>
+                    <c:when test="${isRoot or isAdmin}">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="manager">Сотрудник</label>
+                            <div class="col-sm-10">
+                                <formSpring:select id="manager" path="manager.id" class="form-control">
+                                    <formSpring:options items="${staff}" itemValue="id"/>
+                                </formSpring:select>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <formSpring:hidden path="manager"/>
+                    </c:otherwise>
+                </c:choose>
                 <div class="modal-footer">
                     <formSpring:button class="btn btn-primary" type="submit">
                         Сохранить
                     </formSpring:button>
-                        <a class="btn btn-default" href="<c:url value="/materials/showAllMaterials"/>">
+                    <a class="btn btn-default" href="<c:url value="/materials/showAllMaterials"/>">
                         Отмена
                     </a>
                 </div>

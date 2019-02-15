@@ -3,13 +3,17 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="formSpring" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="page" tagdir="/WEB-INF/tags" %>
 
 <page:mainTamplate>
     <jsp:attribute name="title">Материалы</jsp:attribute>
     <jsp:attribute name="currentPage">viewMaterials</jsp:attribute>
 
-    <jsp:body>         
+    <jsp:body>        
+        <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')" var="isAdmin"/>
+        <security:authorize access="hasRole('ROLE_ROOT')" var="isRoot"/>
+
         <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="material" method="post">
             <div class="row">
                 <div class="col-sm-10">
@@ -40,6 +44,10 @@
                                             <th data-classes="cost" 
                                                 data-breakpoints="xs sm md">
                                                 Стоимость</th>
+                                                <c:if test="${isRoot or isAdmin}">
+                                                <th data-breakpoints="xs sm md">
+                                                    Сотрудник</th>
+                                                </c:if>
                                         </tr>
                                     </thead> 
                                     <tbody>
@@ -60,6 +68,11 @@
                                                 <td>
                                                     <fmt:formatNumber value="${material.cost}" minFractionDigits="4"/>
                                                 </td>
+                                                <c:if test="${isRoot or isAdmin}">
+                                                    <td>
+                                                        ${material.manager}
+                                                    </td>
+                                                </c:if>
                                             </tr>
                                         </c:forEach>
 

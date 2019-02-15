@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -92,6 +93,9 @@ public class Staff implements Serializable, Cloneable {
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "manager")
     private List<Orders> ordersList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "manager")
+    private List<Materials> materials;
     
     @JoinColumn(name = "userType", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -181,6 +185,15 @@ public class Staff implements Serializable, Cloneable {
 
     public void setOrdersList(List<Orders> ordersList) {
         this.ordersList = ordersList;
+    }
+
+    @XmlTransient
+    public List<Materials> getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(List<Materials> materials) {
+        this.materials = materials;
     }
 
     public Usertypes getUserType() {

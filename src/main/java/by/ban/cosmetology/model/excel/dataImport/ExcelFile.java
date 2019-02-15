@@ -5,6 +5,8 @@
  */
 package by.ban.cosmetology.model.excel.dataImport;
 
+import by.ban.cosmetology.model.excel.dataImport.layouts.ServicesRowColInfo;
+import by.ban.cosmetology.model.excel.dataImport.layouts.MaterialRowColInfo;
 import javax.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 

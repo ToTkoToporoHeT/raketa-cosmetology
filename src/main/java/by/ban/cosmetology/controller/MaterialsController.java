@@ -7,14 +7,21 @@ package by.ban.cosmetology.controller;
 
 import by.ban.cosmetology.editors.DecimalEditor;
 import by.ban.cosmetology.model.Materials;
+import by.ban.cosmetology.model.Staff;
+import by.ban.cosmetology.model.Units;
 import by.ban.cosmetology.model.validators.MaterialValidator;
 import by.ban.cosmetology.service.MaterialsService;
+import by.ban.cosmetology.service.StaffService;
 import by.ban.cosmetology.service.UnitsService;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +49,19 @@ public class MaterialsController {
     @Autowired
     private UnitsService unitsService;
     @Autowired
+    private StaffService staffService;
+    @Autowired
     private MaterialValidator materialValidator;
+    
+    @ModelAttribute("units")
+    public List<Units> getUnits() {
+        return unitsService.getAllUnits();
+    }
+    
+    @ModelAttribute("staff")
+    public List<Staff> getStaff() {
+        return staffService.getAllStaff();
+    }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -71,7 +90,6 @@ public class MaterialsController {
         ModelAndView modelAndView = new ModelAndView("/materials/viewMaterials");
 
         modelAndView.addObject("materials", materials);
-        modelAndView.addObject("units", unitsService.getAllUnits());
 
         return modelAndView;
     }
@@ -83,7 +101,6 @@ public class MaterialsController {
                 + action + " material");
 
         model.addAttribute("action", action);
-        model.addAttribute("units", unitsService.getAllUnits());
 
         if (action.equals("add")) {
             model.addAttribute("material", new Materials());
@@ -109,7 +126,6 @@ public class MaterialsController {
 
         if (result.hasErrors()) {
             model.addAttribute("action", action);
-            model.addAttribute("units", unitsService.getAllUnits());
 
             return "/materials/material";
         }
@@ -118,7 +134,11 @@ public class MaterialsController {
 
         switch (action) {
             case "add": {
+            try {
                 materialsService.addMaterial(material);//addMaterial(material.getName(), material.getUnit().getId(), material.getCount(), material.getCost());
+            } catch (Exception ex) {
+                Logger.getLogger(MaterialsController.class.getName()).log(Level.SEVERE, null, ex);
+            }
                 break;
             }
             case "edit": {
@@ -137,5 +157,14 @@ public class MaterialsController {
         materialsService.deleteMaterial(materialId);
 
         return "redirect:/materials/showAllMaterials";
+    }
+    
+    @RequestMapping(value = "/deleteAll")
+    public ResponseEntity<String>  deleteAllMaterials() {
+        System.out.println("Controller level deleteAllMaterials is called");
+
+        materialsService.deleteAllMaterials();
+        
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

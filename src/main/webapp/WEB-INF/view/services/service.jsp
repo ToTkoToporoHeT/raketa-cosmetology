@@ -26,10 +26,17 @@
                     <formSpring:hidden path="id"/>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-2 control-label" for="number">Номер подпункта в прейскуранте</label>
+                    <div class="col-sm-10">  
+                        <formSpring:errors path="number" cssClass="label label-danger"/>
+                        <formSpring:input autofocus="${action == 'add' ? 'true' : ''}" type="text" path="number" cssClass="form-control" placeholder="Введите номер подпункта"/>
+                    </div>
+                </div>    
+                <div class="form-group">
                     <label class="col-sm-2 control-label" for="name">Наименование</label>
                     <div class="col-sm-10">  
                         <formSpring:errors path="name" cssClass="label label-danger"/>
-                        <formSpring:input autofocus="${action == 'add' ? 'true' : ''}" type="text" path="name" cssClass="form-control" placeholder="Введите наименование"/>
+                        <formSpring:input type="text" path="name" cssClass="form-control" placeholder="Введите наименование"/>
                     </div>
                 </div>                
                 <div class="form-group">

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package by.ban.cosmetology.model.excel.layouts;
+package by.ban.cosmetology.model.excel.dataImport.layouts;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -14,33 +14,45 @@ import javax.validation.constraints.NotNull;
  * @author dazz
  */
 public class DataRowColInfo {
+    
+    @NotNull
+    private String sheetName;
 
     @NotNull
-    @Min(0)
+    @Min(1)
     private int name;
 
     @NotNull
-    @Min(0)
+    @Min(1)
     private int price;
 
     @NotNull
-    @Min(0)
+    @Min(1)
     private int rowStartData;
 
     @NotNull
-    @Min(0)
+    @Min(1)
     private int rowEndData;
 
     public DataRowColInfo() {
     }
 
-    public DataRowColInfo(int rowStartData, int rowEndData, int name, int price) {
+    public DataRowColInfo(String sheetName, int rowStartData, int rowEndData, int name, int price) {
+        this.sheetName = sheetName;
         this.name = name;
         this.price = price;
         this.rowStartData = rowStartData;
         this.rowEndData = rowEndData;
     }   
 
+    public String getSheetName() {
+        return sheetName;
+    }
+
+    public void setSheetName(String sheetName) {
+        this.sheetName = sheetName;
+    }   
+    
     public int getName() {
         return name;
     }

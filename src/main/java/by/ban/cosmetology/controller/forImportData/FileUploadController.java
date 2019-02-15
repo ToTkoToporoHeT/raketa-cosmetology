@@ -8,13 +8,15 @@ package by.ban.cosmetology.controller.forImportData;
 import by.ban.cosmetology.controller.GlobalExceptiosHandler;
 import by.ban.cosmetology.model.Materials;
 import by.ban.cosmetology.model.Services;
+import by.ban.cosmetology.model.Staff;
 import by.ban.cosmetology.model.Units;
 import by.ban.cosmetology.model.excel.ExcelImporter;
 import by.ban.cosmetology.model.excel.dataImport.ExcelFile;
-import by.ban.cosmetology.model.excel.dataImport.MaterialRowColInfo;
-import by.ban.cosmetology.model.excel.dataImport.ServicesRowColInfo;
+import by.ban.cosmetology.model.excel.dataImport.layouts.MaterialRowColInfo;
+import by.ban.cosmetology.model.excel.dataImport.layouts.ServicesRowColInfo;
 import by.ban.cosmetology.service.MaterialsService;
 import by.ban.cosmetology.service.ServicesService;
+import by.ban.cosmetology.service.StaffService;
 import by.ban.cosmetology.service.UnitsService;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -48,23 +50,21 @@ public class FileUploadController {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptiosHandler.class);
 
     @Autowired
-    private ServicesService servicesServ;
-    @Autowired
-    private MaterialsService materialsServ;
-    @Autowired
-    private UnitsService unitsServ;
+    private StaffService staffService;
     @Autowired
     private ExcelImporter excelImporter;
 
+    @ModelAttribute
+    public void getExcelFile(Model model) {
+        ServicesRowColInfo sdi = new ServicesRowColInfo("косметика 1", 12, 35, 1, 2, 6, 9);
+        List<Staff> staff = staffService.getAllStaff();
+        MaterialRowColInfo mdi = new MaterialRowColInfo(null, "прайс", 4, 95, 2, 3, 4, 5, 12, 11);
+        model.addAttribute("excelFile", new ExcelFile(sdi, mdi));
+        model.addAttribute("staff", staff);
+    }
+    
     @RequestMapping(value = "/createPage")
     public String createPage(Model model) {
-
-        ServicesRowColInfo sdi = new ServicesRowColInfo(6, 612, 2, 6, 7);
-        MaterialRowColInfo mdi = new MaterialRowColInfo(4, 95, 2, 3, 4, 5, 12, 11);
-        ExcelFile ef = new ExcelFile(sdi, mdi);
-
-        model.addAttribute("excelFile", ef);
-
         return "/excel/importDataForDB";
     } 
 
@@ -75,7 +75,6 @@ public class FileUploadController {
 
         List<String> errors = new LinkedList<>();
         MultipartFile mpFile = excelFile.getMpFile();
-        MaterialRowColInfo mRowCol = excelFile.getMaterialRowColInfo();
         File file;
 
         if (!mpFile.isEmpty()) {
@@ -95,33 +94,6 @@ public class FileUploadController {
 
                 //запись из эксэль в базу
                 errors = excelImporter.importExcelFile(fileType, file, excelFile);
-                /*if (fileType.equals("materials")) {
-                    Workbook wb = new XSSFWorkbook(file);
-                    Sheet sheet = wb.getSheetAt(0);
-
-                    for (int i = mRowCol.getRowStartData(); i <= mRowCol.getRowEndData(); i++) {
-                        try {
-                            Row row = sheet.getRow(i);
-                            Materials material = new Materials();
-                            material.setNumber(
-                                    ((Double) row.getCell(mRowCol.getItemNumber()).getNumericCellValue())
-                                            .intValue());
-                            material.setName(row.getCell(mRowCol.getName()).getStringCellValue());
-
-                            String unitName = row.getCell(mRowCol.getUnit()).getStringCellValue().trim();
-                            material.setUnit(unitsServ.getUnit(unitName));
-                            material.setCost(row.getCell(mRowCol.getPrice()).getNumericCellValue());
-                            material.setCount(0.0);
-                            material.setForDelete(false);
-                            materialsServ.addMaterial(material);
-                        } catch (Exception e) {
-                            LOGGER.info("Ошибка при извлечении из строки " + i
-                                    + ".\nОбъект не был создан.\n" + e.getMessage());
-                        }
-                    }
-                } else if (fileType.equals("services")) {
-                    
-                }*/
 
                 System.out.println("File is saved under: " + pathEF);
             } catch (Exception e) {

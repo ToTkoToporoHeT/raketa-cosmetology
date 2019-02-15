@@ -61,6 +61,19 @@ public class ServicesDAO {
         return null;
     }
     
+    public Services findServiceByNumber(String number){
+        System.out.println("DAO level findService by Number is called");
+        
+        TypedQuery<Services> tq = entityManager.createNamedQuery("Services.findByNumber", Services.class);
+        tq.setParameter("number", number);        
+        List<Services> services = tq.getResultList();
+        
+        if (services.size() > 0){
+            return services.get(0);
+        }        
+        return null;
+    }
+    
     public boolean updateService(int id, String name, double cost, double costFF) {
         System.out.println("DAO level updateService is called");
  

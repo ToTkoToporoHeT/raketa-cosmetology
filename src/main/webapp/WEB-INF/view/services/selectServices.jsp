@@ -49,7 +49,7 @@
                                                                          path="providedservicesList[${serviceNumber.index}].service.id" 
                                                                          id="serviceRadio${serviceNumber.count}" 
                                                                          disabled="${providedService.service.forDelete}"/>
-                                                    ${serviceNumber.count}
+                                                    ${providedService.service.number}
                                                 </td>
                                                 <td>
                                                     ${providedService.service.name}

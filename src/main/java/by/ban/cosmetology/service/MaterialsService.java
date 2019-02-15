@@ -71,12 +71,32 @@ public class MaterialsService {
         return materialsDAO.addMaterial(material);
     }
     
+    public Materials addOrUpdateMaterial(Materials material) throws Exception {
+        System.out.println("Service level addOrUpdate is called");
+        
+        Materials oldMaterial;
+        if (material.getNumber() != null)
+            oldMaterial = findMaterialByNumber(material.getNumber());
+        else
+            oldMaterial = findMaterial(material.getName());
+        
+        if (oldMaterial != null) {
+            material.setId(oldMaterial.getId());
+            materialsDAO.updateMaterial(material);
+        } else {
+            materialsDAO.addMaterial(material);
+        }
+        
+        return material;
+    }
+    
     public boolean deleteMaterial(int idMaterial) {
         System.out.println("Service level deleteMaterial is called");
         
         return materialsDAO.deleteMaterial(idMaterial);
     }
 
+    /*старый метод импорта из Excel
     public void importMaterials(Map<String, Materials> materials) throws Exception{
         System.out.println("Service level importMaterials is called");
         
@@ -90,5 +110,11 @@ public class MaterialsService {
                 material.update(entry.getValue());
             }
         }
+    }*/
+
+    public void deleteAllMaterials() {
+        getAllMaterials().forEach((material) -> {
+            deleteMaterial(material.getId());
+        });
     }
 }

@@ -36,6 +36,7 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name = "Services.findAll", query = "SELECT s FROM Services s"),
     @NamedQuery(name = "Services.findAllActive", query = "SELECT s FROM Services s WHERE s.forDelete = :del"),
     @NamedQuery(name = "Services.findById", query = "SELECT s FROM Services s WHERE s.id = :id"),
+    @NamedQuery(name = "Services.findByNumber", query = "SELECT s FROM Services s WHERE s.number = :number"),
     @NamedQuery(name = "Services.findByName", query = "SELECT s FROM Services s WHERE s.name = :name"),
     @NamedQuery(name = "Services.findByCost", query = "SELECT s FROM Services s WHERE s.cost = :cost")})
 public class Services implements Serializable, Cloneable {
@@ -48,9 +49,14 @@ public class Services implements Serializable, Cloneable {
     private Integer id;
     
     @Basic(optional = false)
+    @Size(max = 10, message = "Длинна строки должна быть не больше 7 символов")
+    @Column(name = "number", unique = true)
+    private String number;
+    
+    @Basic(optional = false)
     @NotNull
     @NotEmpty(message = "Обязательное поле")
-    @Size(max = 100, message = "Длинна строки должна быть не больше 100 символов")
+    @Size(max = 255, message = "Длинна строки должна быть не больше 255 символов")
     @Column(name = "name")
     private String name;
     
@@ -107,6 +113,14 @@ public class Services implements Serializable, Cloneable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getName() {

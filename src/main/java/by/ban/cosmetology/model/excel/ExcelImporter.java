@@ -9,8 +9,8 @@ import by.ban.cosmetology.model.Materials;
 import by.ban.cosmetology.model.Services;
 import by.ban.cosmetology.model.Units;
 import by.ban.cosmetology.model.excel.dataImport.ExcelFile;
-import by.ban.cosmetology.model.excel.dataImport.MaterialRowColInfo;
-import by.ban.cosmetology.model.excel.dataImport.ServicesRowColInfo;
+import by.ban.cosmetology.model.excel.dataImport.layouts.MaterialRowColInfo;
+import by.ban.cosmetology.model.excel.dataImport.layouts.ServicesRowColInfo;
 import by.ban.cosmetology.service.MaterialsService;
 import by.ban.cosmetology.service.ServicesService;
 import by.ban.cosmetology.service.UnitsService;
@@ -19,6 +19,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -50,10 +53,38 @@ public class ExcelImporter {
     @Autowired
     private UnitsService unitsService;
 
-    public List<String> importExcelFile(String fileType, File file, ExcelFile excelFile) throws Exception {
+    List<String> errors = new LinkedList<>();
 
-        //Map<String, List> errors = new HashMap<>();
-        List<String> errors = new LinkedList<>();
+    public List<String> importExcelFile(String fileType, File file, ExcelFile excelFile) throws Exception {
+        Workbook document = getWorkbook(file);
+        if (document == null) {
+            return errors;
+        }
+
+        errors.add("Импорт прошел без ошибок.");
+        try {
+            switch (fileType) {
+                case "materials": {
+                    errors = importMaterials(document,
+                            excelFile.getMaterialRowColInfo());
+                    break;
+                }
+                case "services": {
+                    errors = importServices(document,
+                            excelFile.getServicesRowColInfo());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            file.delete();
+        }
+
+        return errors;
+    }
+
+    private Workbook getWorkbook(File file) {
         String extension = getExtension(file);
         Workbook document = null;
 
@@ -72,41 +103,20 @@ public class ExcelImporter {
                     break;
                 }
                 default: {
-                    /*List<String> list = new ArrayList<>();
-                    list.add("/errors/importNotSupported");*/
                     errors.add("Файлы с расширением \"" + extension
                             + "\" не поддерживаются");
-                    return errors;
+                    return document;
                 }
             }
         } catch (IOException iOException) {
-            System.out.println("Ошибка чтения файла: " + file.getAbsolutePath());
+            errors.add("Ошибка чтения файла: " + file.getAbsolutePath());
             iOException.printStackTrace();
         } catch (InvalidFormatException invalidFormatException) {
-            System.out.println("Не верный формат файла: " + file.getAbsolutePath());
+            errors.add("Не верный формат файла: " + file.getAbsolutePath());
             invalidFormatException.printStackTrace();
         }
 
-        errors.add("Импорт прошел без ошибок.");
-        try {
-            switch (fileType) {
-                case "materials": {
-                    errors = importMaterials(document.getSheetAt(0), excelFile.getMaterialRowColInfo());
-                    break;
-                }
-                case "services": {
-                    errors = importServices(document.getSheetAt(0), excelFile.getServicesRowColInfo());
-                    break;
-                }
-            }
-            //errors = importDataInDB(document, excelFile.getServicesRowColInfo(), excelFile.getMaterialRowColInfo());
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            file.delete();
-        }
-
-        return errors;
+        return document;
     }
 
     private HSSFWorkbook getXLSWB(File file) throws IOException, InvalidFormatException {
@@ -135,12 +145,11 @@ public class ExcelImporter {
 
     private Map<String, List> importDataInDB(Workbook document, ServicesRowColInfo serviceMap, MaterialRowColInfo materialMap) {
         Map<String, List> errors = new HashMap<>();
-        Sheet sheet = document.getSheet("06,17");
 
-        List<String> servicesErrors = importServices(sheet, serviceMap);
+        List<String> servicesErrors = importServices(document, serviceMap);
         List<String> materialsErrors = new LinkedList<>();
         try {
-            materialsErrors = importMaterials(sheet, materialMap);
+            materialsErrors = importMaterials(document, materialMap);
         } catch (Exception ex) {
             Logger.getLogger(ExcelImporter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -151,86 +160,114 @@ public class ExcelImporter {
         return errors;
     }
 
-    private List<String> importServices(Sheet sheet, ServicesRowColInfo serviceMap) {
+    private List<String> importServices(Workbook w, ServicesRowColInfo serviceMap) {
 
-        Map<String, Services> services = new HashMap<>();
         List<String> errors = new ArrayList<>();
-        Row curRow;
 
-        for (int i = serviceMap.getRowStartData() - 1, end = serviceMap.getRowEndData();
-             i < end;
-             i++) {
-            curRow = sheet.getRow(i);
-            boolean costCellIsEmpty = false;
-
-            //Если в текущей строке нет ни стоимости для граждан рб, 
-            //ни стоимости для иностранцев, то переходим на другую строку
-            Cell nameCell = curRow.getCell(serviceMap.getName() - 1);
-            Cell costCell = curRow.getCell(serviceMap.getPrice() - 1);
-            if (isEmpty(nameCell) || !isStringCell(nameCell)) {
-                continue;
-            }
-            if (isEmpty(costCell) || !isNumberCell(costCell)) {
-                costCellIsEmpty = true;
-                costCell = curRow.getCell(serviceMap.getPriceFF() - 1);
-                if (isEmpty(costCell) || !isNumberCell(costCell)) {
-                    continue;
-                }
-            }
-
-            String name;
-            Double cost;
-
-            //Проверяет соответствие данных в ячейках необходимым форматам,
-            //в случае несоответствия пропускает строку и добавляет данные об ошибке в список ошибок,
-            //для вывода информации о не импортированных услугах
-            if (isStringCell(nameCell) && isNumberCell(costCell)) {
-                name = nameCell.getStringCellValue();
-                cost = costCell.getNumericCellValue();
-            } else {
-                String error = "Ошибка формата ячейки. Услуга из строки №" + (i - 1) + " не была записана!";
-
-                System.out.println(error);
-                errors.add(error);
-
-                continue;
-            }
-
-            Services serviceExc = services.get(name);
-            //Если в services не содержится услуга с заданным именем
-            //то содается новая услуга для добавления в services
-            if (name == null) {
-                serviceExc = new Services(name);
-            }
-
-            //Если costCellIsEmpty = true значит стоимость для граждан РБ не была указана в текущей строке,
-            //а значит в вставляемый сервис стоит добавить стоимость для иностранцев
-            if (costCellIsEmpty) {
-                serviceExc.setCostFF(cost);
-            } else {
-                serviceExc.setCost(cost);
-            }
-            services.put(serviceExc.getName(), serviceExc);
-
+        Sheet sheet = w.getSheet(serviceMap.getSheetName());
+        if (sheet == null) {
+            errors.add("Не найдена страница с именем - \"" + serviceMap.getSheetName() + "\"");
+            return errors;
         }
 
-        servicesService.importServices(services);
+        int nStartRow = serviceMap.getRowStartData() - 1;
+        int nEndRow = serviceMap.getRowEndData() - 1;
+        Row curRow;
+        int addedCount = 0;
+
+        for (int i = nStartRow; i <= nEndRow; i++) {
+            curRow = sheet.getRow(i);
+
+            StringBuilder errorBuilder = new StringBuilder();
+            Cell nameCell = curRow.getCell(serviceMap.getName() - 1);
+            Cell priceCell = curRow.getCell(serviceMap.getPrice() - 1);
+            Cell priceFFCell = curRow.getCell(serviceMap.getPriceFF() - 1);
+            Cell numberPLCell = null;
+            if (serviceMap.getNumberInPL() > 0) {
+                numberPLCell = curRow.getCell(serviceMap.getNumberInPL() - 1);
+            }
+
+            //Т.к. в прейскурантах могут быть подпункты, а названия у подпунктов 
+            //не отличаются и записаны в 1 строке, то пытаемся найти название в 
+            //вышестоящих подпунктах
+            if (isEmpty(nameCell) && !isEmpty(numberPLCell)) {
+                nameCell = getNameCell(nameCell, numberPLCell);
+            }
+
+            //Если в текущей строке нет ни названия услуги, ни стоимости для граждан рб, 
+            //ни стоимости для иностранцев, то переходим на другую строку
+            if (isEmpty(nameCell) && isEmpty(priceCell) && isEmpty(priceFFCell)) {
+                continue;
+            }
+            //Проверяем правильность данных в строке прайслиста
+            if (isEmpty(nameCell)) {
+                errorBuilder.append("Ячейка имени пуста.\n");
+            }
+            if (isEmpty(priceCell)) {
+                errorBuilder.append("Ячейка стоимости пуста.\n");
+            }
+            if (isEmpty(priceFFCell)) {
+                errorBuilder.append("Ячейка стоимости для ИГ пуста.\n");
+            }
+            if (!isStringCell(nameCell) && !isFormulaCell(nameCell)) {
+                errorBuilder.append("Ячейка имени не является строкой.\n");
+            }
+            if (!isNumberCell(priceCell)) {
+                errorBuilder.append("Ячейка стоимости не является числом.\n");
+            }
+            if (!isNumberCell(priceFFCell)) {
+                errorBuilder.append("Ячейка стоимости для ИГ не является числом.\n");
+            }
+
+            if (errorBuilder.length() != 0) {
+                errors.add("[ERROR] Услуга из строки №" + (i + 1) + " не была записана. Ошибки:\n" + errorBuilder.toString());
+                continue;
+            }
+
+            //Создание обновление услуги
+            Services service = new Services();
+
+            if (!isEmpty(numberPLCell) && isStringCell(numberPLCell)) {
+                String number = numberPLCell.getStringCellValue();
+                if (number.endsWith(".")) {
+                    number = deleteEndDots(number);
+                }
+                service.setNumber(number);
+            }
+            service.setName(nameCell.getStringCellValue());
+            service.setCost(roundRfDigits(priceCell.getNumericCellValue(), 2));
+            service.setCostFF(roundRfDigits(priceFFCell.getNumericCellValue(), 2));
+            service.setForDelete(false);
+
+            servicesService.addOrUpdateService(service);
+            addedCount++;
+        }
+
+        errors.add("Всего было добавлено/обновлено " + addedCount + " услуг(а).");
 
         return errors;
     }
 
-    private List<String> importMaterials(Sheet sheet, MaterialRowColInfo materialMap) throws Exception {
-        Map<String, Materials> materials = new HashMap<>();
+    private List<String> importMaterials(Workbook w, MaterialRowColInfo materialMap) throws Exception {
+        Sheet sheet = w.getSheet(materialMap.getSheetName());
         List<String> errors = new ArrayList<>();
         Row curRow;
         Materials material = null;
+        int addedCount = 0;
 
         for (int i = materialMap.getRowStartData() - 1, end = materialMap.getRowEndData();
              i < end; i++) {
             try {
                 material = new Materials();
+                material.setUnit(new Units(1));
+                material.setCount(10.0);
                 curRow = sheet.getRow(i);
 
+                if (materialMap.getName() <= 0 && materialMap.getPrice() <= 0) {
+                    errors.add("[ERROR] Укажите столбец имени и стоимости материалов."
+                            + " Они должны быть больше 0.");
+                    break;
+                }
                 //Если в текущей строке нет ни стоимости для граждан рб, 
                 //ни стоимости для иностранцев, то переходим на другую строку
                 Cell nameCell = curRow.getCell(materialMap.getName() - 1);
@@ -249,11 +286,13 @@ public class ExcelImporter {
                 //Проверяет соответствие данных в ячейках необходимым форматам,
                 //в случае несоответствия добавляет данные об ошибке,
                 //для вывода информации о не импортированных материалах
-                Cell numberCell = curRow.getCell(materialMap.getItemNumber() - 1);
-                if (isNumberCell(numberCell)) {
-                    material.setNumber(((Double) numberCell.getNumericCellValue()).intValue());
-                } else {
-                    errNumber = "Номер должен быть целым числом";
+                if (materialMap.getItemNumber() > 0) {
+                    Cell numberCell = curRow.getCell(materialMap.getItemNumber() - 1);
+                    if (isNumberCell(numberCell)) {
+                        material.setNumber(((Double) numberCell.getNumericCellValue()).intValue());
+                    } else {
+                        errNumber = "Номер должен быть целым числом";
+                    }
                 }
                 if (isStringCell(nameCell)) {
                     material.setName(nameCell.getStringCellValue());
@@ -261,62 +300,76 @@ public class ExcelImporter {
                     errName = "Имя должно быть строкой";
                 }
                 if (isNumberCell(costCell)) {
-                    BigDecimal decimal = new BigDecimal(costCell.getNumericCellValue());
-                    material.setCost(decimal.round(new MathContext(2)).doubleValue());
+                    /*BigDecimal decimal = new BigDecimal(costCell.getNumericCellValue());
+                    material.setCost(decimal.round(new MathContext(5)).doubleValue());*/
+                    Double cost = costCell.getNumericCellValue();
+                    material.setCost(roundRfDigits(cost, 4));
                 } else {
                     errCost = "Стоимость должна быть числом";
                 }
 
-                Cell unitCell = curRow.getCell(materialMap.getUnit() - 1);
-                Cell countCell = curRow.getCell(materialMap.getCount() - 1);
-
                 //Импорт в метариал единицы измерения
-                if (isEmpty(unitCell) || !isStringCell(unitCell)) {
-                    material.setUnit(new Units(1));
-                    errUnit = "Не задана единица измерения";
-                } else {
-                    String sUnit = unitCell.getStringCellValue().trim();
-                    Units unit = unitsService.getUnit(sUnit);
-                    /*if (unit == null) {
-                    material.setUnit(new Units(1));
-                    errUnit = "Нет такой единицы измерения: " + sUnit;
-                } else {
-                    material.setUnit(unit);
-                }*/
-                    material.setUnit(unit);
+                if (materialMap.getUnit() > 0) {
+                    Cell unitCell = curRow.getCell(materialMap.getUnit() - 1);
+                    if (isEmpty(unitCell) || !isStringCell(unitCell)) {
+                        errUnit = "Не задана единица измерения. Поставлено значение по умолчанию.";
+                    } else {
+                        String sUnit = unitCell.getStringCellValue().trim();
+                        Units unit = unitsService.getUnit(sUnit);
+                        material.setUnit(unit);
+                    }
                 }
                 //Импорт в материал количества
-                if (isEmpty(countCell) || !isNumberCell(countCell)) {
-                    material.setCount(10.0);
-                    errCount = "Не задано кол-во. По умолчанию равняется 10";
-                } else {
-                    Double count = countCell.getNumericCellValue();
-                    material.setCount(count);
+                if (materialMap.getCount() > 0) {
+                    Cell countCell = curRow.getCell(materialMap.getCount() - 1);
+                    if (isEmpty(countCell) || !isNumberCell(countCell)) {
+                        errCount = "Не задано кол-во. По умолчанию равняется 10";
+                    } else {
+                        Double count = countCell.getNumericCellValue();
+                        material.setCount(count);
+                    }
                 }
 
-                String error = "[ERROR] Материал не был создан. Строка №" + (i + 1) + ". Ошибки:";
+                //заполнение сотрудника, который пользуется материалом
+                material.setManager(materialMap.getManager());
+
+                StringBuilder error = new StringBuilder();
                 if (errName.isEmpty() && errCost.isEmpty()) {
-                    error = "Материал создан с ошибками. Строка №" + (i + 1) + ". Ошибки:\n";
-                    error += errUnit + "\n";
-                    error += errCount + "\n";
-                    materialsService.addMaterial(material);
+                    if (!errUnit.isEmpty() && !errCount.isEmpty()) {
+                        error.append("[INFO] Материал из строки ").append(i + 1).append(" записан с ошибками. Ошибки:\n");
+                        error.append(errUnit).append("\n");
+                        error.append(errCount).append("\n");
+                    }
+                    materialsService.addOrUpdateMaterial(material);
+                    addedCount++;
                 } else {
-                    error += errNumber + "\n";
-                    error += errName + "\n";
-                    error += errCost + "\n";
-                    error += errUnit + "\n";
-                    error += errCount + "\n";
+                    error.append("[ERROR] Материал из строки №").append(i + 1).append(" не был записан. Ошибки:\n");
+                    error.append(errNumber).append("\n");
+                    error.append(errName).append("\n");
+                    error.append(errCost).append("\n");
+                    error.append(errUnit).append("\n");
+                    error.append(errCount).append("\n");
                 }
 
-                System.out.println(error);
-                errors.add(error);
-                //materials.put(material.getName(), material);
+                if (!error.toString().isEmpty()) {
+                    errors.add(error.toString());
+                }
             } catch (Exception e) {
                 throw new Exception("Ошибка импорта материала: " + material + "\nВ строке - " + (i + 1) + ".\n"
                         + e.getMessage(), e);
             }
         }
-        //materialsService.importMaterials(materials);
+        
+        StringBuilder info = new StringBuilder();
+        if (errors.isEmpty()) {
+            info.append("Импорт прошел без ошибок.\n");
+        }
+        errors.add(info
+                .append("Всего было добавлено/обновлено ")
+                .append(addedCount)
+                .append(" материала(ов).")
+                .toString()
+        );
 
         return errors;
 
@@ -333,12 +386,54 @@ public class ExcelImporter {
     private boolean isNumberCell(Cell cell) {
         return cell.getCellType() == Cell.CELL_TYPE_NUMERIC || isFormulaCell(cell);
     }
-    
+
     private boolean isFormulaCell(Cell cell) {
         return cell.getCellType() == Cell.CELL_TYPE_FORMULA;
     }
-    
-    private void evalFormula(Cell cell) {
-        
+
+    private double roundRfDigits(double val, int fractionDigits) {
+        DecimalFormat df = new DecimalFormat("#0.#");
+        DecimalFormatSymbols decimalFormatSymbols = df.getDecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator('.');
+        df.setDecimalFormatSymbols(decimalFormatSymbols);
+        df.setMaximumFractionDigits(fractionDigits);
+
+        return Double.parseDouble(df.format(val));
+    }
+
+    private Cell getNameCell(Cell oldNameCell, Cell numPLCell) {
+        Cell nameCell = null;
+        Sheet sheet = oldNameCell.getSheet();
+        int iCurRow = oldNameCell.getRow().getRowNum();
+
+        while (isEmpty(nameCell) && iCurRow > 0) {
+            nameCell = sheet.getRow(--iCurRow).getCell(oldNameCell.getColumnIndex());
+        }
+
+        String groupNumPL = numPLCell.getStringCellValue();
+        int index;
+        do {
+            index = groupNumPL.lastIndexOf(".");
+            if (index == -1) {
+                break;
+            }
+            groupNumPL = groupNumPL.substring(0, index);
+        } while (groupNumPL.length() == index);
+
+        String curRowNumPL = sheet.getRow(iCurRow).
+                getCell(numPLCell.getColumnIndex()).getStringCellValue();
+        if (curRowNumPL.startsWith(groupNumPL)) {
+            return nameCell;
+        }
+
+        return oldNameCell;
+    }
+
+    private String deleteEndDots(String s) {
+        while (s.endsWith(".")) {
+            s = s.substring(0, s.length() - 1);
+        }
+
+        return s;
     }
 }

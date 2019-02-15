@@ -57,7 +57,7 @@ public class UsedMaterialsController {
                 Usedmaterials umTemp = mapOrderMaterials.get(matId);
                 if (umTemp == null) {
                     //Если материал используемый в Usedmaterials помечен на удаление, 
-                    //то метод getAllMaterials его не вернет, а значит umTemp будет раняться null
+                    //то метод getAllMaterials его не вернет, а значит umTemp будет равняться null
                     //код ниже помещает такие Usedmaterials в конец списка выбора, а на странице их изменение блокируется
                     umTemp = new Usedmaterials(materialsService.findMaterial(matId));
                     um.setMaterial(umTemp.getMaterial());

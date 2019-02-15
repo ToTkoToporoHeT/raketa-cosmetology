@@ -19,65 +19,103 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class ServicesService {
-    
+
     @Autowired
     private ServicesDAO servicesDAO;
-    
-    public List<Services> getAllServices(){
+
+    public List<Services> getAllServices() {
         System.out.println("Service level getAllServices is called");
-        
+
         return servicesDAO.getAllServices(false);
     }
-    
-    public Services findService(int id){
+
+    public Services findService(int id) {
         System.out.println("Service level findService by Id is called");
-        
+
         return servicesDAO.findService(id);
     }
-    
-    public Services findService(String name){
+
+    public Services findService(String name) {
         System.out.println("Service level findService by Name is called");
-        
+
         return servicesDAO.findService(name);
     }
-    
-    public boolean updateService(int id, String name, double cost, double costFF){
+
+    public Services findServiceByNumber(String number) {
+        System.out.println("Service level findService by Name is called");
+
+        return servicesDAO.findServiceByNumber(number);
+    }
+
+    public boolean updateService(int id, String name, double cost, double costFF) {
         System.out.println("Service level updateService is called");
-        
+
         return servicesDAO.updateService(id, name.trim(), cost, costFF);
     }
-    
-    public boolean addService(String name, double cost, double costFF){
+
+    public boolean updateService(Services service) {
+        System.out.println("Service level updateService is called");
+
+        return servicesDAO.updateService(service);
+    }
+
+    public boolean addService(String name, double cost, double costFF) {
         System.out.println("Service level addService is called");
-        
+
         return servicesDAO.addService(name.trim(), cost, costFF);
     }
-    
-    public boolean addService(Services service){
+
+    public boolean addService(Services service) {
         System.out.println("Service level addService is called");
-        
+
         return servicesDAO.addService(service);
     }
-    
+
+    public Services addOrUpdateService(Services service) {
+        System.out.println("Service level addOrUpdate is called");
+
+        Services oldServices;
+        if (service.getNumber() != null) {
+            oldServices = findServiceByNumber(service.getNumber());
+        } else {
+            oldServices = findService(service.getName());
+        }
+
+        if (oldServices != null) {
+            service.setId(oldServices.getId());
+            servicesDAO.updateService(service);
+        } else {
+            servicesDAO.addService(service);
+        }
+
+        return service;
+    }
+
     public boolean deleteService(int idService) {
         System.out.println("Service level deleteService is called");
-        
+
         return servicesDAO.deleteService(idService);
     }
 
     @Transactional
     public void importServices(Map<String, Services> services) {
         System.out.println("Service level importServices is called");
-        
-        for (Map.Entry<String, Services> entry : services.entrySet()){            
+
+        for (Map.Entry<String, Services> entry : services.entrySet()) {
             Services service = servicesDAO.findService(entry.getKey());
-            
-            if (service != null){
+
+            if (service != null) {
                 addService(entry.getValue());
-                
+
             } else {
                 service.update(entry.getValue());
             }
         }
+    }
+
+    public void deleteAllServices() {
+        getAllServices().forEach((service) -> {
+            deleteService(service.getId());
+        });
     }
 }

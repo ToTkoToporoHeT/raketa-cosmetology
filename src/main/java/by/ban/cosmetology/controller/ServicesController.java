@@ -13,6 +13,8 @@ import java.text.NumberFormat;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -100,11 +102,11 @@ public class ServicesController {
 
         switch(action){
             case "add":{
-                servicesService.addService(service.getName(), service.getCost(), service.getCostFF());
+                servicesService.addService(service);
                 break;
             }
             case "edit":{
-                servicesService.updateService(service.getId(), service.getName(), service.getCost(), service.getCostFF());
+                servicesService.updateService(service);
             }
         }
         
@@ -126,5 +128,14 @@ public class ServicesController {
         
         model.addAttribute("services", servicesService.getAllServices());
         return "/materials/selectMaterials";
+    }
+    
+    @RequestMapping("/deleteAll")
+    public ResponseEntity<String> deleteAllServices() {
+        System.out.println("Controller level deleteAllServices is called");
+
+        servicesService.deleteAllServices();
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
