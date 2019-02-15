@@ -7,6 +7,7 @@ package by.ban.cosmetology.DAO;
 
 import by.ban.cosmetology.model.Materials;
 import by.ban.cosmetology.model.Orders;
+import by.ban.cosmetology.model.Staff;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,6 +33,16 @@ public class MaterialsDAO {
         System.out.println("DAO level getAllMaterials is called");
 
         TypedQuery<Materials> tq = entityManager.createNamedQuery("Materials.findAllActive", Materials.class);
+        tq.setParameter("del", false);
+
+        return tq.getResultList();
+    }
+    
+    public List<Materials> getAllMaterials(Staff manager) {
+        System.out.println("DAO level getAllMaterials is called");
+
+        TypedQuery<Materials> tq = entityManager.createNamedQuery("Materials.findAllByManager", Materials.class);
+        tq.setParameter("manager", manager);
         tq.setParameter("del", false);
 
         return tq.getResultList();

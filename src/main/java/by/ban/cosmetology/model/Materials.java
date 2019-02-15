@@ -36,6 +36,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Materials.findAll", query = "SELECT m FROM Materials m"),
+    @NamedQuery(name = "Materials.findAllByManager", 
+            query = "SELECT m FROM Materials m "
+                    + "WHERE m.manager = :manager and m.forDelete = :del"),
     @NamedQuery(name = "Materials.findAllActive", query = "SELECT m FROM Materials m WHERE m.forDelete = :del"),
     @NamedQuery(name = "Materials.findById", query = "SELECT m FROM Materials m WHERE m.id = :id"),
     @NamedQuery(name = "Materials.findByNumber", query = "SELECT m FROM Materials m WHERE m.number = :number"),

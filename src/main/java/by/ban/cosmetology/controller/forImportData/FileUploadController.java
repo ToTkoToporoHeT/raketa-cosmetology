@@ -6,28 +6,18 @@
 package by.ban.cosmetology.controller.forImportData;
 
 import by.ban.cosmetology.controller.GlobalExceptiosHandler;
-import by.ban.cosmetology.model.Materials;
-import by.ban.cosmetology.model.Services;
 import by.ban.cosmetology.model.Staff;
-import by.ban.cosmetology.model.Units;
 import by.ban.cosmetology.model.excel.ExcelImporter;
 import by.ban.cosmetology.model.excel.dataImport.ExcelFile;
 import by.ban.cosmetology.model.excel.dataImport.layouts.MaterialRowColInfo;
 import by.ban.cosmetology.model.excel.dataImport.layouts.ServicesRowColInfo;
-import by.ban.cosmetology.service.MaterialsService;
-import by.ban.cosmetology.service.ServicesService;
 import by.ban.cosmetology.service.StaffService;
-import by.ban.cosmetology.service.UnitsService;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 import javax.validation.Valid;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +48,7 @@ public class FileUploadController {
     public void getExcelFile(Model model) {
         ServicesRowColInfo sdi = new ServicesRowColInfo("косметика 1", 12, 35, 1, 2, 6, 9);
         List<Staff> staff = staffService.getAllStaff();
-        MaterialRowColInfo mdi = new MaterialRowColInfo(null, "прайс", 4, 95, 2, 3, 4, 5, 12, 11);
+        MaterialRowColInfo mdi = new MaterialRowColInfo(null, "!", 4, 105, 2, 4, 3, 5, 0, 11);
         model.addAttribute("excelFile", new ExcelFile(sdi, mdi));
         model.addAttribute("staff", staff);
     }

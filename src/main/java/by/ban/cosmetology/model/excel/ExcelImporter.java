@@ -78,6 +78,9 @@ public class ExcelImporter {
         } catch (Exception e) {
             throw e;
         } finally {
+            if (document != null) {
+                document.close();
+            }
             file.delete();
         }
 
@@ -161,8 +164,6 @@ public class ExcelImporter {
     }
 
     private List<String> importServices(Workbook w, ServicesRowColInfo serviceMap) {
-
-        List<String> errors = new ArrayList<>();
 
         Sheet sheet = w.getSheet(serviceMap.getSheetName());
         if (sheet == null) {
@@ -250,7 +251,6 @@ public class ExcelImporter {
 
     private List<String> importMaterials(Workbook w, MaterialRowColInfo materialMap) throws Exception {
         Sheet sheet = w.getSheet(materialMap.getSheetName());
-        List<String> errors = new ArrayList<>();
         Row curRow;
         Materials material = null;
         int addedCount = 0;
@@ -359,7 +359,7 @@ public class ExcelImporter {
                         + e.getMessage(), e);
             }
         }
-        
+
         StringBuilder info = new StringBuilder();
         if (errors.isEmpty()) {
             info.append("Импорт прошел без ошибок.\n");

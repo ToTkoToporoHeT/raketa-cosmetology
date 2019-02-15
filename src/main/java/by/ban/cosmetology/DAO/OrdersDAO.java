@@ -125,8 +125,9 @@ public class OrdersDAO {
     public boolean deleteOrder(Orders order) {
         System.out.println("DAO level deleteOrder is called");
         
-        entityManager.remove(order);
+        
         removeDeleted(order);
+        entityManager.remove(order);
 
         return true;
     }
