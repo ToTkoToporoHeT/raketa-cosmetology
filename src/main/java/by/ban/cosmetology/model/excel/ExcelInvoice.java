@@ -37,31 +37,33 @@ public class ExcelInvoice extends ExcelDocument {
         Orders order = (Orders) map.get("order");
         
         //ФИО клиента
-        setCellValue(new CellReference("Sheet1!K7"), order.getCustomer().toString());
-        setCellValue(new CellReference("Sheet1!D24"), order.getCustomer().toString());
+        setCellValue("Sheet1!K7", order.getCustomer().toString());
+        setCellValue("Sheet1!D24", order.getCustomer().toString());
+        //гражданство клиента
+        String nationality = order.getCustomer().getAddressId().getCountry();
+        setCellValue("Sheet1!BK7", nationality);
         //стоимость услуг
         Double psSum = 0.0;
         for (Providedservices ps : order.getProvidedservicesList()) {
             psSum += ps.getCost();
         }
-        setCellValue(new CellReference("Sheet1!AW14"), psSum);
+        setCellValue("Sheet1!AW14", psSum);
         //стоимость материалов
         Double umSum = 0.0;
         for (Usedmaterials um : order.getUsedmaterialsList()) {
             umSum += um.getCost() * um.getCount();
         }
-        setCellValue(new CellReference("Sheet1!AW15"), umSum);
+        setCellValue("Sheet1!AW15", umSum);
         //сумма к оплате
-        setCellValue(new CellReference("Sheet1!AW16"), psSum + umSum);
+        setCellValue("Sheet1!AW16", psSum + umSum);
         //ФИО сотрудника
-        setCellValue(new CellReference("Sheet1!S18"), 
-                "косметик " + order.getManager().toString());
-        setCellValue(new CellReference("Sheet1!AL27"), order.getManager().toString());
+        setCellValue("Sheet1!S18", "косметик " + order.getManager().toString());
+        setCellValue("Sheet1!AL27", order.getManager().toString());
         //Дата
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         Date date = new Date();
-        setCellValue(new CellReference("Sheet1!A18"), date);
-        setCellValue(new CellReference("Sheet1!A35"), date);
+        setCellValue("Sheet1!A18", date);
+        setCellValue("Sheet1!A35", date);
         
         //Смена имени файла
         response.setHeader("Content-Disposition", "attachment; filename=" 

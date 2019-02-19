@@ -7,7 +7,7 @@ package by.ban.cosmetology.controller.forImportData;
 
 import by.ban.cosmetology.controller.GlobalExceptiosHandler;
 import by.ban.cosmetology.model.Staff;
-import by.ban.cosmetology.model.excel.ExcelImporter;
+import by.ban.cosmetology.service.ExcelImporter;
 import by.ban.cosmetology.model.excel.dataImport.ExcelFile;
 import by.ban.cosmetology.model.excel.dataImport.layouts.MaterialRowColInfo;
 import by.ban.cosmetology.model.excel.dataImport.layouts.ServicesRowColInfo;

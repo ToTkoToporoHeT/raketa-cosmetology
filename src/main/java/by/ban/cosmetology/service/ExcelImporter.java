@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package by.ban.cosmetology.model.excel;
+package by.ban.cosmetology.service;
 
 import by.ban.cosmetology.model.Materials;
 import by.ban.cosmetology.model.Services;
@@ -53,7 +53,7 @@ public class ExcelImporter {
     @Autowired
     private UnitsService unitsService;
 
-    List<String> errors = new LinkedList<>();
+    private List<String> errors = new LinkedList<>();
 
     public List<String> importExcelFile(String fileType, File file, ExcelFile excelFile) throws Exception {
         Workbook document = getWorkbook(file);
@@ -228,7 +228,7 @@ public class ExcelImporter {
             //Создание обновление услуги
             Services service = new Services();
 
-            if (!isEmpty(numberPLCell) && isStringCell(numberPLCell)) {
+            if (!isEmpty(numberPLCell) && (isStringCell(numberPLCell) || isFormulaCell(nameCell))) {
                 String number = numberPLCell.getStringCellValue();
                 if (number.endsWith(".")) {
                     number = deleteEndDots(number);

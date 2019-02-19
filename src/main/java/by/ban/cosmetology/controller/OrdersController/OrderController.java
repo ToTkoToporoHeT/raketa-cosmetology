@@ -342,7 +342,8 @@ public class OrderController {
             model.addAttribute("order", orders);
             return "excelInvoice";
         } else {
-            return "forward:" + ordersService.getOpenInExceURL(orders);
+            model.addAttribute("order", orders);
+            return "excelOrder";
         }
     }
 }

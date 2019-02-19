@@ -8,7 +8,6 @@ package by.ban.cosmetology.model.excel;
 import by.ban.cosmetology.model.Orders;
 import by.ban.cosmetology.model.Providedservices;
 import by.ban.cosmetology.model.Staff;
-import by.ban.cosmetology.model.Usedmaterials;
 import by.ban.cosmetology.model.excel.instruments.StaffProvidedServices;
 import by.ban.cosmetology.model.excel.instruments.TableRowReportPSUM;
 import java.io.IOException;
@@ -129,6 +128,7 @@ public class ExcelReport extends ExcelDocument {
     protected Workbook createWorkbook(Map<String, Object> model, HttpServletRequest request) {
         try {
             wbx = new XSSFWorkbook("C:\\excelTamplates\\Отчет (услуги и материалы).xlsx");
+            sheet = wbx.getSheet("Лист1");
         } catch (IOException ex) {
             Logger.getLogger(ExcelInvoice.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -168,26 +168,5 @@ public class ExcelReport extends ExcelDocument {
                 }
             });
         }
-    }
-
-    private void setCellValue(int row, int col, String value) {
-        wbx.getSheet(FIRST_TABEL_CR.getSheetName())
-                .getRow(row)
-                .getCell(col)
-                .setCellValue(value);
-    }
-
-    private void setCellValue(int row, int col, Double value) {
-        wbx.getSheet(FIRST_TABEL_CR.getSheetName())
-                .getRow(row)
-                .getCell(col)
-                .setCellValue(value);
-    }
-
-    private void setCellValue(int row, int col, Date value) {
-        wbx.getSheet(FIRST_TABEL_CR.getSheetName())
-                .getRow(row)
-                .getCell(col)
-                .setCellValue(value);
     }
 }
