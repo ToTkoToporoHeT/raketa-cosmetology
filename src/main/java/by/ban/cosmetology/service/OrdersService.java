@@ -115,28 +115,6 @@ public class OrdersService {
         
         return materialsSum + servicesSum;
     }
-    
-    //формирует строку запроса в PHP скрипт для формирования/печати Excel документа
-    public String getOpenInExceURL(Orders order) {
-        String phpScriptURL = "192.168.1.16:8585/phpOrderPrinter/openOrderInExcel.php?";
-
-        try {
-            
-            phpScriptURL += "staffFullName="    + getURLString(order.getManager().toString())                  + "&";
-            phpScriptURL += "number="           + getURLString(order.getCheck_number())                              + "&";
-            phpScriptURL += "date="             + getURLString(order.getPrepare_date().toString())             + "&";
-            phpScriptURL += "clientFullName="   + getURLString(order.getCustomer().toString())                 + "&";
-            phpScriptURL += "address="          + getURLString(order.getCustomer().getAddressId().toString())  + "&";
-            phpScriptURL += getServicesURL(order.getProvidedservicesList());
-            phpScriptURL += getMaterialsURL(order.getUsedmaterialsList());
-            phpScriptURL += "sum=" + getOrderSum(order);
-            
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-           
-        return phpScriptURL;
-    }
 
         //вычисляет кол-во материалов оставшихся на складе
         private List<Usedmaterials> calculateMaterialsBalance(Orders order, CalcAction calcAction) {
@@ -218,34 +196,5 @@ public class OrdersService {
                 }
             }
             order.setVisitDatesList(visitDates);
-        }
-        
-        private String getServicesURL(List<Providedservices> pList) throws UnsupportedEncodingException {
-            String result = "";
-            for (Providedservices ps : pList) {
-                result += "service[]=" 
-                        + getURLString(ps.getService().getName())  + "_" 
-                        + ps.getRate()                             + "_" 
-                        + ps.getCost()                             + "&";
-            }
-            
-            return result;
-        }
-        
-        private String getMaterialsURL(List<Usedmaterials> uList) throws UnsupportedEncodingException {
-            String result = "";
-            for (Usedmaterials um : uList) {
-                result += "material[]=" 
-                        + getURLString(um.getMaterial().getName())            + "_" 
-                        + getURLString(um.getMaterial().getUnit().getUnit())  + "_" 
-                        + um.getCount()                                       + "_" 
-                        + um.getCost()                                        + "&";
-            }
-            
-            return result;
-        }
-    
-        private String getURLString(String str) throws UnsupportedEncodingException {
-            return URLEncoder.encode(str, "utf-8");
         }
 }

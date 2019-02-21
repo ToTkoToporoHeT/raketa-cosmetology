@@ -17,6 +17,7 @@
         <!--Ссылки используемые для обработки событий на странице-->
         <c:url var="actionURL"          value="/orders/order/${action}"/>
         <c:url var="cancelURL"          value="/orders/order/cancel"/>
+        <c:url var="openInExcel"        value="/orders/order/openInExcel"/>
         <c:url var="printOrder"         value="/printer/order"/>
 
         <c:url var="changeCheckNumber"  value="/orders/order/changeCheckNumber"/>
@@ -274,21 +275,14 @@
                     Сохранить
                 </button>
                 <div class="btn-group">
-                    <c:url
-                        var="openInExcel"
-                        value="/orders/order/openInExcel"
-                        />
-                    <%--value="http://192.168.1.16:8585/phpOrderPrinter/openOrderInExcel.php?staffFullName=${orders.manager}&number=${orders.check_number}&date=${orders.prepare_date}&clientFullName=${orders.customer}&address=${orders.customer.addressId}&${provadedServicesForURL}${usedmaterialsStrForURL}sum=${materialsSum + serviceSum}"--%> 
-                    <%--formSpring:form id="print" action="${openInExcel}" method="GET" commandName="orders"--%>
                     <button type="submit" form="mainForm" formaction="${openInExcel}" class="btn btn-info">Открыть в MS Excel</button>
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
-                    <ul class="dropdown-menu">
+                    <%--<ul class="dropdown-menu">
                         <li><a href="${printOrder}">Напечатать</a>
-                    </ul>
-                    <!--/formSpring:form-->
+                    </ul>--%>
                 </div>              
                 <a class="btn btn-default" onclick="return confirm('Вы дейстительно хотите отменить ${action == 'add' ? 'создание' : 'редактирование'} документа?')" href="${cancelURL}">
                     Отмена

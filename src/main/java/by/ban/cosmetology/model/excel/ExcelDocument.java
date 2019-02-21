@@ -8,6 +8,7 @@ package by.ban.cosmetology.model.excel;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -42,7 +43,7 @@ public abstract class ExcelDocument extends AbstractXlsxView {
     protected XSSFWorkbook wbx = new XSSFWorkbook();
     protected XSSFSheet sheet;
 
-    public XSSFWorkbook getWorkbook(String sourcePath, String sheetName) {
+    public XSSFWorkbook getWorkbook(String sourcePath, String sheetName) throws IOException {
         InputStream is = null;
         OutputStream os = null;
         path = System.getProperty("catalina.home")
@@ -66,23 +67,18 @@ public abstract class ExcelDocument extends AbstractXlsxView {
         } catch (IOException ex) {
             Logger.getLogger(ExcelInvoice.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (is != null) {
-                    is.close();
-                }
-                if (os != null) {
-                    os.close();
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(ExcelOrder.class.getName()).log(Level.SEVERE, null, ex);
+            if (is != null) {
+                is.close();
+            }
+            if (os != null) {
+                os.close();
             }
         }
-
-        System.out.println("File open in - " + path);
+        
         return wbx;
     }
 
-    public XSSFWorkbook getWorkbook(String sourcePath) {
+    public XSSFWorkbook getWorkbook(String sourcePath) throws IOException{
         return getWorkbook(sourcePath, null);
     }
 
@@ -95,30 +91,60 @@ public abstract class ExcelDocument extends AbstractXlsxView {
         return wbx.getSheet(sheetName).getRow(cellRef.getRow()).getCell(cellRef.getCol()).getStringCellValue();
     }
 
-    protected void setCellValue(String STRcellRef, String value) {
-        getCell(STRcellRef).setCellValue(value);
+    protected <T> Cell setCellValue(String STRcellRef, T value) {
+        Cell cell = getCell(STRcellRef);
+
+        if (value instanceof Date) {
+            cell.setCellValue((Date) value);
+        } else if (value instanceof Number) {
+            cell.setCellValue(((Number) value).doubleValue());
+        } else {
+            cell.setCellValue(value.toString());
+        }
+
+        return cell;
     }
 
-    protected void setCellValue(String STRcellRef, Double value) {
-        getCell(STRcellRef).setCellValue(value);
+    /*protected Cell setCellValue(String STRcellRef, Double value) {
+        Cell cell = getCell(STRcellRef);
+        cell.setCellValue(value);
+        
+        return  cell;
     }
 
-    protected void setCellValue(String STRcellRef, Date value) {
-        getCell(STRcellRef).setCellValue(value);
+    protected Cell setCellValue(String STRcellRef, Date value) {
+        Cell cell = getCell(STRcellRef);
+        cell.setCellValue(value);
+        
+        return  cell;
+    }*/
+    protected <T> Cell setCellValue(int row, int col, T value) {
+        Cell cell = getCell(row, col);
+
+        if (value instanceof Date) {
+            cell.setCellValue((Date) value);
+        } else if (value instanceof Number) {
+            cell.setCellValue(((Number) value).doubleValue());
+        } else {
+            cell.setCellValue(value.toString());
+        }
+
+        return cell;
     }
 
-    protected void setCellValue(int row, int col, String value) {
-        getCell(row, col).setCellValue(value);
+    /*protected Cell setCellValue(int row, int col, Double value) {
+        Cell cell = getCell(row, col);
+        cell.setCellValue(value);
+        
+        return  cell;
     }
 
-    protected void setCellValue(int row, int col, Double value) {
-        getCell(row, col).setCellValue(value);
-    }
-
-    protected void setCellValue(int row, int col, Date value) {
-        getCell(row, col).setCellValue(value);
-    }
-
+    protected Cell setCellValue(int row, int col, Date value) {
+        Cell cell = getCell(row, col);
+        cell.setCellValue(value);
+        
+        return  cell;
+    }*/
     protected void replaceTextInCell(String STRcellRef, String marker, String text) {
         String str = getStringCellValue(STRcellRef);
 
@@ -129,51 +155,69 @@ public abstract class ExcelDocument extends AbstractXlsxView {
         sheet.shiftRows(rowNum, sheet.getLastRowNum(), 1, true, false);
     }
 
+    //Проверен со шрифтом Times New Roman 11
     protected void setRowHeight(Cell cell) {
-        final short rowHeight = 240;
         Sheet curSheet = cell.getSheet();
         String cellValue = cell.getStringCellValue();
         if (cellValue.equals("")) {
             return;
         }
         // Create Font object with Font attribute (e.g. Font family, Font size, etc) for calculation
-        Font excelFont = wbx.getFontAt(cell.getCellStyle().getFontIndex());
+        Font excelFont = wbx.getFontAt(cell.getCellStyle().getFontIndex());  
         java.awt.Font currFont = new java.awt.Font(excelFont.getFontName(), 0, excelFont.getFontHeightInPoints());
         AttributedString attrStr = new AttributedString(cellValue);
         attrStr.addAttribute(TextAttribute.FONT, currFont);
 
         // Use LineBreakMeasurer to count number of lines needed for the text
-        FontRenderContext frc = new FontRenderContext(null, true, true);
+        FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
+        float letterWidth = (float) currFont.getStringBounds(cellValue, frc).getWidth();
         LineBreakMeasurer measurer = new LineBreakMeasurer(attrStr.getIterator(), frc);
         int nextPos = 0;
         int lineCnt = 0;
-        int columnWhidth = 0;
+        int columnWidth = 0;
 
         for (CellRangeAddress address : curSheet.getMergedRegions()) {
             if (address.isInRange(cell)) {
                 for (int i = address.getFirstColumn(); i < address.getLastColumn(); i++) {
-                    columnWhidth += curSheet.getColumnWidth(i);
+                    columnWidth += curSheet.getColumnWidth(i);
                 }
                 break;
             }
         }
 
         while (measurer.getPosition() < cellValue.length()) {
-            nextPos = measurer.nextOffset(columnWhidth / 48.481f); // mergedCellWidth is the max width of each line
+            nextPos = measurer.nextOffset(columnWidth / 39.6009f); // mergedCellWidth is the max width of each line
             lineCnt++;
             measurer.setPosition(nextPos);
         }
 
         Row currRow = curSheet.getRow(cell.getRowIndex());
-        int currRowLines = currRow.getHeight() / rowHeight;
-        if (currRowLines < lineCnt) {
-            currRow.setHeight((short) (rowHeight * lineCnt));
+        short rowHeight = currRow.getHeight();
+        if (lineCnt > 1) {
+            currRow.setHeight((short) ( rowHeight * lineCnt));
         }
     }
 
     protected void setRowHeight(int row, int col) {
         Cell cell = sheet.getRow(row).getCell(col);
         setRowHeight(cell);
+    }
+
+    protected Integer nextVisibleCellCol(int row, int col) {
+        return nextVisibleCellCol(getCell(row, col));
+    }
+
+    protected Integer nextVisibleCellCol(Cell cell) {
+        Sheet sheet = cell.getSheet();
+        int nextCellCol = cell.getColumnIndex() + 1;
+        for (CellRangeAddress mergedRegion : sheet.getMergedRegions()) {
+            if (mergedRegion.containsRow(cell.getRowIndex()) 
+                    && mergedRegion.containsColumn(cell.getColumnIndex())) {
+                return mergedRegion.getLastColumn() + 1;
+            }
+        }
+
+        return nextCellCol;
     }
 
     //не работает с многострочными объедененными регионами
@@ -242,5 +286,13 @@ public abstract class ExcelDocument extends AbstractXlsxView {
     private String getFileFullName(String path) {
         int index = path.lastIndexOf("\\");
         return path.substring(index + 1);
+    }
+    
+    private int poiWidthToPixels(final double width) {
+        if (width <= 256) {
+            return (int) Math.round((width / 28));
+        } else {
+            return (int) (Math.round(width * 9 / 256));
+        }
     }
 }

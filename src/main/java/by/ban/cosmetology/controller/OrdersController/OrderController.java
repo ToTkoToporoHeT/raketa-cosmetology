@@ -327,8 +327,7 @@ public class OrderController {
 
         return "redirect:/orders/showAllOrders";
     }
-
-    //отправляет данные для обработки сторонним скриптом (php)
+    
     @RequestMapping("/openInExcel")
     public String openOrderInExcel(@Valid Orders orders,
                                    BindingResult result,
