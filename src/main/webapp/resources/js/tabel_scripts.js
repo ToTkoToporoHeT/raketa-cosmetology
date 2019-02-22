@@ -43,6 +43,14 @@ $('document').ready(function () {
             }
         }
     });
+
+    //очистка поиска
+    $('#searchReset').click(function () {
+        $(this).parents('.input-group').find('input[type=search]').val("");
+        $.each($("#table tbody tr"), function () {
+            $(this).show();
+        });
+    });
 });
 
 $(function ($) {

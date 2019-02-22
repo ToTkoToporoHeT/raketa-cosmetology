@@ -52,8 +52,6 @@
                     </label>
                 </div--%>
                 <input type= "submit" value= "Войти" class= "btn btn-lg btn-primary btn-block" >
-                <br/>
-                <a href= "javascript:history.back()">Назад</a>
             </form>
 
         </div>

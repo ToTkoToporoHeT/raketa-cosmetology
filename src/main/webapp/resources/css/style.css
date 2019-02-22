@@ -67,6 +67,20 @@ and open the template in the editor.
 }
 /*}*/
 
+.panel .panel-body input, .panel .input-group span button{
+    border: 0px solid;
+    border-bottom: 0.1px solid #EAEAEA;
+    border-top: 0.1px solid #EAEAEA;
+    border-radius: 0;
+}
+
+.panel .panel-body span button {
+    margin: 0px;
+    padding-bottom: 8px;
+    box-shadow: none;
+    
+}
+
 .table thead th {
     text-align: center;
 }

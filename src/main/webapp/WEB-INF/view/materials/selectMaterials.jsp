@@ -21,10 +21,10 @@
                 }
             }
         </script>
-        
+
         <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')" var="isAdmin"/>
         <security:authorize access="hasRole('ROLE_ROOT')" var="isRoot"/>
-        
+
         <formSpring:form cssClass="form-horizontal" role="main" modelAttribute="orderTemp" method="post"
                          onsubmit="return checkCheckedMaterials()">
             <div class="row">
@@ -32,10 +32,17 @@
                     <div class="form-group">
                         <div class="panel panel-info">
                             <div class="panel-heading">Список материалов</div> 
-                            <div class="panel-body">
+                            <div class="panel-body" style="padding: 0 15px;">
                                 <div class="row">                                
-                                    <div class="col-sm-12">
-                                        <input id="search" type="text" class="form-control" placeholder="Искать...">
+                                    <div class="">
+                                        <div class="input-group">
+                                            <input id="search" type="search" class="form-control" placeholder="Искать..." autocomplete=off>
+                                            <span class="input-group-btn">
+                                                <button id="searchReset" class="btn btn-default" type="button">
+                                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"/>
+                                                </button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div><!-- /.row -->
                             </div>
